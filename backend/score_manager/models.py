@@ -55,7 +55,7 @@ class Question(models.Model):
 class Test(models.Model):
     questions = models.ManyToManyField(Question)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
-    semester = models.PositiveSmallIntegerField()
+    semester = models.PositiveSmallIntegerField(null=False, blank=False)
     datetime = models.DateTimeField()
 
     def __str__(self):
