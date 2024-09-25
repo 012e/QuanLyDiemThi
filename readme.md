@@ -53,7 +53,7 @@ python install -r requirements.txt
 pythom manage.py runserver
 ```
 
-### Các lần chạy sau
+#### Các lần chạy sau
 
 Chạy tất cả các lệnh sau trong thư mục backend
 1. Activate môi trường ảo đó
@@ -66,7 +66,7 @@ Chạy tất cả các lệnh sau trong thư mục backend
 pythom manage.py runserver
 ```
 
-### Cách thêm dependency vào backend
+#### Cách thêm dependency vào backend
 
 Các lệnh sau đều được chạy sau khi activate môi trường ảo.
 
