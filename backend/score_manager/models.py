@@ -42,13 +42,12 @@ DIFFICULTY_CHOICES = {
 
 
 class Question(models.Model):
-    question = models.TextField()
     detail = models.TextField(blank=False, null=True)
     difficulty = models.CharField(max_length=100, choices=DIFFICULTY_CHOICES.items())
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
 
     def __str__(self):
-        return str(self.question)
+        return str(self.detail)
 
     class Meta:
         verbose_name = "Question"
