@@ -1,12 +1,7 @@
 from unittest import TestSuite
 from rest_framework import viewsets
-from .models import Difficulty, Question, Test
-from .serializers import DifficultySerializer, QuestionSerializer, TestSerializer
-
-
-class DifficultyViewSet(viewsets.ModelViewSet):
-    queryset = Difficulty.objects.all()
-    serializer_class = DifficultySerializer
+from .models import Question, Test
+from .serializers import QuestionSerializer, TestSerializer
 
 
 class QuestionViewSet(viewsets.ModelViewSet):

@@ -1,5 +1,5 @@
 from rest_framework.routers import DefaultRouter
-from score_manager.views import DifficultyViewSet, QuestionViewSet, TestViewSet
+from score_manager.views import QuestionViewSet, TestViewSet
 from django.urls import path, include
 from drf_spectacular.views import (
     SpectacularAPIView,
@@ -8,7 +8,6 @@ from drf_spectacular.views import (
 )
 
 router = DefaultRouter()
-router.register(r"difficulty", DifficultyViewSet, basename="difficulty")
 router.register(r"question", QuestionViewSet, basename="question")
 router.register(r"test", TestViewSet, basename="test")
 

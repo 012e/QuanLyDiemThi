@@ -1,12 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
-
-
-class Difficulty(models.Model):
-    name = models.CharField(max_length=50)
-
-    def __str__(self):
-        return str(self.name)
+from django.utils import choices
 
 
 class Subject(models.Model):
@@ -34,15 +27,25 @@ class Class(models.Model):
 class Student(models.Model):
     name = models.CharField(max_length=100)
     classes = models.ManyToManyField(Class)
+    student_code = models.CharField(max_length=10)
 
     def __str__(self):
         return str(self.name)
 
 
+DIFFICULTY_CHOICES = {
+    "easy": "Easy",
+    "medium": "Medium",
+    "hard": "Hard",
+    "hehe": "Hehe",
+}
+
+
 class Question(models.Model):
     question = models.TextField()
-    difficulty = models.ForeignKey(Difficulty, on_delete=models.CASCADE)
     detail = models.TextField(blank=False, null=True)
+    difficulty = models.CharField(max_length=100, choices=DIFFICULTY_CHOICES.items())
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.question)
@@ -53,10 +56,10 @@ class Question(models.Model):
 
 
 class Test(models.Model):
-    questions = models.ManyToManyField(Question)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     semester = models.PositiveSmallIntegerField(null=False, blank=False)
     datetime = models.DateTimeField()
+    duration = models.DurationField()
 
     def __str__(self):
         return f"{self.subject} - {self.semester} - {self.datetime}"

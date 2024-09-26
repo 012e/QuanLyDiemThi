@@ -1,12 +1,6 @@
 from typing_extensions import ReadOnly
 import rest_framework.serializers as serializers
-from .models import Question, Difficulty, Test, Subject
-
-
-class DifficultySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Difficulty
-        fields = "__all__"
+from .models import Question, Test, Subject
 
 
 class QuestionSerializer(serializers.ModelSerializer):
