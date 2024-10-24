@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "drf_spectacular",
     "dj_rest_auth",
     "constance",
+    "corsheaders",
 ]
 
 CONSTANCE_BACKEND = "constance.backends.database.DatabaseBackend"
@@ -68,6 +69,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
 ]
 
 ROOT_URLCONF = "backend.urls"
@@ -157,3 +160,8 @@ REST_FRAMEWORK = {
 REST_AUTH = {
     "USE_JWT": True,
 }
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:4200",
+    "http://localhost:8080",
+]
