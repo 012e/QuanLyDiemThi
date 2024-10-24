@@ -1,14 +1,3 @@
-services: 
-  backend:
-    build:
-      context: backend
-    hostname: ${BACKEND_HOST:-backend}
-    ports:
-      - 8000:8000
-    
-  frontend:
-    build:
-      context: frontend
-    hostname: ${FRONTEND_HOST:-frontend}
-    ports:
-      - 8080:8080
+include:
+  - docker-compose.backend.yaml
+  - docker-compose.frontend.yaml

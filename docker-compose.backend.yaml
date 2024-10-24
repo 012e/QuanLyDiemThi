@@ -1,0 +1,7 @@
+services:
+  backend:
+    build:
+      context: backend
+    hostname: ${BACKEND_HOST:-backend}
+    ports:
+      - 8000:8000

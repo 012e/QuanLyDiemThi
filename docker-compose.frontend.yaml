@@ -1,0 +1,7 @@
+services:
+  frontend:
+    build:
+      context: frontend
+    hostname: ${FRONTEND_HOST:-frontend}
+    ports:
+      - 8080:8080
