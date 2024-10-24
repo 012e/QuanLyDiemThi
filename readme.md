@@ -104,5 +104,5 @@ docker compose -f ./docker-compose.backend.yaml up --build
 docker compose up --build
 ```
 
-Sau đó có thể truy cập localhost:8080 để sử dụng frontend kết hợp backend.
+Sau đó có thể truy cập http://localhost:8080 để sử dụng frontend kết hợp backend.
 
