@@ -1,0 +1,1171 @@
+openapi: 3.0.3
+info:
+  title: ''
+  version: 0.0.0
+paths:
+  /api/schema/:
+    get:
+      operationId: api_schema_retrieve
+      description: |-
+        OpenApi3 schema for this API. Format can be selected via content negotiation.
+
+        - YAML: application/vnd.oai.openapi
+        - JSON: application/vnd.oai.openapi+json
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - yaml
+      - in: query
+        name: lang
+        schema:
+          type: string
+          enum:
+          - af
+          - ar
+          - ar-dz
+          - ast
+          - az
+          - be
+          - bg
+          - bn
+          - br
+          - bs
+          - ca
+          - ckb
+          - cs
+          - cy
+          - da
+          - de
+          - dsb
+          - el
+          - en
+          - en-au
+          - en-gb
+          - eo
+          - es
+          - es-ar
+          - es-co
+          - es-mx
+          - es-ni
+          - es-ve
+          - et
+          - eu
+          - fa
+          - fi
+          - fr
+          - fy
+          - ga
+          - gd
+          - gl
+          - he
+          - hi
+          - hr
+          - hsb
+          - hu
+          - hy
+          - ia
+          - id
+          - ig
+          - io
+          - is
+          - it
+          - ja
+          - ka
+          - kab
+          - kk
+          - km
+          - kn
+          - ko
+          - ky
+          - lb
+          - lt
+          - lv
+          - mk
+          - ml
+          - mn
+          - mr
+          - ms
+          - my
+          - nb
+          - ne
+          - nl
+          - nn
+          - os
+          - pa
+          - pl
+          - pt
+          - pt-br
+          - ro
+          - ru
+          - sk
+          - sl
+          - sq
+          - sr
+          - sr-latn
+          - sv
+          - sw
+          - ta
+          - te
+          - tg
+          - th
+          - tk
+          - tr
+          - tt
+          - udm
+          - ug
+          - uk
+          - ur
+          - uz
+          - vi
+          - zh-hans
+          - zh-hant
+      tags:
+      - api
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/vnd.oai.openapi:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/yaml:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/vnd.oai.openapi+json:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /auth/login/:
+    post:
+      operationId: auth_login_create
+      description: |-
+        Check the credentials and return the REST Token
+        if the credentials are valid and authenticated.
+        Calls Django Auth login method to register User ID
+        in Django session framework
+
+        Accept the following POST parameters: username, password
+        Return the REST Framework Token Object's key.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Login'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Login'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JWT'
+          description: ''
+  /auth/logout/:
+    post:
+      operationId: auth_logout_create
+      description: |-
+        Calls Django logout method and delete the Token object
+        assigned to the current User object.
+
+        Accepts/Returns nothing.
+      tags:
+      - auth
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestAuthDetail'
+          description: ''
+  /auth/password/change/:
+    post:
+      operationId: auth_password_change_create
+      description: |-
+        Calls Django Auth SetPasswordForm save method.
+
+        Accepts the following POST parameters: new_password1, new_password2
+        Returns the success/fail message.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordChange'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PasswordChange'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PasswordChange'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestAuthDetail'
+          description: ''
+  /auth/password/reset/:
+    post:
+      operationId: auth_password_reset_create
+      description: |-
+        Calls Django Auth PasswordResetForm save method.
+
+        Accepts the following POST parameters: email
+        Returns the success/fail message.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordReset'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PasswordReset'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PasswordReset'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestAuthDetail'
+          description: ''
+  /auth/password/reset/confirm/:
+    post:
+      operationId: auth_password_reset_confirm_create
+      description: |-
+        Password reset e-mail link is confirmed, therefore
+        this resets the user's password.
+
+        Accepts the following POST parameters: token, uid,
+            new_password1, new_password2
+        Returns the success/fail message.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordResetConfirm'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PasswordResetConfirm'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PasswordResetConfirm'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestAuthDetail'
+          description: ''
+  /auth/token/refresh/:
+    post:
+      operationId: auth_token_refresh_create
+      description: |-
+        Takes a refresh type JSON web token and returns an access type JSON web
+        token if the refresh token is valid.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+          description: ''
+  /auth/token/verify/:
+    post:
+      operationId: auth_token_verify_create
+      description: |-
+        Takes a token and indicates if it is valid.  This view provides no
+        information about a token's fitness for a particular use.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenVerify'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenVerify'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenVerify'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenVerify'
+          description: ''
+  /auth/user/:
+    get:
+      operationId: auth_user_retrieve
+      description: |-
+        Reads and updates UserModel fields
+        Accepts GET, PUT, PATCH methods.
+
+        Default accepted fields: username, first_name, last_name
+        Default display fields: pk, username, email, first_name, last_name
+        Read-only fields: pk, email
+
+        Returns UserModel fields.
+      tags:
+      - auth
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetails'
+          description: ''
+    put:
+      operationId: auth_user_update
+      description: |-
+        Reads and updates UserModel fields
+        Accepts GET, PUT, PATCH methods.
+
+        Default accepted fields: username, first_name, last_name
+        Default display fields: pk, username, email, first_name, last_name
+        Read-only fields: pk, email
+
+        Returns UserModel fields.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDetails'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserDetails'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserDetails'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetails'
+          description: ''
+    patch:
+      operationId: auth_user_partial_update
+      description: |-
+        Reads and updates UserModel fields
+        Accepts GET, PUT, PATCH methods.
+
+        Default accepted fields: username, first_name, last_name
+        Default display fields: pk, username, email, first_name, last_name
+        Read-only fields: pk, email
+
+        Returns UserModel fields.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUserDetails'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUserDetails'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUserDetails'
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetails'
+          description: ''
+  /difficulty/:
+    get:
+      operationId: difficulty_list
+      tags:
+      - difficulty
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Difficulty'
+          description: ''
+    post:
+      operationId: difficulty_create
+      tags:
+      - difficulty
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Difficulty'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Difficulty'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Difficulty'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Difficulty'
+          description: ''
+  /difficulty/{id}/:
+    get:
+      operationId: difficulty_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this difficulty.
+        required: true
+      tags:
+      - difficulty
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Difficulty'
+          description: ''
+    put:
+      operationId: difficulty_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this difficulty.
+        required: true
+      tags:
+      - difficulty
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Difficulty'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Difficulty'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Difficulty'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Difficulty'
+          description: ''
+    patch:
+      operationId: difficulty_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this difficulty.
+        required: true
+      tags:
+      - difficulty
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedDifficulty'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedDifficulty'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedDifficulty'
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Difficulty'
+          description: ''
+    delete:
+      operationId: difficulty_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this difficulty.
+        required: true
+      tags:
+      - difficulty
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /question/:
+    get:
+      operationId: question_list
+      tags:
+      - question
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Question'
+          description: ''
+    post:
+      operationId: question_create
+      tags:
+      - question
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Question'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Question'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Question'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Question'
+          description: ''
+  /question/{id}/:
+    get:
+      operationId: question_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Question.
+        required: true
+      tags:
+      - question
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Question'
+          description: ''
+    put:
+      operationId: question_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Question.
+        required: true
+      tags:
+      - question
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Question'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Question'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Question'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Question'
+          description: ''
+    patch:
+      operationId: question_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Question.
+        required: true
+      tags:
+      - question
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedQuestion'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedQuestion'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedQuestion'
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Question'
+          description: ''
+    delete:
+      operationId: question_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Question.
+        required: true
+      tags:
+      - question
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /setting/:
+    get:
+      operationId: setting_retrieve
+      tags:
+      - setting
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /test/:
+    get:
+      operationId: test_list
+      tags:
+      - test
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Test'
+          description: ''
+    post:
+      operationId: test_create
+      tags:
+      - test
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Test'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Test'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Test'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Test'
+          description: ''
+  /test/{id}/:
+    get:
+      operationId: test_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this test.
+        required: true
+      tags:
+      - test
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Test'
+          description: ''
+    put:
+      operationId: test_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this test.
+        required: true
+      tags:
+      - test
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Test'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Test'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Test'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Test'
+          description: ''
+    patch:
+      operationId: test_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this test.
+        required: true
+      tags:
+      - test
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedTest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedTest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedTest'
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Test'
+          description: ''
+    delete:
+      operationId: test_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this test.
+        required: true
+      tags:
+      - test
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '204':
+          description: No response body
+components:
+  schemas:
+    Difficulty:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+      required:
+      - id
+      - name
+    JWT:
+      type: object
+      description: Serializer for JWT authentication.
+      properties:
+        access:
+          type: string
+        refresh:
+          type: string
+        user:
+          $ref: '#/components/schemas/UserDetails'
+      required:
+      - access
+      - refresh
+      - user
+    Login:
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+      required:
+      - password
+    PasswordChange:
+      type: object
+      properties:
+        new_password1:
+          type: string
+          maxLength: 128
+        new_password2:
+          type: string
+          maxLength: 128
+      required:
+      - new_password1
+      - new_password2
+    PasswordReset:
+      type: object
+      description: Serializer for requesting a password reset e-mail.
+      properties:
+        email:
+          type: string
+          format: email
+      required:
+      - email
+    PasswordResetConfirm:
+      type: object
+      description: Serializer for confirming a password reset attempt.
+      properties:
+        new_password1:
+          type: string
+          maxLength: 128
+        new_password2:
+          type: string
+          maxLength: 128
+        uid:
+          type: string
+        token:
+          type: string
+      required:
+      - new_password1
+      - new_password2
+      - token
+      - uid
+    PatchedDifficulty:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+    PatchedQuestion:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        detail:
+          type: string
+          nullable: true
+        difficulty:
+          type: integer
+        subject:
+          type: integer
+    PatchedTest:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        questions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Question'
+          readOnly: true
+        semester:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        datetime:
+          type: string
+          format: date-time
+        duration:
+          type: string
+        subject:
+          type: integer
+    PatchedUserDetails:
+      type: object
+      description: User model w/o password
+      properties:
+        pk:
+          type: integer
+          readOnly: true
+          title: ID
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          readOnly: true
+          title: Email address
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+    Question:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        detail:
+          type: string
+          nullable: true
+        difficulty:
+          type: integer
+        subject:
+          type: integer
+      required:
+      - difficulty
+      - id
+      - subject
+    RestAuthDetail:
+      type: object
+      properties:
+        detail:
+          type: string
+          readOnly: true
+      required:
+      - detail
+    Test:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        questions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Question'
+          readOnly: true
+        semester:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        datetime:
+          type: string
+          format: date-time
+        duration:
+          type: string
+        subject:
+          type: integer
+      required:
+      - datetime
+      - duration
+      - id
+      - questions
+      - semester
+      - subject
+    TokenRefresh:
+      type: object
+      properties:
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+          writeOnly: true
+      required:
+      - access
+      - refresh
+    TokenVerify:
+      type: object
+      properties:
+        token:
+          type: string
+          writeOnly: true
+      required:
+      - token
+    UserDetails:
+      type: object
+      description: User model w/o password
+      properties:
+        pk:
+          type: integer
+          readOnly: true
+          title: ID
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          readOnly: true
+          title: Email address
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+      required:
+      - email
+      - pk
+      - username
+  securitySchemes:
+    jwtCookieAuth:
+      type: apiKey
+      in: cookie
+      name: jwt-auth
+    jwtHeaderAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

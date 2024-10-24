@@ -1,0 +1,11 @@
+<div class="flex items-center justify-center h-screen">
+  <form action="" class="flex flex-col">
+    <label for="">Username</label>
+    <input type="text" name="username" [(ngModel)]="username" />
+    <label for="">Email</label>
+    <input type="text" name="email" [(ngModel)]="email" />
+    <label for="">Password</label>
+    <input type="text" name="password" [(ngModel)]="password" />
+    <button (click)="handleLogin()" type="button">Submit</button>
+  </form>
+</div>
