@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from rest_framework.compat import md_filter_add_syntax_highlight
 
+User._meta.get_field("email")._unique = True  # pyright: ignore
+
 
 class Subject(models.Model):
     name = models.CharField(max_length=100)
