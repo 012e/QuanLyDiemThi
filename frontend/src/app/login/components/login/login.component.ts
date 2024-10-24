@@ -18,12 +18,11 @@ export class LoginComponent {
   public handleLogin(): void {
     const loginInfo: Login = {
       username: this.username,
-      email: this.email,
       password: this.password,
     };
     this.authService.authLoginCreate(loginInfo).subscribe({
       next: (response) => {
-        localStorage.setItem('acces_token', response.access);
+        localStorage.setItem('access_token', response.access);
         localStorage.setItem('refresh_token', response.refresh);
         alert('Login successful');
       },

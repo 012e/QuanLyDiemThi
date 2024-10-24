@@ -7,8 +7,13 @@ import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 import { ApiModule, BASE_PATH } from './core/api';
-import { provideHttpClient, withXsrfConfiguration } from '@angular/common/http';
+import {
+  provideHttpClient,
+  withInterceptors,
+  withXsrfConfiguration,
+} from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -20,6 +25,7 @@ export const appConfig: ApplicationConfig = {
         cookieName: 'csrftoken',
         headerName: 'X-CSRFToken',
       }),
+      withInterceptors([JwtInterceptor]),
     ),
     importProvidersFrom(ApiModule),
     {
