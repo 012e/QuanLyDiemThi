@@ -1,5 +1,6 @@
 from django.db import models
-from django.utils import choices
+from django.contrib.auth.models import User
+from rest_framework.compat import md_filter_add_syntax_highlight
 
 
 class Subject(models.Model):
@@ -9,16 +10,9 @@ class Subject(models.Model):
         return str(self.name)
 
 
-class Teacher(models.Model):
-    name = models.CharField(max_length=100)
-
-    def __str__(self):
-        return str(self.name)
-
-
 class Class(models.Model):
     name = models.CharField(max_length=100)
-    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    teacher = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.name)
@@ -33,17 +27,16 @@ class Student(models.Model):
         return str(self.name)
 
 
-DIFFICULTY_CHOICES = {
-    "easy": "Easy",
-    "medium": "Medium",
-    "hard": "Hard",
-    "hehe": "Hehe",
-}
+class Difficulty(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return str(self.name)
 
 
 class Question(models.Model):
     detail = models.TextField(blank=False, null=True)
-    difficulty = models.CharField(max_length=100, choices=DIFFICULTY_CHOICES.items())
+    difficulty = models.OneToOneField(Difficulty, null=False, on_delete=models.CASCADE)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -68,7 +61,7 @@ class Result(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     test = models.ForeignKey(Test, on_delete=models.CASCADE)
     score = models.DecimalField(max_digits=4, decimal_places=2)
-    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    teacher = models.ForeignKey(User, on_delete=models.CASCADE)
     note = models.TextField(null=True, blank=False)
 
     class Meta:
