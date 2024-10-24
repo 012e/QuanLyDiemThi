@@ -1,5 +1,3 @@
-# syntax=docker/dockerfile:1.7-labs
-
 FROM node:lts-iron AS build
 
 WORKDIR /app
