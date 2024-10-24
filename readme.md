@@ -79,3 +79,30 @@ pip install thu-vien-vip-pro
 ```sh
 pip freeze > requirements.txt
 ```
+
+## Cách chạy dự án bằng Docker
+
+### Chạy frontend
+
+Chạy lệnh sau, sau đó có thể truy cập bằng trình duyệt web ở `http://localhost:4200`.
+
+```sh
+docker compose -f ./docker-compose.frontend.yaml up --build
+```
+
+### Chạy backend
+
+Chạy lệnh sau và backend sẽ được chạy ở `http://localhost:8000`.
+
+```sh
+docker compose -f ./docker-compose.backend.yaml up --build
+```
+
+### Chạy cả frontend, backend cùng lúc
+
+```sh
+docker compose up --build
+```
+
+Sau đó có thể truy cập `localhost:8080` để sử dụng frontend kết hợp backend.
+
