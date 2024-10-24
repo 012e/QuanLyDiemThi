@@ -42,7 +42,23 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "drf_spectacular",
     "dj_rest_auth",
+    "constance",
 ]
+
+CONSTANCE_BACKEND = "constance.backends.database.DatabaseBackend"
+
+CONSTANCE_CONFIG = {
+    "MAX_TEST_SCORE": (10, "Maximum score for a test", float),
+    "MIN_TEST_SCORE": (0, "Minimum score for a test", float),
+    "MIN_TEST_DURATION": (30, "Minimum duration (in minutes) for a test", int),
+    "MAX_TEST_DURATION": (180, "Maximum duration (in minutes) for a test", int),
+    "MAX_QUESTIONS_PER_TEST": (5, "Maximum number of questions per test", int),
+    "MAX_CLASS_PER_TEACHER": (
+        50,
+        "Maximum number of classes a teacher can teach each year",
+        int,
+    ),
+}
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
