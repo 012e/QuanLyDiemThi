@@ -40,17 +40,17 @@ python -m venv .venv
 
 2. Activate môi trường ảo đó
 ```sh
-.\venv\Scripts\activate
+.\.venv\Scripts\activate
 ```
 
 3. Cài đặt các dependency
 ```sh
-python install -r requirements.txt
+pip install -r requirements.txt
 ```
 
 4. Bắt đầu chạy django
 ```sh
-pythom manage.py runserver
+python manage.py runserver
 ```
 
 #### Các lần chạy sau
@@ -58,12 +58,12 @@ pythom manage.py runserver
 Chạy tất cả các lệnh sau trong thư mục backend
 1. Activate môi trường ảo đó
 ```sh
-.\venv\Scripts\activate
+.\.venv\Scripts\activate
 ```
 
 2. Bắt đầu chạy django
 ```sh
-pythom manage.py runserver
+python manage.py runserver
 ```
 
 #### Cách thêm dependency vào backend
