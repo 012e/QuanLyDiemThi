@@ -84,7 +84,7 @@ pip freeze > requirements.txt
 
 ### Chạy frontend
 
-Chạy lệnh sau, sau đó có thể truy cập bằng trình duyệt web ở `http://localhost:4200`.
+Chạy lệnh sau, sau đó có thể truy cập bằng trình duyệt web ở http://localhost:4200.
 
 ```sh
 docker compose -f ./docker-compose.frontend.yaml up --build
@@ -92,7 +92,7 @@ docker compose -f ./docker-compose.frontend.yaml up --build
 
 ### Chạy backend
 
-Chạy lệnh sau và backend sẽ được chạy ở `http://localhost:8000`.
+Chạy lệnh sau và backend sẽ được chạy ở http://localhost:8000.
 
 ```sh
 docker compose -f ./docker-compose.backend.yaml up --build
@@ -104,5 +104,5 @@ docker compose -f ./docker-compose.backend.yaml up --build
 docker compose up --build
 ```
 
-Sau đó có thể truy cập `localhost:8080` để sử dụng frontend kết hợp backend.
+Sau đó có thể truy cập localhost:8080 để sử dụng frontend kết hợp backend.
 
