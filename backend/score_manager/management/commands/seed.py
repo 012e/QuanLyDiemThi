@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand
 from score_manager.models import Difficulty, Question, Subject
 from faker import Faker
@@ -6,6 +7,7 @@ from faker import Faker
 fake = Faker()
 
 TOTAL_QUESTIONS = 100
+TOTAL_USERS = 10
 
 
 def seed_difficulty():
@@ -38,8 +40,16 @@ def seed_question():
         )
 
 
+def seed_user():
+    for _ in range(TOTAL_USERS):
+        User.objects.create_user(
+            username=fake.user_name(), email=fake.email(), password=fake.password()
+        )
+
+
 class Command(BaseCommand):
     def handle(self, *args, **options):
+        seed_user()
         seed_difficulty()
         seed_subject()
         seed_question()
