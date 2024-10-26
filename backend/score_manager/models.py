@@ -38,7 +38,7 @@ class Difficulty(models.Model):
 
 class Question(models.Model):
     detail = models.TextField(blank=False, null=True)
-    difficulty = models.OneToOneField(Difficulty, null=False, on_delete=models.CASCADE)
+    difficulty = models.ForeignKey(Difficulty, null=False, on_delete=models.CASCADE)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
 
     def __str__(self):
