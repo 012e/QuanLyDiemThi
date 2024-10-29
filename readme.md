@@ -80,6 +80,18 @@ pip install thu-vien-vip-pro
 pip freeze > requirements.txt
 ```
 
+#### Test api của backend
+
+Back end có để sẵn endpoint cho giao diện của swagger: http://localhost:8000/api/schema/swagger/. Có thể vào trang này để chạy và test cái api của backend.
+
+**Lưu ý:** Cần phải đăng nhập mới có thể sử dụng các api của backend. Các bước đăng nhập như sau:
+1. Vào trang http://localhost:8000/api/schema/swagger/
+2. Sử dụng api /auth/login ![image](https://github.com/user-attachments/assets/37a69e3b-73ec-4f2a-89a1-81133ee5a726)
+3. Nhập username và password sau đó chạy ![image](https://github.com/user-attachments/assets/24ff40b7-8248-4109-85c4-e299bfe85b61)
+4. Nếu username và password đúng thì máy chủ sẽ trả về response 200 kèm với `access`: ... ![image](https://github.com/user-attachments/assets/95f41213-65dd-4446-a634-36e98a7ece0e). Copy `access` đó, để chuẩn bị sử dụng.
+5. Kéo lên đầu trang, ta có nút authorize, nhấn vào authorize, paste nội dung access vào `jwtHeaderAuth`, và cuối cùng nhấn `Authorize`. ![image](https://github.com/user-attachments/assets/6acbdc9e-a735-4e21-aafb-07670baa42e3)
+6. Sau đó có thể test api, ví dụ như lấy danh sách các độ khó: ![image](https://github.com/user-attachments/assets/1bdf6c65-dab7-49ae-885a-c105b0b8183c)
+
 ## Cách chạy dự án bằng Docker
 
 ### Chạy frontend
