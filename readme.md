@@ -84,7 +84,7 @@ pip freeze > requirements.txt
 
 ### Chạy frontend
 
-Chạy lệnh sau, sau đó có thể truy cập bằng trình duyệt web ở http://localhost:4200.
+Chạy lệnh sau, sau đó có thể truy cập bằng trình duyệt web ở http://localhost:8080.
 
 ```sh
 docker compose -f ./docker-compose.frontend.yaml up --build
