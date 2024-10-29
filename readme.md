@@ -112,6 +112,6 @@ Khi thực hiện một tính năng nào thì cần thực hiện các bước s
 1. Tạo branch với tên là tính năng đang thực hiện: ví dụ `git branch tinh-nang`.
 2. Bắt đầu viết code và tạo các commit trong branch này, sau khi hoàn thành thì push các thay đổi này lên branch này ở remote `git push --set-upstream origin tinh-nang`
 3. Vào github và tạo pull request
-4. Nhờ ai đó kiểm tra lại code (chống code qua tệ thôi), va sau đó squash and merge (chú ý: nó khác với mới merge!!)
+4. Nhờ ai đó kiểm tra lại code (chống code qua tệ thôi), và sau đó squash and merge (chú ý: nó khác với mới merge!!)
 5. Ăn mừng
 
