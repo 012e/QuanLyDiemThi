@@ -1,7 +1,6 @@
 from rest_framework.routers import DefaultRouter
 from score_manager.views import (
     QuestionViewSet,
-    TestViewSet,
     DifficultyViewSet,
     SettingViewSet,
 )
@@ -14,7 +13,6 @@ from drf_spectacular.views import (
 
 router = DefaultRouter()
 router.register(r"question", QuestionViewSet, basename="question")
-router.register(r"test", TestViewSet, basename="test")
 router.register(r"difficulty", DifficultyViewSet, basename="difficulty")
 router.register(r"setting", SettingViewSet, basename="setting")
 
