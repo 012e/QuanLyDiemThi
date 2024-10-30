@@ -1,15 +1,29 @@
-<div class="flex items-center justify-center h-screen rounded-lg">
-  <form action="" class="flex flex-col items-center space-y-10">
-    <h1 class="text-2xl font-bold">Login</h1>
+<div class="flex flex-col items-center justify-center h-screen rounded-lg bg-slate-100">
+  <form action="" class="card flex flex-col items-center gap-7 bg-white rounded-lg p-10">    
+    <div class="flex flex-col items-center font-bold gap-2">
+      <h1 class="text-3xl">Hello</h1>
+      <h2 class="text-xl">Sign in to your account</h2>
+    </div>
     <p-toast/>
-    <p-floatLabel>
-      <input class="border-2 border-sky-300 " pInputText name="username" [(ngModel)]="username" />
-      <label for="username">Username</label>
-    </p-floatLabel>
-    <p-floatLabel>
-      <p-password class="border-2 border-sky-300 py-1 rounded-lg" name="password" [(ngModel)]="password" [feedback]="false" [toggleMask]="true"/>
+    <div class="flex flex-col text-slate-600">
+      <label for="username">User Name</label>
+      <span class="p-input-icon-right">
+        <i class="pi pi-user"></i>
+        <input class="border-2 rounded-md hover:border-sky-400 focus: border-sky-600" name="username" [(ngModel)]="username"/>
+      </span>
+    </div>
+    <div class="flex flex-col text-slate-600">
       <label for="password">Password</label>
-    </p-floatLabel>
-    <button class="bg-sky-300 w-full rounded-lg " (click)="handleLogin()" type="button">Submit</button>
+      <input type="password" class="border-2 rounded-md hover:border-sky-400 focus: border-sky-600" name="password" [(ngModel)]="password"/>
+      <span class="flex flex-wrap gap-2 my-3 items-center">
+        <input type="checkbox" class="hover:border-sky-600" [(ngModel)]="checked"/>
+        <label for="checked">Remember me</label>
+      </span>
+    </div>
+    
+    <div class="flex flex-col gap-2 w-full items-center">
+      <button class="bg-sky-600 text-white rounded-full w-full hover:bg-sky-400" (click)="handleLogin()" type="button">Log in</button>
+      <a href="/auth/login" class="text-sky-600 hover:text-sky-400">Forgot password?</a>
+    </div>
   </form>
 </div>

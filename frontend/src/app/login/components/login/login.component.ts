@@ -8,6 +8,7 @@ import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { MessageService } from 'primeng/api';
 import { FloatLabelModule } from 'primeng/floatlabel';
+import { CheckboxModule } from 'primeng/checkbox';
 
 @Component({
   selector: 'app-login',
@@ -20,6 +21,7 @@ import { FloatLabelModule } from 'primeng/floatlabel';
     ButtonModule,
     RippleModule,
     FloatLabelModule,
+    CheckboxModule,
   ],
   providers: [MessageService],
   templateUrl: './login.component.html',
@@ -29,6 +31,7 @@ export class LoginComponent {
   public username: string = '';
   public email: string = '';
   public password: string = '';
+  public checked: boolean = false;
   constructor(private authService: AuthService, private messageService: MessageService) {}
 
   public handleLogin(): void {
@@ -40,16 +43,17 @@ export class LoginComponent {
       next: (response) => {
         localStorage.setItem('access_token', response.access);
         localStorage.setItem('refresh_token', response.refresh);
-        alert('Login successful');
+        this.messageService.add({ severity: 'sucess', summary: 'Success Message', detail: 'Login successful' });
       },
       error: (error) => {
-        this.messageService.add({ severity: 'error', summary: 'Error Message', detail: error.message });
-        // alert('Login failed: ' + error.message);
+        switch (error.status) {
+          case 0:
+            this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'WTF' });
+            break;
+          default:
+            this.messageService.add({ severity: 'error', summary: 'Error Message', detail: error.message });
+        }
       },
     });
-  }
-
-  public show(): void {
-    this.messageService.add({ severity: 'success', summary: 'Service Message', detail: 'Via MessageService' });
   }
 }
