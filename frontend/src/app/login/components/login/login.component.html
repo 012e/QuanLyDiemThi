@@ -1,9 +1,15 @@
-<div class="flex items-center justify-center h-screen">
-  <form action="" class="flex flex-col">
-    <label for="">Username</label>
-    <input type="text" name="username" [(ngModel)]="username" />
-    <label for="">Password</label>
-    <input type="text" name="password" [(ngModel)]="password" />
-    <button (click)="handleLogin()" type="button">Submit</button>
+<div class="flex items-center justify-center h-screen rounded-lg">
+  <form action="" class="flex flex-col items-center space-y-10">
+    <h1 class="text-2xl font-bold">Login</h1>
+    <p-toast/>
+    <p-floatLabel>
+      <input class="border-2 border-sky-300 " pInputText name="username" [(ngModel)]="username" />
+      <label for="username">Username</label>
+    </p-floatLabel>
+    <p-floatLabel>
+      <p-password class="border-2 border-sky-300 py-1 rounded-lg" name="password" [(ngModel)]="password" [feedback]="false" [toggleMask]="true"/>
+      <label for="password">Password</label>
+    </p-floatLabel>
+    <button class="bg-sky-300 w-full rounded-lg " (click)="handleLogin()" type="button">Submit</button>
   </form>
 </div>
