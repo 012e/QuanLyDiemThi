@@ -7,6 +7,9 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { of, delay } from 'rxjs';
+import { CheckboxModule } from 'primeng/checkbox';
+import { ButtonModule } from 'primeng/button';
+import { RippleModule } from 'primeng/ripple';
 
 @Component({
   selector: 'app-login',
@@ -16,6 +19,9 @@ import { of, delay } from 'rxjs';
     InputTextModule,
     PasswordModule,
     ToastModule,
+    CheckboxModule,
+    ButtonModule,
+    RippleModule,
   ],
   providers: [MessageService],
   templateUrl: './login.component.html',
@@ -61,6 +67,7 @@ export class LoginComponent {
             break;
           default:
             this.messageService.add({ severity: 'error', summary: 'Error Message', detail: error.message });
+            
         }
       },
     });

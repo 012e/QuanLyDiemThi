@@ -1,28 +1,25 @@
 <div class="flex flex-col items-center justify-center h-screen rounded-lg bg-slate-100">
   <p-toast/>
-  <form action="" class="card flex flex-col items-center gap-7 bg-white rounded-lg p-10 drop-shadow-lg">    
-    <div class="flex flex-col items-center font-bold gap-2">
-      <h1 class="text-3xl">Hello</h1>
-      <h2 class="text-xl">Sign in to your account</h2>
+  <form action="" class="card flex flex-col items-center gap-3 bg-white rounded-lg p-10 drop-shadow-lg">    
+    <div class="flex flex-col items-center font-bold">
+      <h1 class="m-2">Hello</h1>
+      <h3 class="m-2">Sign in to your account</h3>
     </div>
-    <div class="flex flex-col text-slate-600">
+    <div class="flex flex-col text-slate-600 w-full gap-1">
       <label for="username">User Name</label>
       <span class="p-input-icon-right">
         <i class="pi pi-user"></i>
-        <input pInputText class="border-2 rounded-md hover:border-sky-400 focus: border-sky-600" name="username" [(ngModel)]="username"/>
+        <input pInputText name="username" [(ngModel)]="username"/>
       </span>
     </div>
-    <div class="flex flex-col text-slate-600">
+    <div class="flex flex-col text-slate-600 w-full gap-1">
       <label for="password">Password</label>
-      <p-password class="border-2 rounded-md hover:border-sky-400 focus: border-sky-600" name="password" [(ngModel)]="password" [toggleMask]="true" [feedback]="false"/>
-      <span class="flex flex-wrap gap-2 my-3 items-center">
-        <input type="checkbox" name="checked" class="hover:border-sky-600" [(ngModel)]="checked"/>
-        <label for="checked">Remember me</label>
-      </span>
+      <p-password name="password" [(ngModel)]="password" [toggleMask]="true" [feedback]="false"/>
+      <p-checkbox name="checked" class="my-2" [(ngModel)]="checked" [binary]="true" label="Remember me"/>
     </div>
     <div class="flex flex-col gap-2 w-full items-center">
-      <button class="bg-sky-600 text-white rounded-full w-full hover:bg-sky-400" (click)="handleLogin()" type="button">Log in</button>
-      <a href="/auth/login" class="text-sky-600 hover:text-sky-400">Forgot password?</a>
+      <button pButton pRipple class="w-full rounded-full" label="Log in" (click)="handleLogin()"></button>
+      <p-button label="Forgot password?" [link]="true"/>
     </div>
   </form>
 </div>
