@@ -2,8 +2,8 @@ from rest_framework import viewsets, permissions
 from rest_framework.response import Response
 
 from score_manager import utils
-from .models import Question, Difficulty
-from .serializers import QuestionSerializer, DifficultySerializer
+from .models import Question, Difficulty, Subject
+from .serializers import QuestionSerializer, DifficultySerializer, SubjectSerializer
 
 
 class QuestionViewSet(viewsets.ModelViewSet):
@@ -14,6 +14,11 @@ class QuestionViewSet(viewsets.ModelViewSet):
 class DifficultyViewSet(viewsets.ModelViewSet):
     queryset = Difficulty.objects.all()
     serializer_class = DifficultySerializer
+
+
+class SubjectViewSet(viewsets.ModelViewSet):
+    queryset = Subject.objects.all()
+    serializer_class = SubjectSerializer
 
 
 class SettingViewSet(viewsets.ViewSet):
