@@ -1,5 +1,7 @@
 import { HttpInterceptorFn } from '@angular/common/http';
+import { inject } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
+import { MessageService } from 'primeng/api';
 
 function tokenExpired(token: string): boolean {
   if (!token) return true;
@@ -16,13 +18,11 @@ function tokenExpired(token: string): boolean {
 
 export const JwtInterceptor: HttpInterceptorFn = (request, next) => {
   const token = localStorage.getItem('access_token');
-  if (!token) return next(request);
-  if (token && !tokenExpired(token)) {
-    request = request.clone({
-      setHeaders: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-  }
+  if (!token || tokenExpired(token)) return next(request);
+  request = request.clone({
+    setHeaders: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return next(request);
 };
