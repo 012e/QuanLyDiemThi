@@ -66,6 +66,22 @@ Chạy tất cả các lệnh sau trong thư mục backend
 python manage.py runserver
 ```
 
+#### Thêm dữ liệu mẫu
+
+Để thêm dữ liệu mẫu, trong backend có cung cấp sẵn một số lệnh như sau:
+
+- Tạo user admin mẫu
+  - Username: admin
+  - Password: admin
+```sh
+python manage.py initsuperuser
+```
+
+- Thêm dữ liệu mẫu vào các bảng
+```sh
+python manage.py seed
+``` 
+
 #### Cách thêm dependency vào backend
 
 Các lệnh sau đều được chạy sau khi activate môi trường ảo.
