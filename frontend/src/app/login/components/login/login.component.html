@@ -1,6 +1,8 @@
 <div class="flex flex-col items-center justify-center h-screen bg-slate-100">
-  <p-toast/>
-  <form action="" class="card flex flex-col items-center gap-3 bg-white rounded-lg p-10 drop-shadow-lg">    
+  <form
+    action=""
+    class="card flex flex-col items-center gap-3 bg-white rounded-lg p-10 drop-shadow-lg"
+  >
     <div class="flex flex-col items-center font-bold">
       <h1 class="m-2">Hello</h1>
       <h3 class="m-2">Sign in to your account</h3>
@@ -9,17 +11,34 @@
       <label for="username">Username</label>
       <span class="p-input-icon-right">
         <i class="pi pi-user"></i>
-        <input pInputText name="username" [(ngModel)]="username"/>
+        <input pInputText name="username" [(ngModel)]="username" />
       </span>
     </div>
     <div class="flex flex-col text-slate-600 w-full gap-1">
       <label for="password">Password</label>
-      <p-password name="password" [(ngModel)]="password" [toggleMask]="true" [feedback]="false"/>
-      <p-checkbox name="checked" class="my-2" [(ngModel)]="checked" [binary]="true" label="Remember me"/>
+      <p-password
+        name="password"
+        [(ngModel)]="password"
+        [toggleMask]="true"
+        [feedback]="false"
+      />
+      <p-checkbox
+        name="checked"
+        class="my-2"
+        [(ngModel)]="checked"
+        [binary]="true"
+        label="Remember me"
+      />
     </div>
     <div class="flex flex-col gap-2 w-full items-center">
-      <button pButton pRipple class="w-full rounded-full" label="Log in" (click)="handleLogin()"></button>
-      <p-button label="Forgot password?" [link]="true"/>
+      <button
+        pButton
+        pRipple
+        class="w-full rounded-full"
+        label="Log in"
+        (click)="handleLogin()"
+      ></button>
+      <p-button label="Forgot password?" [link]="true" />
     </div>
   </form>
 </div>
