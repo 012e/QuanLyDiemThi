@@ -22,7 +22,6 @@ import { RippleModule } from 'primeng/ripple';
     ButtonModule,
     RippleModule,
   ],
-  providers: [MessageService],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
@@ -31,7 +30,11 @@ export class LoginComponent {
   public email: string = '';
   public password: string = '';
   public checked: boolean = false;
-  constructor(private authService: AuthService, private messageService: MessageService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private messageService: MessageService,
+    private router: Router,
+  ) {}
 
   public handleLogin(): void {
     const loginInfo: Login = {
@@ -42,28 +45,56 @@ export class LoginComponent {
       next: (response) => {
         localStorage.setItem('access_token', response.access);
         localStorage.setItem('refresh_token', response.refresh);
-        this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Login successful' });
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success Message',
+          detail: 'Login successful',
+        });
         this.router.navigate(['/']);
       },
       error: (error) => {
         switch (error.status) {
           case 400:
-            this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Wrong username or password' });
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error Message',
+              detail: 'Wrong username or password',
+            });
             break;
           case 401:
-            this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Invalid credentials' });
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error Message',
+              detail: 'Invalid credentials',
+            });
             break;
           case 403:
-            this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Forbidden' });
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error Message',
+              detail: 'Forbidden',
+            });
             break;
           case 404:
-            this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Not found' });
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error Message',
+              detail: 'Not found',
+            });
             break;
           case 500:
-            this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Server error' });
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error Message',
+              detail: 'Server error',
+            });
             break;
           default:
-            this.messageService.add({ severity: 'error', summary: 'Error Message', detail: error.message });
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error Message',
+              detail: error.message,
+            });
         }
       },
     });
