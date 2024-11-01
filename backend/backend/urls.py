@@ -4,6 +4,7 @@ from score_manager.views import (
     DifficultyViewSet,
     SettingViewSet,
     SubjectViewSet,
+    TestViewSet
 )
 from django.urls import path, include
 from drf_spectacular.views import (
@@ -17,6 +18,7 @@ router.register(r"question", QuestionViewSet, basename="question")
 router.register(r"difficulty", DifficultyViewSet, basename="difficulty")
 router.register(r"setting", SettingViewSet, basename="setting")
 router.register(r"subject", SubjectViewSet, basename="subject")
+router.register(r"test", TestViewSet, basename="test")
 
 urlpatterns = [
     path("", include(router.urls)),
