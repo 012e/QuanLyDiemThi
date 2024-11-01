@@ -25,6 +25,18 @@ class TestViewSet(viewsets.ModelViewSet):
     queryset = Test.objects.all()
     serializer_class = TestSerializer
 
+    def perform_create(self, serializer):
+        test = serializer.save()
+        questions = self.request.data.get('questions')
+        if questions:
+            test.questions.set(questions)  
+
+    def perform_update(self, serializer):
+        test = serializer.save()
+        questions = self.request.data.get('questions')
+        if questions is not None:
+            test.questions.set(questions)  
+
 
 class SettingViewSet(viewsets.ViewSet):
     def list(self, request):

@@ -54,6 +54,7 @@ class Test(models.Model):
     semester = models.PositiveSmallIntegerField(null=False, blank=False)
     datetime = models.DateTimeField()
     duration = models.DurationField()
+    questions = models.ManyToManyField(Question, blank=True)  
 
     def __str__(self):
         return f"{self.subject} - {self.semester} - {self.datetime}"

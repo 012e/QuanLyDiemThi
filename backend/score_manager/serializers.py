@@ -23,6 +23,8 @@ class DifficultySerializer(serializers.ModelSerializer):
 
 
 class TestSerializer(serializers.ModelSerializer):
+    questions = serializers.PrimaryKeyRelatedField(queryset=Question.objects.all(), many=True)
+
     class Meta:
         model = Test
-        fields = "__all__" 
+        fields = '__all__'  
