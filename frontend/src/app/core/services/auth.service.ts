@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { jwtDecode } from 'jwt-decode';
+import { decodeJwt } from 'jose';
 
 @Injectable({
   providedIn: 'root',
@@ -8,7 +8,7 @@ export class AuthService {
   public tokenExpired(token: string): boolean {
     if (!token) return true;
     try {
-      const decodedToken = jwtDecode(token);
+      const decodedToken = decodeJwt(token);
       if (!decodedToken.exp) return true;
       const currentTime = Date.now() / 1000;
       return decodedToken.exp < currentTime;
