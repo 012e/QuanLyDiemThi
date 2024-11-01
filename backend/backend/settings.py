@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     "rest_framework",
+    "django_filters",
     "score_manager",
     "rest_framework.authtoken",
     "django.contrib.admin",
