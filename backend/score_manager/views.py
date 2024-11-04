@@ -2,8 +2,8 @@ from rest_framework import viewsets, permissions
 from rest_framework.response import Response
 
 from score_manager import utils
-from .models import Question, Difficulty, Subject, Test
-from .serializers import QuestionSerializer, DifficultySerializer, SubjectSerializer, TestSerializer
+from .models import Question, Difficulty, Subject, Test, Result
+from .serializers import QuestionSerializer, DifficultySerializer, SubjectSerializer, TestSerializer, ResultSerializer
 
 
 class QuestionViewSet(viewsets.ModelViewSet):
@@ -37,7 +37,11 @@ class TestViewSet(viewsets.ModelViewSet):
         if questions is not None:
             test.questions.set(questions)  
 
-
+class ResultViewSet(viewsets.ModelViewSet):
+    queryset = Result.objects.all()
+    serializer_class = ResultSerializer
+    
+    
 class SettingViewSet(viewsets.ViewSet):
     def list(self, request):
         return Response(utils.set_settings_as_dict())
