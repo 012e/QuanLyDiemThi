@@ -1,6 +1,9 @@
 from rest_framework import viewsets, permissions
 from rest_framework.response import Response
-
+from rest_framework.views import APIView
+from rest_framework import status
+from constance import config
+from django.conf import settings
 from score_manager import utils
 from .models import Question, Difficulty, Subject, Test, Result
 from .serializers import QuestionSerializer, DifficultySerializer, SubjectSerializer, TestSerializer, ResultSerializer
@@ -41,6 +44,16 @@ class ResultViewSet(viewsets.ModelViewSet):
     queryset = Result.objects.all()
     serializer_class = ResultSerializer
     
+class ConfigView(APIView):
+    def get(self, request):
+        config_data = {key: getattr(config, key) for key in settings.CONSTANCE_CONFIG}
+        return Response(config_data)
+
+    def put(self, request):
+        for key, value in request.data.items():
+            if key in settings.CONSTANCE_CONFIG:
+                setattr(config, key, value)
+        return Response({"message": "Configuration updated successfully"}, status=status.HTTP_200_OK)
     
 class SettingViewSet(viewsets.ViewSet):
     def list(self, request):

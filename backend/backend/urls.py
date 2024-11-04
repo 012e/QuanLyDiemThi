@@ -5,7 +5,8 @@ from score_manager.views import (
     SettingViewSet,
     SubjectViewSet,
     TestViewSet,
-    ResultViewSet
+    ResultViewSet,
+    ConfigView
 )
 from django.urls import path, include
 from drf_spectacular.views import (
@@ -13,6 +14,7 @@ from drf_spectacular.views import (
     SpectacularRedocView,
     SpectacularSwaggerView,
 )
+
 
 router = DefaultRouter()
 router.register(r"question", QuestionViewSet, basename="question")
@@ -38,4 +40,5 @@ urlpatterns = [
         name="redoc",
     ),
     path("auth/", include("dj_rest_auth.urls")),
+    path('config/', ConfigView.as_view(), name='config-view'),
 ]
