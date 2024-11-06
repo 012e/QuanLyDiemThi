@@ -2,8 +2,10 @@ from rest_framework.routers import DefaultRouter
 from score_manager.views import (
     QuestionViewSet,
     DifficultyViewSet,
-    SettingViewSet,
     SubjectViewSet,
+    TestViewSet,
+    ResultViewSet,
+    ConfigView,
 )
 from django.urls import path, include
 from drf_spectacular.views import (
@@ -12,11 +14,14 @@ from drf_spectacular.views import (
     SpectacularSwaggerView,
 )
 
+
 router = DefaultRouter()
 router.register(r"question", QuestionViewSet, basename="question")
 router.register(r"difficulty", DifficultyViewSet, basename="difficulty")
-router.register(r"setting", SettingViewSet, basename="setting")
 router.register(r"subject", SubjectViewSet, basename="subject")
+router.register(r"test", TestViewSet, basename="test")
+router.register(r"results", ResultViewSet, basename="result")
+
 
 urlpatterns = [
     path("", include(router.urls)),
@@ -33,4 +38,5 @@ urlpatterns = [
         name="redoc",
     ),
     path("auth/", include("dj_rest_auth.urls")),
+    path("config/", ConfigView.as_view(), name="config-view"),
 ]

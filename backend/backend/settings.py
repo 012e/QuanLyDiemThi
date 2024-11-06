@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "drf_spectacular",
     "dj_rest_auth",
     "constance",
+    'constance.backends.database',
     "corsheaders",
 ]
 
