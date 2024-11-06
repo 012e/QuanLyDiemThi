@@ -6,7 +6,13 @@ from constance import config
 from django.conf import settings
 from score_manager import utils
 from .models import Question, Difficulty, Subject, Test, Result
-from .serializers import QuestionSerializer, DifficultySerializer, SubjectSerializer, TestSerializer, ResultSerializer
+from .serializers import (
+    QuestionSerializer,
+    DifficultySerializer,
+    SubjectSerializer,
+    TestSerializer,
+    ResultSerializer,
+)
 
 
 class QuestionViewSet(viewsets.ModelViewSet):
@@ -30,20 +36,22 @@ class TestViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         test = serializer.save()
-        questions = self.request.data.get('questions')
+        questions = self.request.data.get("questions")
         if questions:
-            test.questions.set(questions)  
+            test.questions.set(questions)
 
     def perform_update(self, serializer):
         test = serializer.save()
-        questions = self.request.data.get('questions')
+        questions = self.request.data.get("questions")
         if questions is not None:
-            test.questions.set(questions)  
+            test.questions.set(questions)
+
 
 class ResultViewSet(viewsets.ModelViewSet):
     queryset = Result.objects.all()
     serializer_class = ResultSerializer
-    
+
+
 class ConfigView(APIView):
     def get(self, request):
         config_data = {key: getattr(config, key) for key in settings.CONSTANCE_CONFIG}
@@ -53,9 +61,6 @@ class ConfigView(APIView):
         for key, value in request.data.items():
             if key in settings.CONSTANCE_CONFIG:
                 setattr(config, key, value)
-        return Response({"message": "Configuration updated successfully"}, status=status.HTTP_200_OK)
-    
-class SettingViewSet(viewsets.ViewSet):
-    def list(self, request):
-        return Response(utils.set_settings_as_dict())
-    
+        return Response(
+            {"message": "Configuration updated successfully"}, status=status.HTTP_200_OK
+        )
