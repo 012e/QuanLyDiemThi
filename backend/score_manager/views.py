@@ -5,14 +5,31 @@ from rest_framework import status
 from constance import config
 from django.conf import settings
 from score_manager import utils
-from .models import Question, Difficulty, Subject, Test, Result
+from .models import Student, Class, Question, Difficulty, Subject, Test, Result
 from .serializers import (
+    StudentSerializer,
+    ClassSerializer,
     QuestionSerializer,
     DifficultySerializer,
     SubjectSerializer,
     TestSerializer,
     ResultSerializer,
 )
+
+class StudentViewSet(viewsets.ModelViewSet):
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+
+    def perform_update(self, serializer):
+        student = serializer.save()
+        classes = self.request.data.get("classes")
+        if classes is not None:  # Neu "classes" key duoc cung cap trong request
+            student.classes.set(classes)# update student class truc tiep
+
+
+class ClassViewSet(viewsets.ModelViewSet):
+    queryset = Class.objects.all()
+    serializer_class = ClassSerializer
 
 
 class QuestionViewSet(viewsets.ModelViewSet):
