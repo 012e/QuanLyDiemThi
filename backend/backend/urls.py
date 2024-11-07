@@ -1,7 +1,9 @@
 from rest_framework.routers import DefaultRouter
 from score_manager.views import (
+    ClassViewSet,
     QuestionViewSet,
     DifficultyViewSet,
+    StudentViewSet,
     SubjectViewSet,
     TestViewSet,
     ResultViewSet,
@@ -21,6 +23,8 @@ router.register(r"difficulty", DifficultyViewSet, basename="difficulty")
 router.register(r"subject", SubjectViewSet, basename="subject")
 router.register(r"test", TestViewSet, basename="test")
 router.register(r"results", ResultViewSet, basename="result")
+router.register(r"student", StudentViewSet, basename="student")
+router.register(r"class", ClassViewSet, basename="class")
 
 
 urlpatterns = [
