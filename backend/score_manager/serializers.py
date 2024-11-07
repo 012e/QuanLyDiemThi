@@ -1,6 +1,15 @@
 import rest_framework.serializers as serializers
-from .models import Question, Subject, Difficulty, Test, Result
+from .models import Student, Class, Question, Subject, Difficulty, Test, Result
 
+class StudentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Student
+        fields = '__all__'
+
+class ClassSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Class
+        fields = '__all__'
 
 class QuestionSerializer(serializers.ModelSerializer):
     class Meta:
