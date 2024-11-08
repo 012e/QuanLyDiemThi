@@ -7,12 +7,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Question } from './question';
 
 
 export interface PatchedTest { 
     readonly id?: number;
-    readonly questions?: Array<Question>;
+    questions?: Array<number>;
     semester?: number;
     datetime?: string;
     duration?: string;
