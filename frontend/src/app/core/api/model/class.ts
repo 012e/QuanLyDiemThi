@@ -9,12 +9,9 @@
  */
 
 
-export interface Test { 
+export interface Class { 
     readonly id: number;
-    questions: Array<number>;
-    semester: number;
-    datetime: string;
-    duration: string;
-    subject: number;
+    name: string;
+    teacher: number;
 }
 

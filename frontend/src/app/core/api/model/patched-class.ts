@@ -9,12 +9,9 @@
  */
 
 
-export interface Test { 
-    readonly id: number;
-    questions: Array<number>;
-    semester: number;
-    datetime: string;
-    duration: string;
-    subject: number;
+export interface PatchedClass { 
+    readonly id?: number;
+    name?: string;
+    teacher?: number;
 }
 
