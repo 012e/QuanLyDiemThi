@@ -31,6 +31,13 @@ model/difficulty.ts
 model/jwt.ts
 model/login.ts
 model/models.ts
+model/paginated-class-list.ts
+model/paginated-difficulty-list.ts
+model/paginated-question-list.ts
+model/paginated-result-list.ts
+model/paginated-student-list.ts
+model/paginated-subject-list.ts
+model/paginated-test-list.ts
 model/password-change.ts
 model/password-reset-confirm.ts
 model/password-reset.ts

@@ -11,6 +11,7 @@ import { HttpHeaders }                                       from '@angular/comm
 
 import { Observable }                                        from 'rxjs';
 
+import { PaginatedTestList } from '../model/models';
 import { PatchedTest } from '../model/models';
 import { Test } from '../model/models';
 
@@ -40,8 +41,10 @@ export interface TestServiceInterface {
     /**
      * 
      * 
+     * @param page A page number within the paginated result set.
+     * @param pageSize Number of results to return per page.
      */
-    testList(extraHttpRequestParams?: any): Observable<Array<Test>>;
+    testList(page?: number, pageSize?: number, extraHttpRequestParams?: any): Observable<PaginatedTestList>;
 
     /**
      * 

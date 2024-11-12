@@ -12,6 +12,7 @@ import { HttpHeaders }                                       from '@angular/comm
 import { Observable }                                        from 'rxjs';
 
 import { Class } from '../model/models';
+import { PaginatedClassList } from '../model/models';
 import { PatchedClass } from '../model/models';
 
 
@@ -40,8 +41,10 @@ export interface ClassServiceInterface {
     /**
      * 
      * 
+     * @param page A page number within the paginated result set.
+     * @param pageSize Number of results to return per page.
      */
-    classList(extraHttpRequestParams?: any): Observable<Array<Class>>;
+    classList(page?: number, pageSize?: number, extraHttpRequestParams?: any): Observable<PaginatedClassList>;
 
     /**
      * 

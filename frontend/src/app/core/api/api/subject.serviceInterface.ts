@@ -11,6 +11,7 @@ import { HttpHeaders }                                       from '@angular/comm
 
 import { Observable }                                        from 'rxjs';
 
+import { PaginatedSubjectList } from '../model/models';
 import { PatchedSubject } from '../model/models';
 import { Subject } from '../model/models';
 
@@ -40,8 +41,10 @@ export interface SubjectServiceInterface {
     /**
      * 
      * 
+     * @param page A page number within the paginated result set.
+     * @param pageSize Number of results to return per page.
      */
-    subjectList(extraHttpRequestParams?: any): Observable<Array<Subject>>;
+    subjectList(page?: number, pageSize?: number, extraHttpRequestParams?: any): Observable<PaginatedSubjectList>;
 
     /**
      * 

@@ -11,6 +11,7 @@ import { HttpHeaders }                                       from '@angular/comm
 
 import { Observable }                                        from 'rxjs';
 
+import { PaginatedResultList } from '../model/models';
 import { PatchedResult } from '../model/models';
 import { Result } from '../model/models';
 
@@ -40,8 +41,10 @@ export interface ResultsServiceInterface {
     /**
      * 
      * 
+     * @param page A page number within the paginated result set.
+     * @param pageSize Number of results to return per page.
      */
-    resultsList(extraHttpRequestParams?: any): Observable<Array<Result>>;
+    resultsList(page?: number, pageSize?: number, extraHttpRequestParams?: any): Observable<PaginatedResultList>;
 
     /**
      * 
