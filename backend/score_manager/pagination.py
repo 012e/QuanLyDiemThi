@@ -11,11 +11,33 @@ class NumberTextPagination(PageNumberPagination):
     def get_paginated_response(self, data):
         return Response(
             {
+                "count": self.page.paginator.count,
+                "results": data,
                 "next": self.page.next_page_number() if self.page.has_next() else None,
                 "previous": self.page.previous_page_number()
                 if self.page.has_previous()
                 else None,
-                "count": self.page.paginator.count,
-                "results": data,
             }
         )
+
+    def get_paginated_response_schema(self, schema):
+        return {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer",
+                    "example": 123,
+                },
+                "results": schema,
+                "next": {
+                    "type": "integer",
+                    "nullable": True,
+                    "example": "3",
+                },
+                "previous": {
+                    "type": "integer",
+                    "nullable": True,
+                    "example": "5",
+                },
+            },
+        }
