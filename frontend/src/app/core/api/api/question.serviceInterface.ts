@@ -11,6 +11,7 @@ import { HttpHeaders }                                       from '@angular/comm
 
 import { Observable }                                        from 'rxjs';
 
+import { PaginatedQuestionList } from '../model/models';
 import { PatchedQuestion } from '../model/models';
 import { Question } from '../model/models';
 
@@ -40,8 +41,10 @@ export interface QuestionServiceInterface {
     /**
      * 
      * 
+     * @param page A page number within the paginated result set.
+     * @param pageSize Number of results to return per page.
      */
-    questionList(extraHttpRequestParams?: any): Observable<Array<Question>>;
+    questionList(page?: number, pageSize?: number, extraHttpRequestParams?: any): Observable<PaginatedQuestionList>;
 
     /**
      * 

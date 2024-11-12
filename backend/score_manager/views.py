@@ -1,20 +1,20 @@
-from rest_framework import viewsets, permissions
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from rest_framework import status
 from constance import config
 from django.conf import settings
-from score_manager import utils
-from .models import Student, Class, Question, Difficulty, Subject, Test, Result
+from rest_framework import status, viewsets
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from .models import Class, Difficulty, Question, Result, Student, Subject, Test
 from .serializers import (
-    StudentSerializer,
     ClassSerializer,
-    QuestionSerializer,
     DifficultySerializer,
+    QuestionSerializer,
+    ResultSerializer,
+    StudentSerializer,
     SubjectSerializer,
     TestSerializer,
-    ResultSerializer,
 )
+
 
 class StudentViewSet(viewsets.ModelViewSet):
     queryset = Student.objects.all()
@@ -24,7 +24,7 @@ class StudentViewSet(viewsets.ModelViewSet):
         student = serializer.save()
         classes = self.request.data.get("classes")
         if classes is not None:  # Neu "classes" key duoc cung cap trong request
-            student.classes.set(classes)# update student class truc tiep
+            student.classes.set(classes)  # update student class truc tiep
 
 
 class ClassViewSet(viewsets.ModelViewSet):
@@ -39,6 +39,7 @@ class QuestionViewSet(viewsets.ModelViewSet):
 
 class DifficultyViewSet(viewsets.ModelViewSet):
     queryset = Difficulty.objects.all()
+    pagination_class = None
     serializer_class = DifficultySerializer
 
 
