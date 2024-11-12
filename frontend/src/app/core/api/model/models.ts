@@ -3,7 +3,6 @@ export * from './difficulty';
 export * from './jwt';
 export * from './login';
 export * from './paginated-class-list';
-export * from './paginated-difficulty-list';
 export * from './paginated-question-list';
 export * from './paginated-result-list';
 export * from './paginated-student-list';

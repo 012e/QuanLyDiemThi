@@ -32,7 +32,6 @@ model/jwt.ts
 model/login.ts
 model/models.ts
 model/paginated-class-list.ts
-model/paginated-difficulty-list.ts
 model/paginated-question-list.ts
 model/paginated-result-list.ts
 model/paginated-student-list.ts

@@ -12,7 +12,6 @@ import { HttpHeaders }                                       from '@angular/comm
 import { Observable }                                        from 'rxjs';
 
 import { Difficulty } from '../model/models';
-import { PaginatedDifficultyList } from '../model/models';
 import { PatchedDifficulty } from '../model/models';
 
 
@@ -41,10 +40,8 @@ export interface DifficultyServiceInterface {
     /**
      * 
      * 
-     * @param page A page number within the paginated result set.
-     * @param pageSize Number of results to return per page.
      */
-    difficultyList(page?: number, pageSize?: number, extraHttpRequestParams?: any): Observable<PaginatedDifficultyList>;
+    difficultyList(extraHttpRequestParams?: any): Observable<Array<Difficulty>>;
 
     /**
      * 
