@@ -1,5 +1,3 @@
-from typing import override
-
 import humanize
 import rest_framework.serializers as serializers
 
@@ -41,7 +39,6 @@ class TestSerializer(serializers.ModelSerializer):
         queryset=Question.objects.all(), many=True
     )
 
-    @override
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         representation["duration"] = humanize.precisedelta(instance.duration)
