@@ -41,10 +41,10 @@ export interface StudentServiceInterface {
     /**
      * 
      * 
-     * @param page A page number within the paginated result set.
-     * @param pageSize Number of results to return per page.
+     * @param limit Number of results to return per page.
+     * @param offset The initial index from which to return the results.
      */
-    studentList(page?: number, pageSize?: number, extraHttpRequestParams?: any): Observable<PaginatedStudentList>;
+    studentList(limit?: number, offset?: number, extraHttpRequestParams?: any): Observable<PaginatedStudentList>;
 
     /**
      * 

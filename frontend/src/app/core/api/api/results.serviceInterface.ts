@@ -41,10 +41,10 @@ export interface ResultsServiceInterface {
     /**
      * 
      * 
-     * @param page A page number within the paginated result set.
-     * @param pageSize Number of results to return per page.
+     * @param limit Number of results to return per page.
+     * @param offset The initial index from which to return the results.
      */
-    resultsList(page?: number, pageSize?: number, extraHttpRequestParams?: any): Observable<PaginatedResultList>;
+    resultsList(limit?: number, offset?: number, extraHttpRequestParams?: any): Observable<PaginatedResultList>;
 
     /**
      * 
