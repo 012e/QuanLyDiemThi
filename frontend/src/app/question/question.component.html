@@ -1,0 +1,161 @@
+<div class="card">
+    <p-toast />
+    <p-toolbar styleClass="mb-4 gap-2">
+        <ng-template pTemplate="left">
+            <p-button
+                severity="success" 
+                label="New" 
+                icon="pi pi-plus" 
+                class="mr-2" 
+                (onClick)="openNew()" />
+            <p-button
+                severity="danger" 
+                label="Delete" 
+                icon="pi pi-trash" 
+                (onClick)="deleteSelectedQuestions()" 
+                [disabled]="!selectedQuestions || !selectedQuestions.length" />
+        </ng-template>
+    </p-toolbar>
+
+    <p-table
+        #dt
+        [value]="questions"
+        [rows]="3"
+        [paginator]="true"
+        [globalFilterFields]="['subject', 'difficulty.name', 'detail']"
+        [tableStyle]="{ 'min-width': '75rem' }"
+        [(selection)]="selectedQuestions"
+        [rowHover]="true"
+        dataKey="id"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [showCurrentPageReport]="true"
+    >
+        <ng-template pTemplate="caption">
+            <div class="flex align-items-center items-center justify-between">
+                <h3 class="m-0">Manage Questions</h3>
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input 
+                        pInputText 
+                        type="text" 
+                        (input)="dt.filterGlobal($event.target, 'contains')" 
+                        placeholder="Search..." />
+                </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th class="w-4">
+                    <p-tableHeaderCheckbox />
+                </th>
+                <th pSortableColumn="subject" class="w-40">
+                    Subject <p-sortIcon field="subject" />
+                </th>
+                <th pSortableColumn="difficulty" class="w-40">
+                    Difficulty <p-sortIcon field="difficulty" />
+                </th>
+                <th pSortableColumn="detail" class="w-max">
+                    Detail <p-sortIcon field="detail" />
+                </th>
+                <th class="w-40"></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-question>
+            <tr>
+                <td>
+                    <p-tableCheckbox [value]="question" />
+                </td>
+                <td>
+                    {{ getSubjectLabelById(question.subject) }}
+                </td>
+                <td>
+                    {{ getDifficultyLabelById(question.difficulty) }}
+                </td>
+                <td>
+                    {{ question.detail }}
+                </td>
+                <td>
+                    <p-button 
+                        icon="pi pi-pencil" 
+                        class="mr-2" 
+                        [rounded]="true" 
+                        [outlined]="true" 
+                        severity="success" 
+                        (onClick)="editQuestion(question)" />
+                    <p-button 
+                        icon="pi pi-trash" 
+                        severity="danger" 
+                        [rounded]="true" 
+                        [outlined]="true" 
+                        (onClick)="deleteQuestion(question)" />
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="flex align-items-center justify-content-between">
+                In total there are {{ questions ? questions.length : 0 }} products.
+            </div>
+        </ng-template>
+    </p-table>
+
+    <p-dialog 
+        [(visible)]="questionDialog" 
+        [style]="{ width: '450px' }" 
+        header="Question Details" 
+        [modal]="true" 
+        styleClass="p-fluid">
+            <ng-template pTemplate="content">
+                <div class="field">
+                    <label for="subject">Subject</label>
+                    <p-dropdown 
+                        [(ngModel)]="question.subject" 
+                        inputId="subject" 
+                        [options]="subjects">
+                    </p-dropdown>
+                </div>
+
+                <div class="field">
+                    <label for="description">Description</label>
+                    <textarea 
+                        id="description" 
+                        pInputTextarea 
+                        [(ngModel)]="question.detail" 
+                        required 
+                        rows="3" 
+                        cols="20">
+                    </textarea>
+                </div>
+
+                <div class="field">
+                    <label class="mb-3">Difficulty</label>
+                    <div class="formgrid grid">
+                        <ng-container *ngFor="let i of difficulties">
+                            <div class="field-radiobutton col-6">
+                                <p-radioButton 
+                                    id="difficulty{{i.id}}" 
+                                    name="difficulty" 
+                                    [value]="i.id" 
+                                    [(ngModel)]="question.difficulty" />
+                                <label for="difficulty{{i.id}}">{{i.name}}</label>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+            </ng-template>
+
+            <ng-template pTemplate="footer">
+                <p-button 
+                    label="Cancel" 
+                    icon="pi pi-times" 
+                    [text]="true" 
+                    (onClick)="hideDialog()" />
+                <p-button
+                    label="Save" 
+                    icon="pi pi-check" 
+                    [text]="true" 
+                    (onClick)="saveQuestion()" />
+            </ng-template>
+    </p-dialog>
+
+    <p-confirmDialog [style]="{ width: '450px' }" />
+</div>
