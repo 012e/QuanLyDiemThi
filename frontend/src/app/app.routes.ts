@@ -4,6 +4,7 @@ import { DifficultyComponent } from './difficulty/components/difficulty/difficul
 import { MainComponent } from './main/components/main/main.component';
 import { isAuthenticatedGuard } from './core/guards/is-authenticated.guard';
 import { isUnauthenticatedGuard } from './core/guards/is-unauthenticated.guard';
+import { QuestionComponent } from './question/question.component';
 
 export const routes: Routes = [
   {
@@ -14,6 +15,11 @@ export const routes: Routes = [
       {
         path: 'difficulty',
         component: DifficultyComponent,
+      },
+
+      {
+        path: 'question',
+        component: QuestionComponent,
       },
     ],
   },
