@@ -1,0 +1,170 @@
+<div class="flex justify-center w-screen py-10">
+  <div class="w-1/2">
+    <h1 class="text-4xl p-0 m-0 capitalize">Create new test form</h1>
+    <p-divider></p-divider>
+    <form [formGroup]="testForm" class="flex flex-col gap-5">
+      <div class="flex flex-col gap-1">
+        <label for="subject" class="px-1 text-sm font-bold">Subject</label>
+        @if (
+          this.testForm.get('subject')?.invalid &&
+          this.testForm.get('subject')?.touched
+        ) {
+          <div class="px-1 text-sm text-red-500">Please select a subject</div>
+        }
+        <p-dropdown
+          [style]="{ minWidth: '100%' }"
+          formControlName="subject"
+          [filter]="true"
+          [options]="subjects"
+          optionLabel="name"
+          optionValue="id"
+          placeholder="Select a Subject"
+          inputId="subject"
+        />
+      </div>
+      <div class="flex flex-col gap-1">
+        <label for="semester" class="px-1 text-sm font-bold">Semester</label>
+        @if (
+          !this.testForm.get('semester')?.value &&
+          this.testForm.get('semester')?.touched
+        ) {
+          <div class="px-1 text-sm text-red-500">Please input valid semester</div>
+        } @else if (
+          this.testForm.get('semester')?.errors?.['isNumber'] &&
+          this.testForm.get('semester')?.touched
+        ) {
+          <div class="px-1 text-sm text-red-500">
+            Semester must be a postive number
+          </div>
+        }
+        <input
+          formControlName="semester"
+          type="text"
+          id="semester"
+          pInputText
+          placeholder="Enter Semester"
+        />
+      </div>
+      <div class="flex flex-col gap-1">
+        <label for="duration" class="px-1 text-sm font-bold"
+          >Date and time</label
+        >
+        @if (
+          this.testForm.get('datetime')?.invalid &&
+          this.testForm.get('datetime')?.touched
+        ) {
+          <div class="px-1 text-sm text-red-500">
+            Please select valid date and time
+          </div>
+        }
+        <p-calendar
+          formControlName="datetime"
+          [showIcon]="true"
+          [showTime]="true"
+          [readonlyInput]="true"
+          placeholder="Select date and time"
+        />
+      </div>
+      <div class="flex flex-col gap-1">
+        <label for="duration" class="px-1 text-sm font-bold"
+          >Duration (in minutes)</label
+        >
+        @if (
+          this.testForm.get('duration')?.invalid &&
+          this.testForm.get('duration')?.touched
+        ) {
+          <div class="px-1 text-sm text-red-500">
+            Please input valid duration
+          </div>
+        }
+        <input
+          formControlName="duration"
+          type="text"
+          pInputText
+          placeholder="Enter Duration"
+        />
+      </div>
+      <div class="flex flex-col gap-3">
+        <div class="flex justify-between items-center">
+          <p class="text-lg font-semibold">Test questions</p>
+          <p-button
+            (click)="addQuestion()"
+            icon="pi pi-plus"
+            severity="success"
+            label="Add questions"
+            [outlined]="true"
+          />
+        </div>
+        <p-table
+          [autoLayout]="true"
+          [rowHover]="true"
+          [value]="questions"
+          (onRowReorder)="syncQuestionsTableToForm()"
+          selectionMode="multiple"
+          datakey="index"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Index</th>
+              <th>Id</th>
+              <th>Subject</th>
+              <th>Detail</th>
+              <th>Difficulty</th>
+              <th></th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-question let-index="rowIndex">
+            <tr [pReorderableRow]="index">
+              <td pReorderableRowHandle>
+                {{ index + 1 }}
+              </td>
+              <td pReorderableRowHandle>
+                {{ question.id }}
+              </td>
+              <td pReorderableRowHandle>
+                {{ getSubjectLabelById(question.subject) }}
+              </td>
+              <td
+                pReorderableRowHandle
+                class="overflow-hidden whitespace-nowrap text-ellipsis max-w-60"
+              >
+                {{ question.detail }}
+              </td>
+              <td pReorderableRowHandle>
+                {{ getDifficultyLabelById(question.difficulty) }}
+              </td>
+              <td>
+                <p-button
+                  [rounded]="true"
+                  icon="pi pi-trash"
+                  severity="danger"
+                  [outlined]="true"
+                  (onClick)="deleteQuestion(index)"
+                />
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="100">
+                No questions have been added yet. Add some questions with
+                <span class="font-bold">Add Questions</span>.
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+      <p-button
+        (click)="submit()"
+        label="Submit"
+        icon="pi pi-check"
+        severity="success"
+      />
+    </form>
+  </div>
+</div>
+
+<p-confirmDialog
+  header="Confirmation"
+  icon="pi pi-exclamation-triangle"
+></p-confirmDialog>

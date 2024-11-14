@@ -16,6 +16,7 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
 import { MessageService } from 'primeng/api';
 import { environment } from '../environments/environment.development';
+import { UnauthorizedInterceptorInterceptor } from './core/interceptors/unauthorized-interceptor.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -27,7 +28,7 @@ export const appConfig: ApplicationConfig = {
         cookieName: 'csrftoken',
         headerName: 'X-CSRFToken',
       }),
-      withInterceptors([JwtInterceptor]),
+      withInterceptors([JwtInterceptor, UnauthorizedInterceptorInterceptor]),
     ),
     importProvidersFrom(ApiModule),
     {
