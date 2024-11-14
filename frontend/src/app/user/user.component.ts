@@ -88,7 +88,7 @@ export class UserComponent implements OnInit {
     });
   }
 
-  public enableEdit() {
+  public enableEditing() {
     this.editing = true;
     this.userDetailsForm.enable();
     this.userDetailsForm.get('email')?.disable();
