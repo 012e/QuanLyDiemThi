@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     "drf_spectacular",
     "dj_rest_auth",
     "constance",
-    'constance.backends.database',
+    "constance.backends.database",
     "corsheaders",
 ]
 
@@ -156,7 +156,7 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
     ],
-    "DEFAULT_PAGINATION_CLASS": "score_manager.pagination.NumberTextPagination",
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
     "PAGE_SIZE": 15,
 }
 
