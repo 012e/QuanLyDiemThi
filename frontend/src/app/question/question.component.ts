@@ -109,7 +109,16 @@ export class QuestionComponent implements OnInit {
         this.questions = this.questions.filter(val => !this.selectedQuestions?.includes(val));
         if (this.selectedQuestions) {
           this.selectedQuestions.forEach((question: { id: number; }) => {
-            this.questionService.questionDestroy(question.id).subscribe();
+            this.questionService.questionDestroy(question.id).subscribe({
+              next: (response) => {
+                console.log(response);
+                this.refresh();
+              },
+              
+              error: (error) => {
+                console.error(error);
+              }
+            });
           });
         }
         this.selectedQuestions = null;
@@ -129,9 +138,17 @@ export class QuestionComponent implements OnInit {
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
+        this.questionService.questionDestroy(question.id).subscribe({
+          next: (response) => {
+            console.log(response);
+            this.refresh();
+          },
+          error: (error) => {
+            console.error(error);
+          }
+        });
         this.questions = this.questions.filter(val => val.id !== question.id);
         this.question = {} as Question;
-        this.questionService.questionDestroy(question.id).subscribe();
         this.messageService.add({severity:'success', summary: 'Successful', detail: 'Question Deleted', life: 3000});
       }
     });
@@ -147,13 +164,31 @@ export class QuestionComponent implements OnInit {
 
     if (this.question.detail?.trim()) {
       if (this.question.id) {
-        this.questionService.questionUpdate(this.question.id, this.question).subscribe();
+        this.questionService.questionUpdate(this.question.id, this.question).subscribe({
+          next: (response) => {
+            console.log(response);
+            this.refresh();
+          },
+
+          error: (error) => {
+            console.error(error);
+          }
+        });
         this.messageService.add({severity:'success', summary: 'Successful', detail: 'Question Updated', life: 3000});
-        }
+      }
 
       else {
         this.questions.push(this.question);
-        this.questionService.questionCreate(this.question).subscribe();
+        this.questionService.questionCreate(this.question).subscribe({
+          next: (response) => {
+            console.log(response);
+          },
+
+          error: (error) => {
+            console.error(error);
+          }
+        }
+        );
         this.messageService.add({severity:'success', summary: 'Successful', detail: 'Question Created', life: 3000});
       }
 
@@ -161,6 +196,12 @@ export class QuestionComponent implements OnInit {
       this.questionDialog = false;
       this.question = {} as Question;
     }
+  }
+
+  refresh() {
+    this.questionService.questionList().subscribe(questions => {
+      this.questions = questions.results;
+    });
   }
 
   getDifficultyLabelById(index: number) {

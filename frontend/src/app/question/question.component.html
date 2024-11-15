@@ -20,7 +20,7 @@
     <p-table
         #dt
         [value]="questions"
-        [rows]="3"
+        [rows]="10"
         [paginator]="true"
         [globalFilterFields]="['subject', 'difficulty.name', 'detail']"
         [tableStyle]="{ 'min-width': '75rem' }"
@@ -30,7 +30,7 @@
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
         [showCurrentPageReport]="true"
     >
-        <ng-template pTemplate="caption">
+        <!-- <ng-template pTemplate="caption">
             <div class="flex align-items-center items-center justify-between">
                 <h3 class="m-0">Manage Questions</h3>
                 <span class="p-input-icon-left">
@@ -42,7 +42,7 @@
                         placeholder="Search..." />
                 </span>
             </div>
-        </ng-template>
+        </ng-template> -->
         <ng-template pTemplate="header">
             <tr>
                 <th class="w-4">
