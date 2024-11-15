@@ -20,7 +20,7 @@
     <p-table
         #dt
         [value]="questions"
-        [rows]="10"
+        [rows]="rows"
         [paginator]="true"
         [globalFilterFields]="['subject', 'difficulty.name', 'detail']"
         [tableStyle]="{ 'min-width': '75rem' }"
@@ -43,19 +43,26 @@
                 </span>
             </div>
         </ng-template> -->
+        
         <ng-template pTemplate="header">
             <tr>
                 <th class="w-4">
                     <p-tableHeaderCheckbox />
                 </th>
-                <th pSortableColumn="subject" class="w-40">
-                    Subject <p-sortIcon field="subject" />
+                <!-- <th pSortableColumn="subject" class="w-40"> -->
+                <th class="w-40">
+                    Subject 
+                    <!-- <p-sortIcon field="subject" /> -->
                 </th>
-                <th pSortableColumn="difficulty" class="w-40">
-                    Difficulty <p-sortIcon field="difficulty" />
+                <!-- <th pSortableColumn="difficulty" class="w-40"> -->
+                <th class="w-40">
+                    Difficulty 
+                    <!-- <p-sortIcon field="difficulty" /> -->
                 </th>
-                <th pSortableColumn="detail" class="w-max">
-                    Detail <p-sortIcon field="detail" />
+                <!-- <th pSortableColumn="detail" class="w-max"> -->
+                <th class="w-max">
+                    Detail 
+                    <!-- <p-sortIcon field="detail" /> -->
                 </th>
                 <th class="w-40"></th>
             </tr>
@@ -136,7 +143,7 @@
                                     name="difficulty" 
                                     [value]="i.id" 
                                     [(ngModel)]="question.difficulty" />
-                                <label for="difficulty{{i.id}}">{{i.name}}</label>
+                                <label for="difficulty{{i.id}}"> {{i.name}}</label>
                             </div>
                         </ng-container>
                     </div>

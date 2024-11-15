@@ -65,6 +65,7 @@ export class QuestionComponent implements OnInit {
   difficulty!: Difficulty;
 
   submitted: boolean = false;
+  rows: number = 10;
 
   constructor(
     private questionService: QuestionService, 
@@ -74,7 +75,7 @@ export class QuestionComponent implements OnInit {
     private difficultyService: DifficultyService,
   ) {}
 
-  ngOnInit() {
+  public ngOnInit() {
     this.questionService.questionList().subscribe(questions => {
       this.questions = questions.results;
     });
@@ -94,13 +95,13 @@ export class QuestionComponent implements OnInit {
     });
   }
 
-  openNew() {
+  public openNew() {
     this.question = {} as Question;
     this.submitted = false;
     this.questionDialog = true;
   }
 
-  deleteSelectedQuestions() {
+  public deleteSelectedQuestions() {
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete the selected questions?',
       header: 'Confirm',
@@ -127,12 +128,12 @@ export class QuestionComponent implements OnInit {
     });
   }
 
-  editQuestion(question: Question) {
+  public editQuestion(question: Question) {
     this.question = {...question};
     this.questionDialog = true;
   }
 
-  deleteQuestion(question: Question) {
+  public deleteQuestion(question: Question) {
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete ' + question.id + '?',
       header: 'Confirm',
@@ -154,12 +155,12 @@ export class QuestionComponent implements OnInit {
     });
   }
 
-  hideDialog() {
+  public hideDialog() {
     this.questionDialog = false;
     this.submitted = false;
   }
 
-  saveQuestion() {
+  public saveQuestion() {
     this.submitted = true;
 
     if (this.question.detail?.trim()) {
@@ -198,17 +199,17 @@ export class QuestionComponent implements OnInit {
     }
   }
 
-  refresh() {
+  public refresh() {
     this.questionService.questionList().subscribe(questions => {
       this.questions = questions.results;
     });
   }
 
-  getDifficultyLabelById(index: number) {
+  public getDifficultyLabelById(index: number) {
     return this.difficulties.find(difficulty => difficulty.id === index)?.name;
   }
 
-  getSubjectLabelById(index: number) {
+  public getSubjectLabelById(index: number) {
     return this.subjects.find(subject => subject.id === index)?.name;
   }
 }
