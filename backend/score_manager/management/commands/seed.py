@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand
 from faker import Faker
+
 from score_manager.models import Difficulty, Question, Subject, Test
 
 fake = Faker()

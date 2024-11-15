@@ -1,6 +1,5 @@
-from django.db import models
 from django.contrib.auth.models import User
-from rest_framework.compat import md_filter_add_syntax_highlight
+from django.db import models
 
 User._meta.get_field("email")._unique = True  # pyright: ignore
 
@@ -11,6 +10,9 @@ class Subject(models.Model):
     def __str__(self):
         return str(self.name)
 
+    class Meta:
+        ordering = ["name"]
+
 
 class Class(models.Model):
     name = models.CharField(max_length=100)
@@ -19,14 +21,22 @@ class Class(models.Model):
     def __str__(self):
         return str(self.name)
 
+    class Meta:
+        ordering = ["name"]
+
 
 class Student(models.Model):
     name = models.CharField(max_length=100)
     classes = models.ManyToManyField(Class)
     student_code = models.CharField(max_length=10)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+    updated_at = models.DateTimeField(auto_now=True, db_index=True)
 
     def __str__(self):
         return str(self.name)
+
+    class Meta:
+        ordering = ["created_at"]
 
 
 class Difficulty(models.Model):
@@ -35,11 +45,16 @@ class Difficulty(models.Model):
     def __str__(self):
         return str(self.name)
 
+    class Meta:
+        ordering = ["name"]
+
 
 class Question(models.Model):
     detail = models.TextField(blank=False, null=True)
     difficulty = models.ForeignKey(Difficulty, null=False, on_delete=models.CASCADE)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+    updated_at = models.DateTimeField(auto_now=True, db_index=True)
 
     def __str__(self):
         return str(self.detail)
@@ -47,6 +62,7 @@ class Question(models.Model):
     class Meta:
         verbose_name = "Question"
         verbose_name_plural = "Questions"
+        ordering = ["created_at"]
 
 
 class Test(models.Model):
@@ -54,10 +70,15 @@ class Test(models.Model):
     semester = models.PositiveSmallIntegerField(null=False, blank=False)
     datetime = models.DateTimeField()
     duration = models.DurationField()
-    questions = models.ManyToManyField(Question, blank=True)  
+    questions = models.ManyToManyField(Question, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+    updated_at = models.DateTimeField(auto_now=True, db_index=True)
 
     def __str__(self):
         return f"{self.subject} - {self.semester} - {self.datetime}"
+
+    class Meta:
+        ordering = ["created_at"]
 
 
 class Result(models.Model):
@@ -66,8 +87,11 @@ class Result(models.Model):
     score = models.DecimalField(max_digits=4, decimal_places=2)
     teacher = models.ForeignKey(User, on_delete=models.CASCADE)
     note = models.TextField(null=True, blank=False)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+    updated_at = models.DateTimeField(auto_now=True, db_index=True)
 
     class Meta:
         constraints = [
             models.UniqueConstraint(fields=["student", "test"], name="unique_result")
         ]
+        ordering = ["created_at"]
