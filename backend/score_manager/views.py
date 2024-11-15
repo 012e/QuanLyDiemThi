@@ -1,6 +1,7 @@
 from constance import config
 from django.conf import settings
 from rest_framework import status, viewsets
+from rest_framework.filters import OrderingFilter
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -19,6 +20,8 @@ from .serializers import (
 class StudentViewSet(viewsets.ModelViewSet):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
+    filter_backends = [OrderingFilter]
+    ordering = ["name"]
 
     def perform_update(self, serializer):
         student = serializer.save()
@@ -31,10 +34,16 @@ class ClassViewSet(viewsets.ModelViewSet):
     queryset = Class.objects.all()
     serializer_class = ClassSerializer
 
+    filter_backends = [OrderingFilter]
+    ordering = ["name"]
+
 
 class QuestionViewSet(viewsets.ModelViewSet):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
+
+    filter_backends = [OrderingFilter]
+    ordering = ["-created_at"]
 
 
 class DifficultyViewSet(viewsets.ModelViewSet):
@@ -47,10 +56,16 @@ class SubjectViewSet(viewsets.ModelViewSet):
     queryset = Subject.objects.all()
     serializer_class = SubjectSerializer
 
+    filter_backends = [OrderingFilter]
+    ordering = ["name"]
+
 
 class TestViewSet(viewsets.ModelViewSet):
     queryset = Test.objects.all()
     serializer_class = TestSerializer
+
+    filter_backends = [OrderingFilter]
+    ordering = ["-created_at"]
 
     def perform_create(self, serializer):
         test = serializer.save()
@@ -68,6 +83,9 @@ class TestViewSet(viewsets.ModelViewSet):
 class ResultViewSet(viewsets.ModelViewSet):
     queryset = Result.objects.all()
     serializer_class = ResultSerializer
+
+    filter_backends = [OrderingFilter]
+    ordering = ["-created_at"]
 
 
 class ConfigView(APIView):
