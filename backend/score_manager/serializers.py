@@ -1,5 +1,8 @@
 import humanize
 import rest_framework.serializers as serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
+from score_manager.utils import get_role
 
 from .models import Class, Difficulty, Question, Result, Student, Subject, Test
 
@@ -53,3 +56,11 @@ class ResultSerializer(serializers.ModelSerializer):
     class Meta:
         model = Result
         fields = "__all__"
+
+
+class RoleTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+        token["role"] = get_role(user)
+        return token
