@@ -12,8 +12,10 @@ fake = Faker()
 log = logging.getLogger("main")
 
 TOTAL_QUESTIONS = 100
-TOTAL_USERS = 10
+TOTAL_USERS = 50
+TOTAL_STAFF = 10
 TOTAL_TESTS = 30
+TOTAL_STUDENTS = 100
 
 
 def seed_difficulty():
@@ -32,6 +34,33 @@ def seed_subject():
     Subject.objects.update_or_create(name="Sinh")
     Subject.objects.update_or_create(name="Sử")
     Subject.objects.update_or_create(name="Địa")
+
+
+def seed_staff():
+    User.objects.create_user(
+        username="staff", email=fake.email(), password="staff", is_staff=True
+    )
+    for _ in range(TOTAL_STAFF):
+        User.objects.create_user(
+            username=fake.user_name(),
+            email=fake.email(),
+            password=fake.password(),
+            is_staff=True,
+        )
+
+
+def seed_users():
+    for _ in range(TOTAL_USERS):
+        User.objects.create_user(
+            username=fake.user_name(), email=fake.email(), password=fake.password()
+        )
+
+
+def seed_students():
+    for _ in range(TOTAL_STUDENTS):
+        User.objects.create_user(
+            username=fake.user_name(), email=fake.email(), password=fake.password()
+        )
 
 
 def seed_question():
@@ -85,13 +114,21 @@ def seed_user():
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        log.info("seeding user")
-        seed_user()
-        log.info("seeding difficulty")
-        seed_difficulty()
-        log.info("seeding subject")
-        seed_subject()
-        log.info("seeding question")
-        seed_question()
-        log.info("seeding test")
-        seed_test()
+        try:
+            print("seeding user")
+            seed_user()
+            print("seeding staff")
+            seed_staff()
+            print("seeding student")
+            seed_students()
+            print("seeding difficulty")
+            seed_difficulty()
+            print("seeding subject")
+            seed_subject()
+            print("seeding question")
+            seed_question()
+            print("seeding test")
+            seed_test()
+        except Exception as e:
+            log.error(e)
+            log.error("Seed data failed")
