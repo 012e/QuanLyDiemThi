@@ -22,15 +22,21 @@
         [value]="questions"
         [rows]="rows"
         [paginator]="true"
-        [globalFilterFields]="['subject', 'difficulty.name', 'detail']"
+        [globalFilterFields]="['question.subject', 'question.difficulty', 'question.detail']"
         [tableStyle]="{ 'min-width': '75rem' }"
         [(selection)]="selectedQuestions"
         [rowHover]="true"
         dataKey="id"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
         [showCurrentPageReport]="true"
+        [paginator]="true"
+        [lazy]="true"
+        [rows]="rows"
+        [first]="first"
+        [totalRecords]="count"
+        (onPage)="onPage($event)"
     >
-        <!-- <ng-template pTemplate="caption">
+        <ng-template pTemplate="caption">
             <div class="flex align-items-center items-center justify-between">
                 <h3 class="m-0">Manage Questions</h3>
                 <span class="p-input-icon-left">
@@ -42,7 +48,7 @@
                         placeholder="Search..." />
                 </span>
             </div>
-        </ng-template> -->
+        </ng-template>
         
         <ng-template pTemplate="header">
             <tr>
@@ -98,11 +104,6 @@
                 </td>
             </tr>
         </ng-template>
-        <ng-template pTemplate="summary">
-            <div class="flex align-items-center justify-content-between">
-                In total there are {{ questions ? questions.length : 0 }} products.
-            </div>
-        </ng-template>
     </p-table>
 
     <p-dialog 
@@ -127,7 +128,6 @@
                         id="description" 
                         pInputTextarea 
                         [(ngModel)]="question.detail" 
-                        required 
                         rows="3" 
                         cols="20">
                     </textarea>
@@ -141,7 +141,7 @@
                                 <p-radioButton 
                                     id="difficulty{{i.id}}" 
                                     name="difficulty" 
-                                    [value]="i.id" 
+                                    [value]="i.id"
                                     [(ngModel)]="question.difficulty" />
                                 <label for="difficulty{{i.id}}"> {{i.name}}</label>
                             </div>
