@@ -13,6 +13,7 @@ export interface Student {
     readonly id: number;
     name: string;
     student_code: string;
-    classes: Array<number>;
+    readonly created_at: string;
+    readonly updated_at: string;
 }
 

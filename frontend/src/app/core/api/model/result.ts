@@ -13,8 +13,11 @@ export interface Result {
     readonly id: number;
     score: string;
     note?: string | null;
+    readonly created_at: string;
+    readonly updated_at: string;
     student: number;
     test: number;
     teacher: number;
+    classes: Array<number>;
 }
 

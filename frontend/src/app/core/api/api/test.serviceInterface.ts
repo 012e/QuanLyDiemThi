@@ -43,8 +43,9 @@ export interface TestServiceInterface {
      * 
      * @param limit Number of results to return per page.
      * @param offset The initial index from which to return the results.
+     * @param ordering Which field to use when ordering the results.
      */
-    testList(limit?: number, offset?: number, extraHttpRequestParams?: any): Observable<PaginatedTestList>;
+    testList(limit?: number, offset?: number, ordering?: string, extraHttpRequestParams?: any): Observable<PaginatedTestList>;
 
     /**
      * 

@@ -15,6 +15,8 @@ export interface PatchedTest {
     semester?: number;
     datetime?: string;
     duration?: string;
+    readonly created_at?: string;
+    readonly updated_at?: string;
     subject?: number;
 }
 
