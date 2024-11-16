@@ -19,6 +19,15 @@ TOTAL_TESTS = 30
 TOTAL_STUDENTS = 100
 
 
+def bulk_create_users(users):
+    User.objects.bulk_create(
+        users,
+        update_conflicts=True,
+        unique_fields=["username"],
+        update_fields=["password"],
+    )
+
+
 def seed_difficulty():
     Difficulty.objects.update_or_create(name="Dễ")
     Difficulty.objects.update_or_create(name="Trung Bình")
@@ -38,10 +47,14 @@ def seed_subject():
 
 
 def seed_staff():
-    User.objects.create_user(
-        username="staff", email=fake.email(), password="staff", is_staff=True
-    )
-    users = []
+    users = [
+        User(
+            username="staff",
+            email=fake.email(),
+            password=make_password("staff"),
+            is_staff=True,
+        )
+    ]
     for _ in range(TOTAL_STAFF):
         users.append(
             User(
@@ -51,13 +64,19 @@ def seed_staff():
                 is_staff=True,
             )
         )
-
-    User.objects.bulk_create(users, ignore_conflicts=True)
+    bulk_create_users(users)
 
 
 def seed_users():
-    users = []
-    for _ in range(TOTAL_STAFF):
+    users = [
+        User(
+            username="user",
+            password=make_password("user"),
+            email=fake.email(),
+            is_staff=False,
+        )
+    ]
+    for _ in range(TOTAL_USERS):
         users.append(
             User(
                 username=fake.user_name(),
@@ -66,7 +85,7 @@ def seed_users():
             )
         )
 
-    User.objects.bulk_create(users, ignore_conflicts=True)
+    bulk_create_users(users)
 
 
 def seed_students():
