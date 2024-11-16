@@ -27,7 +27,6 @@ class Class(models.Model):
 
 class Student(models.Model):
     name = models.CharField(max_length=100)
-    classes = models.ManyToManyField(Class)
     student_code = models.CharField(max_length=10)
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     updated_at = models.DateTimeField(auto_now=True, db_index=True)
@@ -89,6 +88,7 @@ class Result(models.Model):
     note = models.TextField(null=True, blank=False)
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     updated_at = models.DateTimeField(auto_now=True, db_index=True)
+    classes = models.ManyToManyField(Class)
 
     class Meta:
         constraints = [
