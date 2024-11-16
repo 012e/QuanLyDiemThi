@@ -1,7 +1,7 @@
 from constance import config
 from django.conf import settings
 from rest_framework import status, viewsets
-from rest_framework.filters import OrderingFilter
+from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -42,8 +42,11 @@ class QuestionViewSet(viewsets.ModelViewSet):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
 
-    filter_backends = [OrderingFilter]
-    ordering = ["-created_at"]
+    filter_backends = [OrderingFilter, SearchFilter]
+    search_fields = ["detail", "subject__name", "difficulty__name"]
+    ordering = [
+        "-created_at",
+    ]
 
 
 class DifficultyViewSet(viewsets.ModelViewSet):
