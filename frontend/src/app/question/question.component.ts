@@ -61,6 +61,7 @@ import { debounceTime, distinctUntilChanged, Subject as RxSubject } from "rxjs";
 	styleUrl: "./question.component.css",
 })
 export class QuestionComponent implements OnInit {
+	private readonly DEFAULT_PAGE_SIZE = 10;
 	questionDialog: boolean = false;
 	questions!: Question[];
 	question!: Question;
@@ -75,9 +76,9 @@ export class QuestionComponent implements OnInit {
 	submitted: boolean = false;
 	searchValue: string | undefined;
 
-	public count: number = 10;
+	public count!: number;
 	public first: number = 0;
-	public rows: number = 10;
+	public rows: number = this.DEFAULT_PAGE_SIZE;
 	public searchText: string = "";
 
 	private searchText$ = new RxSubject<string>();
@@ -90,11 +91,18 @@ export class QuestionComponent implements OnInit {
 		private difficultyService: DifficultyService,
 	) {}
 
+	public resetPagination() {
+		this.first = 0;
+		this.rows = this.DEFAULT_PAGE_SIZE;
+	}
+
 	public ngOnInit() {
 		this.searchText$
-			.pipe(debounceTime(300), distinctUntilChanged())
+			.pipe(debounceTime(500), distinctUntilChanged())
 			.subscribe((query: string) => {
 				if (query) {
+					this.resetPagination();
+					this.searchText = query;
 					this.updatePage();
 				}
 			});
@@ -159,7 +167,12 @@ export class QuestionComponent implements OnInit {
 							},
 
 							error: (error) => {
-								console.error(error);
+								this.messageService.add({
+									severity: "error",
+									summary: "Error",
+									detail: `Error deleting question: ${error.message}`,
+									life: 3000,
+								});
 							},
 						});
 					});
