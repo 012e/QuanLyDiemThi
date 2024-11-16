@@ -44,14 +44,14 @@ class QuestionViewSet(viewsets.ModelViewSet):
 
     filter_backends = [OrderingFilter, SearchFilter]
     search_fields = ["detail", "subject__name", "difficulty__name"]
-    ordering = [
-        "-created_at",
-    ]
+    ordering = ["-created_at"]
 
 
 class DifficultyViewSet(viewsets.ModelViewSet):
     queryset = Difficulty.objects.all()
     pagination_class = None
+    filter_backends = [OrderingFilter]
+    ordering = ["id"]
     serializer_class = DifficultySerializer
 
 
