@@ -1,22 +1,6 @@
 <div class="card">
     <p-toast />
-    <p-toolbar styleClass="mb-4 gap-2">
-        <ng-template pTemplate="left">
-            <p-button
-                severity="success" 
-                label="New" 
-                icon="pi pi-plus" 
-                class="mr-2" 
-                (onClick)="openNew()" />
-            <p-button
-                severity="danger" 
-                label="Delete" 
-                icon="pi pi-trash" 
-                (onClick)="deleteSelectedQuestions()" 
-                [disabled]="!selectedQuestions || !selectedQuestions.length" />
-        </ng-template>
-    </p-toolbar>
-
+    <h3 class="m-5">Manage Questions</h3>
     <p-table
         #dt
         [value]="questions"
@@ -37,8 +21,24 @@
         (onPage)="onPage($event)"
     >
         <ng-template pTemplate="caption">
-            <div class="flex align-items-center items-center justify-between">
-                <h3 class="m-0">Manage Questions</h3>
+            <div class="flex flex-row w-full justify-between">
+                <div class="flex gap-2">
+                    <p-button
+                        severity="success" 
+                        label="New" 
+                        icon="pi pi-plus" 
+                        (onClick)="openNew()" />
+                    <p-button
+                        severity="danger" 
+                        label="Delete" 
+                        icon="pi pi-trash" 
+                        (onClick)="deleteSelectedQuestions()" 
+                        [disabled]="!selectedQuestions || !selectedQuestions.length" />
+                    <p-button
+                        label="Clear"
+                        icon="pi pi-times"
+                        (onClick)="clearSelectedQuestions()"/>
+                </div>
                 <span class="p-input-icon-left">
                     <i class="pi pi-search"></i>
                     <input 
@@ -55,20 +55,14 @@
                 <th class="w-4">
                     <p-tableHeaderCheckbox />
                 </th>
-                <!-- <th pSortableColumn="subject" class="w-40"> -->
                 <th class="w-40">
                     Subject 
-                    <!-- <p-sortIcon field="subject" /> -->
                 </th>
-                <!-- <th pSortableColumn="difficulty" class="w-40"> -->
                 <th class="w-40">
                     Difficulty 
-                    <!-- <p-sortIcon field="difficulty" /> -->
                 </th>
-                <!-- <th pSortableColumn="detail" class="w-max"> -->
                 <th class="w-max">
                     Detail 
-                    <!-- <p-sortIcon field="detail" /> -->
                 </th>
                 <th class="w-40"></th>
             </tr>
@@ -113,8 +107,8 @@
         [modal]="true" 
         styleClass="p-fluid">
             <ng-template pTemplate="content">
-                <div class="field">
-                    <label for="subject">Subject</label>
+                <div class="field flex flex-col gap-2 mb-4">
+                    <label for="subject" class="font-bold">Subject</label>
                     <p-dropdown 
                         [(ngModel)]="question.subject" 
                         inputId="subject" 
@@ -122,10 +116,10 @@
                     </p-dropdown>
                 </div>
 
-                <div class="field">
-                    <label for="description">Description</label>
+                <div class="field flex flex-col gap-2 mb-4">
+                    <label for="detail" class="font-bold">Detail</label>
                     <textarea 
-                        id="description" 
+                        id="detail" 
                         pInputTextarea 
                         [(ngModel)]="question.detail" 
                         rows="3" 
@@ -133,11 +127,11 @@
                     </textarea>
                 </div>
 
-                <div class="field">
-                    <label class="mb-3">Difficulty</label>
+                <div class="field flex flex-col gap-2 mb-4">
+                    <label for="difficulty" class="font-bold">Difficulty</label>
                     <div class="formgrid grid">
                         <ng-container *ngFor="let i of difficulties">
-                            <div class="field-radiobutton col-6">
+                            <div class="field-radiobutton col-6 mb-2">
                                 <p-radioButton 
                                     id="difficulty{{i.id}}" 
                                     name="difficulty" 

@@ -122,6 +122,7 @@ export class QuestionComponent implements OnInit {
       message: 'Are you sure you want to delete the selected questions? ('+ this.selectedQuestions?.length +' selected)',
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
+      acceptButtonStyleClass: 'p-button-danger',
       accept: () => {
         this.questions = this.questions.filter(val => !this.selectedQuestions?.includes(val));
         if (this.selectedQuestions) {
@@ -144,6 +145,10 @@ export class QuestionComponent implements OnInit {
     });
   }
 
+  public clearSelectedQuestions() {
+    this.selectedQuestions = null;
+  }
+
   public editQuestion(question: Question) {
     this.question = {...question};
     this.questionDialog = true;
@@ -151,9 +156,10 @@ export class QuestionComponent implements OnInit {
 
   public deleteQuestion(question: Question) {
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete ' + question.id + '?',
+      message: 'Are you sure you want to delete question ' + question.id + '?',
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
+      acceptButtonStyleClass: 'p-button-danger',
       accept: () => {
         this.questionService.questionDestroy(question.id).subscribe({
           next: (response) => {
@@ -184,11 +190,11 @@ export class QuestionComponent implements OnInit {
         this.questionService.questionUpdate(this.question.id, this.question).subscribe({
           next: (response) => {
             console.log(response);
-            this.updatePage();
+            this.updatePage()
           },
 
           error: (error) => {
-            console.error(error);
+            console.error(error)
           }
         });
         this.messageService.add({severity:'success', summary: 'Successful', detail: 'Question Updated', life: 3000});
@@ -204,8 +210,7 @@ export class QuestionComponent implements OnInit {
           error: (error) => {
             console.error(error);
           }
-        }
-        );
+        });
         this.messageService.add({severity:'success', summary: 'Successful', detail: 'Question Created', life: 3000});
       }
 
