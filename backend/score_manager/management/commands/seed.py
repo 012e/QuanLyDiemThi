@@ -1,11 +1,12 @@
 import logging
 from datetime import datetime, timedelta
 
+from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand
 from faker import Faker
 
-from score_manager.models import Difficulty, Question, Subject, Test
+from score_manager.models import Difficulty, Question, Student, Subject, Test
 
 fake = Faker()
 
@@ -40,39 +41,56 @@ def seed_staff():
     User.objects.create_user(
         username="staff", email=fake.email(), password="staff", is_staff=True
     )
+    users = []
     for _ in range(TOTAL_STAFF):
-        User.objects.create_user(
-            username=fake.user_name(),
-            email=fake.email(),
-            password=fake.password(),
-            is_staff=True,
+        users.append(
+            User(
+                username=fake.user_name(),
+                email=fake.email(),
+                password=make_password(fake.password()),
+                is_staff=True,
+            )
         )
+
+    User.objects.bulk_create(users, ignore_conflicts=True)
 
 
 def seed_users():
-    for _ in range(TOTAL_USERS):
-        User.objects.create_user(
-            username=fake.user_name(), email=fake.email(), password=fake.password()
+    users = []
+    for _ in range(TOTAL_STAFF):
+        users.append(
+            User(
+                username=fake.user_name(),
+                email=fake.email(),
+                password=make_password(fake.password()),
+            )
         )
+
+    User.objects.bulk_create(users, ignore_conflicts=True)
 
 
 def seed_students():
+    students = []
+    total_class = Subject.objects.count()
     for _ in range(TOTAL_STUDENTS):
-        User.objects.create_user(
-            username=fake.user_name(), email=fake.email(), password=fake.password()
-        )
+        class_id = fake.random_int(1, total_class)
+        students.append(Student(name=fake.name(), class_id=class_id))
 
 
 def seed_question():
     total_subject = Subject.objects.count()
     total_difficulty = Difficulty.objects.count()
 
+    questions = []
     for _ in range(TOTAL_QUESTIONS):
         difficulty_id = fake.random_int(1, total_difficulty)
         subject_id = fake.random_int(1, total_subject)
-        Question.objects.update_or_create(
-            detail=fake.text(), difficulty_id=difficulty_id, subject_id=subject_id
+        questions.append(
+            Question(
+                detail=fake.text(), difficulty_id=difficulty_id, subject_id=subject_id
+            )
         )
+    Question.objects.bulk_create(questions, ignore_conflicts=True)
 
 
 def get_random_time_delta():
@@ -105,22 +123,15 @@ def seed_test():
         test.questions.add(*question_ids)
 
 
-def seed_user():
-    for _ in range(TOTAL_USERS):
-        User.objects.create_user(
-            username=fake.user_name(), email=fake.email(), password=fake.password()
-        )
-
-
 class Command(BaseCommand):
     def handle(self, *args, **options):
         try:
             print("seeding user")
-            seed_user()
+            seed_users()
             print("seeding staff")
             seed_staff()
-            print("seeding student")
-            seed_students()
+            # print("seeding student")
+            # seed_students()
             print("seeding difficulty")
             seed_difficulty()
             print("seeding subject")
