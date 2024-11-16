@@ -1,22 +1,22 @@
-import { CommonModule } from "@angular/common";
-import { Component, OnInit } from "@angular/core";
-import { FormsModule } from "@angular/forms";
-import { ConfirmationService, MessageService } from "primeng/api";
-import { ButtonModule } from "primeng/button";
-import { ConfirmDialogModule } from "primeng/confirmdialog";
-import { DialogModule } from "primeng/dialog";
-import { DropdownModule } from "primeng/dropdown";
-import { FileUploadModule } from "primeng/fileupload";
-import { InputNumberModule } from "primeng/inputnumber";
-import { InputTextModule } from "primeng/inputtext";
-import { InputTextareaModule } from "primeng/inputtextarea";
-import { RadioButtonModule } from "primeng/radiobutton";
-import { RatingModule } from "primeng/rating";
-import { RippleModule } from "primeng/ripple";
-import { TableModule, TablePageEvent } from "primeng/table";
-import { TagModule } from "primeng/tag";
-import { ToastModule } from "primeng/toast";
-import { ToolbarModule } from "primeng/toolbar";
+import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { ButtonModule } from 'primeng/button';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { DialogModule } from 'primeng/dialog';
+import { DropdownModule } from 'primeng/dropdown';
+import { FileUploadModule } from 'primeng/fileupload';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { RatingModule } from 'primeng/rating';
+import { RippleModule } from 'primeng/ripple';
+import { TableModule, TablePageEvent } from 'primeng/table';
+import { TagModule } from 'primeng/tag';
+import { ToastModule } from 'primeng/toast';
+import { ToolbarModule } from 'primeng/toolbar';
 import { DividerModule } from 'primeng/divider';
 
 import {
@@ -26,11 +26,11 @@ import {
   QuestionService,
   Subject,
   SubjectService,
-} from "../core/api";
-import { debounceTime, distinctUntilChanged, Subject as RxSubject } from "rxjs";
+} from '../core/api';
+import { debounceTime, distinctUntilChanged, Subject as RxSubject } from 'rxjs';
 
 @Component({
-  selector: "app-question",
+  selector: 'app-question',
   standalone: true,
   imports: [
     TableModule,
@@ -51,7 +51,7 @@ import { debounceTime, distinctUntilChanged, Subject as RxSubject } from "rxjs";
     InputTextModule,
     FormsModule,
     InputNumberModule,
-    DividerModule
+    DividerModule,
   ],
   providers: [
     MessageService,
@@ -60,8 +60,8 @@ import { debounceTime, distinctUntilChanged, Subject as RxSubject } from "rxjs";
     SubjectService,
     DifficultyService,
   ],
-  templateUrl: "./question.component.html",
-  styleUrl: "./question.component.css",
+  templateUrl: './question.component.html',
+  styleUrl: './question.component.css',
 })
 export class QuestionComponent implements OnInit {
   private readonly DEFAULT_PAGE_SIZE = 10;
@@ -82,7 +82,7 @@ export class QuestionComponent implements OnInit {
   public count!: number;
   public first: number = 0;
   public rows: number = this.DEFAULT_PAGE_SIZE;
-  public searchText: string = "";
+  public searchText: string = '';
 
   private searchText$ = new RxSubject<string>();
 
@@ -91,8 +91,8 @@ export class QuestionComponent implements OnInit {
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private subjectService: SubjectService,
-    private difficultyService: DifficultyService,
-  ) { }
+    private difficultyService: DifficultyService
+  ) {}
 
   public resetPage() {
     this.first = 0;
@@ -148,15 +148,15 @@ export class QuestionComponent implements OnInit {
   public deleteSelectedQuestions() {
     this.confirmationService.confirm({
       message:
-        "Are you sure you want to delete the selected questions? (" +
+        'Are you sure you want to delete the selected questions? (' +
         this.selectedQuestions?.length +
-        " selected)",
-      header: "Confirm",
-      icon: "pi pi-exclamation-triangle",
-      acceptButtonStyleClass: "p-button-danger",
+        ' selected)',
+      header: 'Confirm',
+      icon: 'pi pi-exclamation-triangle',
+      acceptButtonStyleClass: 'p-button-danger',
       accept: () => {
         this.questions = this.questions.filter(
-          (val) => !this.selectedQuestions?.includes(val),
+          (val) => !this.selectedQuestions?.includes(val)
         );
         if (this.selectedQuestions) {
           this.selectedQuestions.forEach((question: { id: number }) => {
@@ -167,23 +167,13 @@ export class QuestionComponent implements OnInit {
               },
 
               error: (error) => {
-                this.messageService.add({
-                  severity: "error",
-                  summary: "Error",
-                  detail: `Error deleting question: ${error.message}`,
-                  life: 3000,
-                });
+                this.showError(`Error deleting question: ${error.message}`)
               },
             });
           });
         }
         this.selectedQuestions = [];
-        this.messageService.add({
-          severity: "success",
-          summary: "Successful",
-          detail: "Questions Deleted",
-          life: 3000,
-        });
+        this.showSuccess("Questions Deleted")
       },
     });
   }
@@ -199,10 +189,10 @@ export class QuestionComponent implements OnInit {
 
   public deleteQuestion(question: Question) {
     this.confirmationService.confirm({
-      message: "Are you sure you want to delete question " + question.id + "?",
-      header: "Confirm",
-      icon: "pi pi-exclamation-triangle",
-      acceptButtonStyleClass: "p-button-danger",
+      message: 'Are you sure you want to delete question ' + question.id + '?',
+      header: 'Confirm',
+      icon: 'pi pi-exclamation-triangle',
+      acceptButtonStyleClass: 'p-button-danger',
       accept: () => {
         this.questionService.questionDestroy(question.id).subscribe({
           next: (response) => {
@@ -215,12 +205,7 @@ export class QuestionComponent implements OnInit {
         });
         this.questions = this.questions.filter((val) => val.id !== question.id);
         this.question = {} as Question;
-        this.messageService.add({
-          severity: "success",
-          summary: "Successful",
-          detail: "Question Deleted",
-          life: 3000,
-        });
+        this.showSuccess("Question Deleted")
       },
     });
   }
@@ -228,6 +213,24 @@ export class QuestionComponent implements OnInit {
   public hideDialog() {
     this.questionDialog = false;
     this.submitted = false;
+  }
+
+  public showError(error: string) {
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: error,
+      life: 3000,
+    });
+  }
+
+  public showSuccess(message: string) {
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Successful',
+      detail: message,
+      life: 3000,
+    });
   }
 
   public saveQuestion() {
@@ -251,12 +254,7 @@ export class QuestionComponent implements OnInit {
               console.error(error);
             },
           });
-        this.messageService.add({
-          severity: "success",
-          summary: "Successful",
-          detail: "Question Updated",
-          life: 3000,
-        });
+        this.showSuccess("Question Updated")
       } else {
         this.questions.push(this.question);
         this.questionService.questionCreate(this.question).subscribe({
@@ -268,12 +266,7 @@ export class QuestionComponent implements OnInit {
             console.error(error);
           },
         });
-        this.messageService.add({
-          severity: "success",
-          summary: "Successful",
-          detail: "Question Created",
-          life: 3000,
-        });
+        this.showSuccess("Question Created")
       }
 
       this.questions = [...this.questions];
@@ -283,26 +276,11 @@ export class QuestionComponent implements OnInit {
       this.updatePage();
     } else {
       if (!this.question.subject) {
-        this.messageService.add({
-          severity: "error",
-          summary: "Error",
-          detail: "Subject is required",
-          life: 3000,
-        });
+        this.showError('Subject is required');
       } else if (!this.question.detail) {
-        this.messageService.add({
-          severity: "error",
-          summary: "Error",
-          detail: "Detail is required",
-          life: 3000,
-        });
+        this.showError('Detail is required');
       } else if (!this.question.difficulty) {
-        this.messageService.add({
-          severity: "error",
-          summary: "Error",
-          detail: "Difficulty is required",
-          life: 3000,
-        });
+        this.showError('Difficulty is required');
       }
     }
   }
