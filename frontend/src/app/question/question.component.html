@@ -6,11 +6,6 @@
     [value]="questions"
     [rows]="rows"
     [paginator]="true"
-    [globalFilterFields]="[
-      'question.subject',
-      'question.difficulty',
-      'question.detail'
-    ]"
     [tableStyle]="{ 'min-width': '75rem' }"
     [(selection)]="selectedQuestions"
     [rowHover]="true"
@@ -106,69 +101,72 @@
     </ng-template>
   </p-table>
 
-  <p-dialog
-    [(visible)]="questionDialog"
-    [style]="{ width: '450px' }"
-    header="Question Details"
-    [modal]="true"
-    styleClass="p-fluid"
-  >
-    <ng-template pTemplate="content">
-      <div class="flex flex-col gap-2 mb-4 field">
-        <label for="subject" class="font-bold">Subject</label>
-        <p-dropdown
-          [(ngModel)]="question.subject"
-          inputId="subject"
-          [options]="subjects"
-        >
-        </p-dropdown>
-      </div>
+  <form [formGroup]="questionForm">
+    <p-dialog
+      [(visible)]="questionDialog"
+      [style]="{ width: '450px' }"
+      header="Question Details"
+      [modal]="true"
+      styleClass="p-fluid"
+    >
+      
+        <ng-template pTemplate="content">
+          <div class="flex flex-col gap-2 mb-4 field">
+            <label for="subject" class="font-bold">Subject</label>
+            <p-dropdown
+              formControlName="subject"
+              inputId="subject"
+              [options]="subjects"
+            >
+            </p-dropdown>
+          </div>
 
-      <div class="flex flex-col gap-2 mb-4 field">
-        <label for="detail" class="font-bold">Detail</label>
-        <textarea
-          id="detail"
-          pInputTextarea
-          [(ngModel)]="question.detail"
-          rows="5"
-          cols="20"
-        >
-        </textarea>
-      </div>
+          <div class="flex flex-col gap-2 mb-4 field">
+            <label for="detail" class="font-bold">Detail</label>
+            <textarea
+              id="detail"
+              pInputTextarea
+              formControlName="detail"
+              rows="5"
+              cols="20"
+            >
+            </textarea>
+          </div>
 
-      <div class="flex flex-col gap-2 mb-4 field">
-        <label for="difficulty" class="font-bold">Difficulty</label>
-        <div class="grid formgrid">
-          <ng-container *ngFor="let i of difficulties">
-            <div class="mb-2 field-radiobutton col-6 flex items-center gap-2">
-              <p-radioButton
-                id="difficulty{{ i.id }}"
-                name="difficulty"
-                [value]="i.id"
-                [(ngModel)]="question.difficulty"
-              />
-              <label for="difficulty{{ i.id }}"> {{ i.name }}</label>
+          <div class="flex flex-col gap-2 mb-4 field">
+            <label for="difficulty" class="font-bold">Difficulty</label>
+            <div class="grid formgrid">
+              <ng-container *ngFor="let i of difficulties">
+                <div class="mb-2 field-radiobutton col-6 flex items-center gap-2">
+                  <p-radioButton
+                    id="difficulty{{ i.id }}"
+                    name="difficulty"
+                    [value]="i.id"
+                    formControlName="difficulty"
+                  />
+                  <label for="difficulty{{ i.id }}"> {{ i.name }}</label>
+                </div>
+              </ng-container>
             </div>
-          </ng-container>
-        </div>
-      </div>
-    </ng-template>
+          </div>
+        </ng-template>
 
-    <ng-template pTemplate="footer">
-      <p-button
-        label="Cancel"
-        icon="pi pi-times"
-        [text]="true"
-        (onClick)="hideDialog()"
-      />
-      <p-button
-        label="Save"
-        icon="pi pi-check"
-        severity="success"
-        (onClick)="saveQuestion()"
-      />
-    </ng-template>
-  </p-dialog>
-
+        <ng-template pTemplate="footer">
+          <p-button
+            label="Cancel"
+            icon="pi pi-times"
+            [text]="true"
+            (onClick)="hideDialog()"
+          />
+          <p-button
+            label="Save"
+            icon="pi pi-check"
+            severity="success"
+            (onClick)="saveQuestion()"
+          />
+        </ng-template>
+      
+    </p-dialog>
+  </form>
   <p-confirmDialog [style]="{ width: '450px' }" />
 </div>

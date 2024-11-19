@@ -1,6 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -52,6 +58,7 @@ import { debounceTime, distinctUntilChanged, Subject as RxSubject } from 'rxjs';
     FormsModule,
     InputNumberModule,
     DividerModule,
+    ReactiveFormsModule,
   ],
   providers: [
     MessageService,
@@ -65,6 +72,7 @@ import { debounceTime, distinctUntilChanged, Subject as RxSubject } from 'rxjs';
 })
 export class QuestionComponent implements OnInit {
   private readonly DEFAULT_PAGE_SIZE = 10;
+  questionForm!: FormGroup;
   questionDialog: boolean = false;
   questions!: Question[];
   question!: Question;
@@ -87,6 +95,7 @@ export class QuestionComponent implements OnInit {
   private searchText$ = new RxSubject<string>();
 
   constructor(
+    private fb: FormBuilder,
     private questionService: QuestionService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
@@ -99,6 +108,20 @@ export class QuestionComponent implements OnInit {
   }
 
   public ngOnInit() {
+    this.initForm();
+    this.loadInitialData();
+  }
+
+  private initForm() {
+    this.questionForm = this.fb.group({
+      id: [undefined],
+      subject: [undefined, Validators.required],
+      difficulty: [undefined, Validators.required],
+      detail: [undefined, Validators.required],
+    });
+  }
+
+  private loadInitialData() {
     this.searchText$
       .pipe(debounceTime(300), distinctUntilChanged())
       .subscribe((query: string) => {
@@ -140,8 +163,12 @@ export class QuestionComponent implements OnInit {
   }
 
   public openNew() {
-    this.question = {} as Question;
-    this.submitted = false;
+    this.questionForm.reset();
+    this.questionDialog = true;
+  }
+
+  public editQuestion(question: Question) {
+    this.questionForm.patchValue(question);
     this.questionDialog = true;
   }
 
@@ -167,24 +194,19 @@ export class QuestionComponent implements OnInit {
               },
 
               error: (error) => {
-                this.showError(`Error deleting question: ${error.message}`)
+                this.showError(`Error deleting question: ${error.message}`);
               },
             });
           });
         }
         this.selectedQuestions = [];
-        this.showSuccess("Questions Deleted")
+        this.showSuccess('Questions Deleted');
       },
     });
   }
 
   public clearSelectedQuestions() {
     this.selectedQuestions = [];
-  }
-
-  public editQuestion(question: Question) {
-    this.question = { ...question };
-    this.questionDialog = true;
   }
 
   public deleteQuestion(question: Question) {
@@ -197,6 +219,9 @@ export class QuestionComponent implements OnInit {
         this.questionService.questionDestroy(question.id).subscribe({
           next: (response) => {
             console.log(response);
+            this.selectedQuestions = this.selectedQuestions.filter(
+              (val) => val.id !== question.id
+            );
             this.updatePage();
           },
           error: (error) => {
@@ -205,7 +230,7 @@ export class QuestionComponent implements OnInit {
         });
         this.questions = this.questions.filter((val) => val.id !== question.id);
         this.question = {} as Question;
-        this.showSuccess("Question Deleted")
+        this.showSuccess('Question Deleted');
       },
     });
   }
@@ -235,15 +260,13 @@ export class QuestionComponent implements OnInit {
 
   public saveQuestion() {
     this.submitted = true;
+    this.questionForm.markAllAsTouched();
 
-    if (
-      this.question.detail?.trim() &&
-      this.question.subject &&
-      this.question.difficulty
-    ) {
-      if (this.question.id) {
+    if (this.questionForm.valid) {
+      const questionData = this.questionForm.value;
+      if (questionData.id) {
         this.questionService
-          .questionUpdate(this.question.id, this.question)
+          .questionUpdate(questionData.id, questionData)
           .subscribe({
             next: (response) => {
               console.log(response);
@@ -254,10 +277,10 @@ export class QuestionComponent implements OnInit {
               console.error(error);
             },
           });
-        this.showSuccess("Question Updated")
+        this.showSuccess('Question Updated');
       } else {
-        this.questions.push(this.question);
-        this.questionService.questionCreate(this.question).subscribe({
+        this.questions.push(questionData);
+        this.questionService.questionCreate(questionData).subscribe({
           next: (response) => {
             console.log(response);
           },
@@ -266,20 +289,18 @@ export class QuestionComponent implements OnInit {
             console.error(error);
           },
         });
-        this.showSuccess("Question Created")
+        this.showSuccess('Question Created');
       }
 
-      this.questions = [...this.questions];
       this.questionDialog = false;
-      this.question = {} as Question;
       this.onPage({ first: this.first, rows: this.rows });
       this.updatePage();
     } else {
-      if (!this.question.subject) {
+      if (this.questionForm.get('subject')?.invalid) {
         this.showError('Subject is required');
-      } else if (!this.question.detail) {
+      } else if (this.questionForm.get('detail')?.invalid) {
         this.showError('Detail is required');
-      } else if (!this.question.difficulty) {
+      } else if (this.questionForm.get('difficulty')?.invalid) {
         this.showError('Difficulty is required');
       }
     }
