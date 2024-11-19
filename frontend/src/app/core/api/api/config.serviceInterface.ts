@@ -11,6 +11,9 @@ import { HttpHeaders }                                       from '@angular/comm
 
 import { Observable }                                        from 'rxjs';
 
+import { ConfigUpdate200Response } from '../model/models';
+import { ConfigUpdate400Response } from '../model/models';
+import { ConfigUpdateRequestInner } from '../model/models';
 
 
 import { Configuration }                                     from '../configuration';
@@ -22,15 +25,16 @@ export interface ConfigServiceInterface {
     configuration: Configuration;
 
     /**
-     * 
-     * 
+     * Retrieve configuration settings
+     * Fetches all configuration settings as a key-value dictionary.
      */
-    configRetrieve(extraHttpRequestParams?: any): Observable<{}>;
+    configRetrieve(extraHttpRequestParams?: any): Observable<{ [key: string]: string; }>;
 
     /**
-     * 
-     * 
+     * Update configuration settings
+     * Accepts a list of key-value pairs to update the configuration settings. Each item in the list must be a dictionary containing a &#x60;key&#x60; and &#x60;value&#x60;. Invalid keys will result in a 400 response with details about the errors.
+     * @param configUpdateRequestInner 
      */
-    configUpdate(extraHttpRequestParams?: any): Observable<{}>;
+    configUpdate(configUpdateRequestInner?: Array<ConfigUpdateRequestInner>, extraHttpRequestParams?: any): Observable<ConfigUpdate200Response>;
 
 }

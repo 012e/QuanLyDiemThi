@@ -620,6 +620,8 @@ paths:
   /config/:
     get:
       operationId: config_retrieve
+      description: Fetches all configuration settings as a key-value dictionary.
+      summary: Retrieve configuration settings
       tags:
       - config
       security:
@@ -627,17 +629,104 @@ paths:
       - jwtCookieAuth: []
       responses:
         '200':
-          description: No response body
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+                  description: The value of the configuration setting.
+              examples:
+                SuccessfulResponse:
+                  value:
+                    SETTING_1: value_1
+                    SETTING_2: value_2
+                    SETTING_3: value_3
+                  summary: Successful Response
+                  description: Example of a dictionary containing configuration settings.
+          description: A dictionary of all configuration settings.
     put:
       operationId: config_update
+      description: Accepts a list of key-value pairs to update the configuration settings.
+        Each item in the list must be a dictionary containing a `key` and `value`.
+        Invalid keys will result in a 400 response with details about the errors.
+      summary: Update configuration settings
       tags:
       - config
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  key:
+                    type: string
+                    description: The name of the configuration setting to update.
+                  value:
+                    type: string
+                    description: The new value for the configuration setting.
+                required:
+                - key
+                - value
+            examples:
+              ValidRequestExample:
+                value:
+                - key: SETTING_1
+                  value: new_value_1
+                - key: SETTING_2
+                  value: new_value_2
+                summary: Valid Request Example
+              InvalidRequestExample:
+                value:
+                - key: INVALID_SETTING
+                  value: some_value
+                - key: SETTING_2
+                summary: Invalid Request Example
       security:
       - jwtHeaderAuth: []
       - jwtCookieAuth: []
       responses:
         '200':
-          description: No response body
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Configuration updated successfully
+              examples:
+                SuccessfulResponse:
+                  value:
+                    message: Configuration updated successfully
+                  summary: Successful Response
+                ErrorResponse:InvalidKeys:
+                  value:
+                    message: 'Invalid keys: INVALID_SETTING'
+                  summary: 'Error Response: Invalid Keys'
+          description: Configuration updated successfully.
+        '400':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Invalid keys: INVALID_SETTING'
+              examples:
+                InvalidKeys:
+                  value:
+                    message: 'Invalid keys: INVALID_SETTING'
+                  summary: Invalid Keys
+                InvalidFormat:
+                  value:
+                    message: Each item must be a dictionary with 'key' and 'value'
+                      fields
+                  summary: Invalid Format
+          description: Invalid request or invalid keys.
   /difficulty/:
     get:
       operationId: difficulty_list
