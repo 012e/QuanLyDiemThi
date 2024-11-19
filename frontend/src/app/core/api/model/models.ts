@@ -6,7 +6,6 @@ export * from './paginated-class-list';
 export * from './paginated-question-list';
 export * from './paginated-result-list';
 export * from './paginated-student-list';
-export * from './paginated-subject-list';
 export * from './paginated-test-list';
 export * from './password-change';
 export * from './password-reset';
