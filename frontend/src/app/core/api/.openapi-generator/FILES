@@ -27,6 +27,9 @@ encoder.ts
 git_push.sh
 index.ts
 model/class.ts
+model/config-update-request-inner.ts
+model/config-update200-response.ts
+model/config-update400-response.ts
 model/difficulty.ts
 model/jwt.ts
 model/login.ts

@@ -1,4 +1,7 @@
 export * from './class';
+export * from './config-update200-response';
+export * from './config-update400-response';
+export * from './config-update-request-inner';
 export * from './difficulty';
 export * from './jwt';
 export * from './login';

@@ -58,6 +58,15 @@ class ResultSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class ConfigUpdateSerializer(serializers.Serializer):
+    key = serializers.CharField(
+        help_text="The name of the configuration setting to update."
+    )
+    value = serializers.CharField(
+        help_text="The new value for the configuration setting."
+    )
+
+
 class RoleTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
