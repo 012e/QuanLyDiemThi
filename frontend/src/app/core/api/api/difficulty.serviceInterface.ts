@@ -40,8 +40,9 @@ export interface DifficultyServiceInterface {
     /**
      * 
      * 
+     * @param ordering Which field to use when ordering the results.
      */
-    difficultyList(extraHttpRequestParams?: any): Observable<Array<Difficulty>>;
+    difficultyList(ordering?: string, extraHttpRequestParams?: any): Observable<Array<Difficulty>>;
 
     /**
      * 

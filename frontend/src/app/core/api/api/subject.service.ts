@@ -17,8 +17,6 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { PaginatedSubjectList } from '../model/paginated-subject-list';
-// @ts-ignore
 import { PatchedSubject } from '../model/patched-subject';
 // @ts-ignore
 import { Subject } from '../model/subject';
@@ -259,26 +257,16 @@ export class SubjectService implements SubjectServiceInterface {
     }
 
     /**
-     * @param limit Number of results to return per page.
-     * @param offset The initial index from which to return the results.
      * @param ordering Which field to use when ordering the results.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public subjectList(limit?: number, offset?: number, ordering?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<PaginatedSubjectList>;
-    public subjectList(limit?: number, offset?: number, ordering?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<PaginatedSubjectList>>;
-    public subjectList(limit?: number, offset?: number, ordering?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<PaginatedSubjectList>>;
-    public subjectList(limit?: number, offset?: number, ordering?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public subjectList(ordering?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<Subject>>;
+    public subjectList(ordering?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<Subject>>>;
+    public subjectList(ordering?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<Subject>>>;
+    public subjectList(ordering?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
-        if (limit !== undefined && limit !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>limit, 'limit');
-        }
-        if (offset !== undefined && offset !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>offset, 'offset');
-        }
         if (ordering !== undefined && ordering !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>ordering, 'ordering');
@@ -333,7 +321,7 @@ export class SubjectService implements SubjectServiceInterface {
         }
 
         let localVarPath = `/subject/`;
-        return this.httpClient.request<PaginatedSubjectList>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<Array<Subject>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,
