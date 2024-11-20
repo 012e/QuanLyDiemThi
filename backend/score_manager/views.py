@@ -45,7 +45,7 @@ class QuestionViewSet(viewsets.ModelViewSet):
 
     filter_backends = [OrderingFilter, SearchFilter]
     search_fields = ["detail", "subject__name", "difficulty__name"]
-    ordering = ["-created_at"]
+    ordering = ["-updated_at"]
 
 
 class DifficultyViewSet(viewsets.ModelViewSet):
@@ -70,7 +70,7 @@ class TestViewSet(viewsets.ModelViewSet):
     serializer_class = TestSerializer
 
     filter_backends = [OrderingFilter]
-    ordering = ["-created_at"]
+    ordering = ["-updated_at"]
 
     def perform_create(self, serializer):
         test = serializer.save()
@@ -90,7 +90,7 @@ class ResultViewSet(viewsets.ModelViewSet):
     serializer_class = ResultSerializer
 
     filter_backends = [OrderingFilter]
-    ordering = ["-created_at"]
+    ordering = ["-updated_at"]
 
 
 class ConfigView(APIView):
