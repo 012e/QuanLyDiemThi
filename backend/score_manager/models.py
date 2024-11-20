@@ -35,7 +35,7 @@ class Student(models.Model):
         return str(self.name)
 
     class Meta:
-        ordering = ["created_at"]
+        ordering = ["updated_at"]
 
 
 class Difficulty(models.Model):
@@ -61,7 +61,7 @@ class Question(models.Model):
     class Meta:
         verbose_name = "Question"
         verbose_name_plural = "Questions"
-        ordering = ["created_at"]
+        ordering = ["updated_at"]
 
 
 class Test(models.Model):
@@ -77,7 +77,7 @@ class Test(models.Model):
         return f"{self.subject} - {self.semester} - {self.datetime}"
 
     class Meta:
-        ordering = ["created_at"]
+        ordering = ["updated_at"]
 
 
 class Result(models.Model):
@@ -94,4 +94,4 @@ class Result(models.Model):
         constraints = [
             models.UniqueConstraint(fields=["student", "test"], name="unique_result")
         ]
-        ordering = ["created_at"]
+        ordering = ["updated_at"]
