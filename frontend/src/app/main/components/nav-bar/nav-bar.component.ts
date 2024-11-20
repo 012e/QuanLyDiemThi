@@ -32,6 +32,13 @@ export class NavBarComponent implements OnInit {
         label: 'Contact',
         icon: 'pi pi-envelope',
       },
+      {
+        label: 'Question',
+        icon: 'pi pi-question',
+        command: () => {
+          this.router.navigate(['question']);
+        }
+      }
     ];
   }
 }
