@@ -1936,14 +1936,6 @@ components:
         detail:
           type: string
           nullable: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
         difficulty:
           type: integer
         subject:
@@ -1961,14 +1953,6 @@ components:
         note:
           type: string
           nullable: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
         student:
           type: integer
         test:
@@ -1991,14 +1975,6 @@ components:
         student_code:
           type: string
           maxLength: 10
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
     PatchedSubject:
       type: object
       properties:
@@ -2028,14 +2004,6 @@ components:
           format: date-time
         duration:
           type: string
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
         subject:
           type: integer
     PatchedUserDetails:
@@ -2072,24 +2040,14 @@ components:
         detail:
           type: string
           nullable: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
         difficulty:
           type: integer
         subject:
           type: integer
       required:
-      - created_at
       - difficulty
       - id
       - subject
-      - updated_at
     RestAuthDetail:
       type: object
       properties:
@@ -2111,14 +2069,6 @@ components:
         note:
           type: string
           nullable: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
         student:
           type: integer
         test:
@@ -2131,13 +2081,11 @@ components:
             type: integer
       required:
       - classes
-      - created_at
       - id
       - score
       - student
       - teacher
       - test
-      - updated_at
     Student:
       type: object
       properties:
@@ -2150,20 +2098,10 @@ components:
         student_code:
           type: string
           maxLength: 10
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
       required:
-      - created_at
       - id
       - name
       - student_code
-      - updated_at
     Subject:
       type: object
       properties:
@@ -2196,25 +2134,15 @@ components:
           format: date-time
         duration:
           type: string
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
         subject:
           type: integer
       required:
-      - created_at
       - datetime
       - duration
       - id
       - questions
       - semester
       - subject
-      - updated_at
     TokenRefresh:
       type: object
       properties:

@@ -13,7 +13,5 @@ export interface PatchedStudent {
     readonly id?: number;
     name?: string;
     student_code?: string;
-    readonly created_at?: string;
-    readonly updated_at?: string;
 }
 
