@@ -12,8 +12,6 @@
 export interface Question { 
     readonly id: number;
     detail?: string | null;
-    readonly created_at: string;
-    readonly updated_at: string;
     difficulty: number;
     subject: number;
 }
