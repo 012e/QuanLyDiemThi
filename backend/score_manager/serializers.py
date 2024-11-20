@@ -10,7 +10,7 @@ from .models import Class, Difficulty, Question, Result, Student, Subject, Test
 class StudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
-        fields = "__all__"
+        exclude = ["created_at", "updated_at"]
 
 
 class ClassSerializer(serializers.ModelSerializer):
@@ -22,7 +22,7 @@ class ClassSerializer(serializers.ModelSerializer):
 class QuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question
-        fields = "__all__"
+        exclude = ["created_at", "updated_at"]
 
 
 class SubjectSerializer(serializers.ModelSerializer):
@@ -49,13 +49,13 @@ class TestSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Test
-        fields = "__all__"
+        exclude = ["created_at", "updated_at"]
 
 
 class ResultSerializer(serializers.ModelSerializer):
     class Meta:
         model = Result
-        fields = "__all__"
+        exclude = ["created_at", "updated_at"]
 
 
 class ConfigUpdateSerializer(serializers.Serializer):
