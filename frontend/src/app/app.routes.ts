@@ -3,10 +3,6 @@ import { isAuthenticatedGuard } from './core/guards/is-authenticated.guard';
 import { isUnauthenticatedGuard } from './core/guards/is-unauthenticated.guard';
 import { UserComponent } from './user/user.component';
 import { AdminComponent } from './admin/admin.component';
-import { LoginComponent } from './login/components/login/login.component';
-import { MainComponent } from './main/components/main/main.component';
-import { QuestionComponent } from './question/question.component';
-import { AdminComponent } from './admin/admin.component';
 
 export const routes: Routes = [
   {
@@ -19,6 +15,10 @@ export const routes: Routes = [
         component: QuestionComponent,
       },
 
+      {
+        path: 'admin',
+        component: AdminComponent,
+      },
       {
         path: 'admin',
         component: AdminComponent,
