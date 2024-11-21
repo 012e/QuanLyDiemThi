@@ -6,10 +6,7 @@ import { AdminComponent } from './admin/admin.component';
 import { LoginComponent } from './login/components/login/login.component';
 import { MainComponent } from './main/components/main/main.component';
 import { QuestionComponent } from './question/question.component';
-import { TestCreateComponent } from './test/test-create/test-create.component';
-import { TestDetailComponent } from './test/test-detail/test-detail.component';
-import { TestListComponent } from './test/test-list/test-list.component';
-import { ResultComponent } from './result/result.component';
+import { AdminComponent } from './admin/admin.component';
 
 export const routes: Routes = [
   {
@@ -21,29 +18,10 @@ export const routes: Routes = [
         path: 'question',
         component: QuestionComponent,
       },
-      {
-        path: 'me',
-        component: UserComponent,
-      },
+
       {
         path: 'admin',
         component: AdminComponent,
-        },
-      {
-        path: 'test',
-        component: TestListComponent,
-      },
-      {
-        path: 'test/new',
-        component: TestCreateComponent,
-      },
-      {
-        path: 'test/:id',
-        component: TestDetailComponent,
-      },
-      {
-        path: 'result',
-        component: ResultComponent,
       },
     ],
   },
