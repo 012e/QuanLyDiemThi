@@ -35,8 +35,11 @@
     <ng-template pTemplate="header">
       <tr>
         <th class="w-4"></th>
-        <th class="w-4">Id</th>
-        <th class="w-max">Name</th>
+        <th pSortableColumn="id" class="w-40">Id <p-sortIcon field="id" /></th>
+        <th pSortableColumn="name" class="w-max">
+          Name <p-sortIcon field="name" />
+        </th>
+
         <th class="w-40"></th>
       </tr>
     </ng-template>
