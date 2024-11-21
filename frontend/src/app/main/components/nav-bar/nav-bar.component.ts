@@ -38,7 +38,14 @@ export class NavBarComponent implements OnInit {
         command: () => {
           this.router.navigate(['question']);
         }
-      }
+      },
+      {
+        label: 'Admin',
+        icon: 'pi pi-cog',
+        command: () => {
+          this.router.navigate(['admin']);
+        }
+      },
     ];
   }
 }
