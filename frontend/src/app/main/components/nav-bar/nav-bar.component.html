@@ -1,3 +1,15 @@
 <div>
-  <p-menubar [model]="items" />
+  <p-menubar [model]="items">
+    <ng-template pTemplate="end">
+      <p-button
+        icon="pi pi-user"
+        [rounded]="true"
+        outlined="true"
+        label="User"
+        severity="secondary"
+        [text]="true"
+        (onClick)="navigateToUser()"
+      />
+    </ng-template>
+  </p-menubar>
 </div>
