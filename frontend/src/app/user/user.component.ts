@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DividerModule } from 'primeng/divider';
 import { UserRole } from '../core/enums/user-role';
 import { AuthService } from '../core/services/auth.service';
@@ -16,7 +16,7 @@ import { Router } from '@angular/router';
   templateUrl: './user.component.html',
   styleUrl: './user.component.css',
 })
-export class UserComponent {
+export class UserComponent implements OnInit {
   public userRole!: string;
   public userDetails!: UserDetails;
   public userDetailsForm!: FormGroup;

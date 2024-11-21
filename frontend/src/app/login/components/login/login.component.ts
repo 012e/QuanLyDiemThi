@@ -26,10 +26,10 @@ import { RippleModule } from 'primeng/ripple';
   styleUrl: './login.component.css',
 })
 export class LoginComponent {
-  public username: string = '';
-  public email: string = '';
-  public password: string = '';
-  public checked: boolean = false;
+  public username = '';
+  public email = '';
+  public password = '';
+  public checked = false;
   constructor(
     private authService: AuthService,
     private messageService: MessageService,
