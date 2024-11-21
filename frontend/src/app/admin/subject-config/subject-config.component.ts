@@ -38,7 +38,7 @@ import { SubjectService, Subject } from '../../core/api';
   ],
   providers: [ConfirmationService],
   templateUrl: './subject-config.component.html',
-  styleUrl: './subject-config.component.css'
+  styleUrl: './subject-config.component.css',
 })
 export class SubjectConfigComponent implements OnInit {
   SubjectForm!: FormGroup;
@@ -128,8 +128,7 @@ export class SubjectConfigComponent implements OnInit {
 
   public deleteSubject(Subject: Subject) {
     this.confirmationService.confirm({
-      message:
-        'Are you sure you want to delete subject ' + Subject.id + '?',
+      message: 'Are you sure you want to delete subject ' + Subject.id + '?',
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       acceptButtonStyleClass: 'p-button-danger',
@@ -177,18 +176,16 @@ export class SubjectConfigComponent implements OnInit {
   }
 
   private updateSubject(Subject: Subject) {
-    this.subjectSerivice
-      .subjectUpdate(Subject.id, Subject)
-      .subscribe({
-        next: (response) => {
-          console.log(response);
-          this.updatePage();
-        },
+    this.subjectSerivice.subjectUpdate(Subject.id, Subject).subscribe({
+      next: (response) => {
+        console.log(response);
+        this.updatePage();
+      },
 
-        error: (error) => {
-          console.error(error);
-        },
-      });
+      error: (error) => {
+        console.error(error);
+      },
+    });
     this.showSuccess('Subject Updated');
   }
 
