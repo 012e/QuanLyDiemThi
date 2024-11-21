@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { ConfigService } from '../core/api';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
@@ -12,7 +18,9 @@ import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { CommonModule } from '@angular/common';
 import { InputTextareaModule } from 'primeng/inputtextarea';
-
+import { TabViewModule } from 'primeng/tabview';
+import { DifficultyConfigComponent } from './difficulty-config/difficulty-config.component';
+import { SubjectConfigComponent } from './subject-config/subject-config.component';
 
 @Component({
   selector: 'app-admin',
@@ -30,15 +38,18 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
     TableModule,
     ToastModule,
     CommonModule,
+    TabViewModule,
+    DifficultyConfigComponent,
+    SubjectConfigComponent,
   ],
   providers: [ConfirmationService],
   templateUrl: './admin.component.html',
-  styleUrl: './admin.component.css'
+  styleUrl: './admin.component.css',
 })
 export class AdminComponent implements OnInit {
   configForm!: FormGroup;
   configDialog: boolean = false;
-  configs: { key: string, value: string }[] = [];
+  configs: { key: string; value: string }[] = [];
 
   constructor(
     private readonly fb: FormBuilder,
@@ -70,13 +81,12 @@ export class AdminComponent implements OnInit {
       this.messageService.add({
         severity: 'error',
         summary: 'Error',
-        detail: "Bruh",
+        detail: 'Please fill out all fields',
         life: 3000,
       });
       return;
-    }
-    else {
-      this.configService.configUpdate([ this.configForm.value ]).subscribe({
+    } else {
+      this.configService.configUpdate([this.configForm.value]).subscribe({
         next: (response) => {
           console.log(response);
           this.messageService.add({
@@ -86,7 +96,7 @@ export class AdminComponent implements OnInit {
             life: 3000,
           });
         },
-  
+
         error: (error) => {
           console.error(error);
           this.messageService.add({
@@ -104,13 +114,15 @@ export class AdminComponent implements OnInit {
 
   public loadConfig(): void {
     this.configService.configRetrieve().subscribe((config) => {
-      this.configs = Object.entries(config).map(([key, value]) => ({ key, value }));
+      this.configs = Object.entries(config).map(([key, value]) => ({
+        key,
+        value,
+      }));
     });
   }
 
-  public editConfig(config: { key: string, value: string }): void {
+  public editConfig(config: { key: string; value: string }): void {
     this.configDialog = true;
-    this.configForm.patchValue(config); 
+    this.configForm.patchValue(config);
   }
 }
-
