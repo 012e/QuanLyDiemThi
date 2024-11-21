@@ -286,9 +286,11 @@ export class QuestionComponent implements OnInit {
     if (this.questionForm.invalid) {
       if (this.questionForm.get('subject')?.invalid) {
         this.showError('Subject is required');
-      } else if (this.questionForm.get('detail')?.invalid) {
+      }  
+      if (this.questionForm.get('detail')?.invalid) {
         this.showError('Detail is required');
-      } else if (this.questionForm.get('difficulty')?.invalid) {
+      } 
+      if (this.questionForm.get('difficulty')?.invalid) {
         this.showError('Difficulty is required');
       }
       return;
