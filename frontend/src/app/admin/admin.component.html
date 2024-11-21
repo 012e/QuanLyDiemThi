@@ -1,0 +1,86 @@
+<div class="card">
+  <h1 class="m-5">Configs</h1>
+  <p-table
+    #dt
+    [value]="configs"
+    [tableStyle]="{ 'min-width': '75rem' }"
+    [rowHover]="true"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th class="w-40">Key</th>
+        <th class="w-40">Value</th>
+        <th class="w-4"></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-config>
+      <tr>
+        <td>
+          {{ config.key }}
+        </td>
+        <td>
+          {{ config.value }}
+        </td>
+        <td>
+          <p-button
+            icon="pi pi-pencil"
+            class="mr-2"
+            [rounded]="true"
+            [outlined]="true"
+            severity="success"
+            (onClick)="editConfig(config)"
+          />
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <form [formGroup]="configForm">
+    <p-dialog
+      [(visible)]="configDialog"
+      [style]="{ width: '450px' }"
+      header="Config Details"
+      [modal]="true"
+      styleClass="p-fluid"
+    >
+      <ng-template pTemplate="content">
+        <div class="flex flex-col gap-2 mb-4 field">
+          <label for="key" class="font-bold">Key</label>
+          <input
+            id="key"
+            pInputText
+            type="text"
+            disabled
+            [placeholder]="configForm.get('key')?.value"
+          />
+        </div>
+
+        <div class="flex flex-col gap-2 mb-4 field">
+          <label for="value" class="font-bold">Value</label>
+          <input
+            id="value"
+            pInputText
+            type="number"
+            formControlName="value"
+          />
+        </div>
+      </ng-template>
+
+      <ng-template pTemplate="footer">
+        <p-button
+          label="Cancel"
+          icon="pi pi-times"
+          [text]="true"
+          (onClick)="hideConfigDialog()"
+        />
+        <p-button
+          label="Save"
+          icon="pi pi-check"
+          severity="success"
+          (onClick)="saveConfig()"
+        />
+      </ng-template>
+    </p-dialog>
+  </form>
+  <p-confirmDialog [style]="{ width: '450px' }" />
+</div>
