@@ -1,0 +1,13 @@
+{
+  "name": "infrastructure",
+  "description": "nothing here",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "dependencies": {
+    "@pulumi/pulumi": "*",
+    "@pulumi/docker": "4.4.3"
+  }
+}

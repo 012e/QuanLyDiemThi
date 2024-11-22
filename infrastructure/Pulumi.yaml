@@ -1,0 +1,10 @@
+name: infrastructure
+runtime:
+  name: nodejs
+  options:
+    packagemanager: npm
+description: nothing here
+config:
+  pulumi:tags:
+    value:
+      pulumi:template: https://www.pulumi.com/ai/api/project/a22d669b-b280-4fe9-becb-351268a33f5e.zip
