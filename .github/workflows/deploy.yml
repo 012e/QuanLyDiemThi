@@ -5,11 +5,17 @@ on:
   pull_request:
     branches: [ "main" ]
 
+env:
+  PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+
 jobs:
   up:
     name: Preview
     runs-on: ubuntu-latest
     environment: Deployment
+    defaults:
+      run:
+        working-directory: ./infrastructure
     steps:
 
       - name: Set up QEMU
@@ -20,7 +26,4 @@ jobs:
         with:
           command: up
           stack-name: prod
-          work-dir: ./infrastructure
-        env:
-          PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
 
