@@ -7,7 +7,10 @@
   },
   "author": "",
   "dependencies": {
+    "@pulumi/aws": "^6.60.0",
+    "@pulumi/awsx": "^2.19.0",
+    "@pulumi/docker": "4.4.3",
     "@pulumi/pulumi": "*",
-    "@pulumi/docker": "4.4.3"
+    "@pulumi/random": "^4.16.7"
   }
 }

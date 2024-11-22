@@ -1,8 +1,12 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as docker from "@pulumi/docker";
+import * as aws from "@pulumi/aws";
+import * as awsx from "@pulumi/awsx";
+import * as random from "@pulumi/random";
 import config from "./config";
 
-// Define the Docker image
+const clusterName = "dev-cluster";
+
 const image = new docker.Image("my-image", {
 	build: {
 		context: "../backend",
@@ -16,5 +20,4 @@ const image = new docker.Image("my-image", {
 	},
 });
 
-// Export the image name
 export const imageName = image.imageName;
