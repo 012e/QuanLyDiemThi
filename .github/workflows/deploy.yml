@@ -21,6 +21,8 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
 
+      - uses: actions/checkout@v3
+
       - name: Set up node
         uses: actions/setup-node@v2
         with:
@@ -29,7 +31,6 @@ jobs:
       - name: npm install
         run: npm install
 
-      - uses: actions/checkout@v3
       - uses: pulumi/actions@v4
         with:
           command: up
