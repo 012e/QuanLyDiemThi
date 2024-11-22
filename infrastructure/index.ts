@@ -7,7 +7,7 @@ const image = new docker.Image("my-image", {
 	build: {
 		context: "../backend/Dockerfile.prod",
 	},
-	imageName: config.backendImageName!,
+	imageName: config.dockerHubImageName!,
 	registry: {
 		server: "docker.io",
 		username: config.dockerHubUsername,
@@ -17,4 +17,3 @@ const image = new docker.Image("my-image", {
 
 // Export the image name
 export const imageName = image.imageName;
-

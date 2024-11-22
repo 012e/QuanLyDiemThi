@@ -1,7 +1,7 @@
 const CONFIG = {
 	dockerHubPassword: process.env["DOCKERHUB_PASSWORD"],
 	dockerHubUsername: process.env["DOCKERHUB_USERNAME"],
-	backendImageName: process.env["BACKEND_IMAGE_NAME"],
+	dockerHubImageName: process.env["DOCKERHUB_IMAGE_NAME"],
 };
 
 export default CONFIG;
