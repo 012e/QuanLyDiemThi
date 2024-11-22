@@ -9,6 +9,7 @@ jobs:
   up:
     name: Preview
     runs-on: ubuntu-latest
+    envionment: Deployment
     steps:
 
       - name: Set up QEMU
