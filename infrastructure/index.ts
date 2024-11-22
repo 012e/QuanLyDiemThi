@@ -6,7 +6,7 @@ import config from "./config";
 const image = new docker.Image("my-image", {
 	build: {
 		context: "../backend",
-		dockerfile: "Dockerfile.prod",
+		dockerfile: "../backend/Dockerfile.prod",
 	},
 	imageName: config.dockerHubImageName!,
 	registry: {
