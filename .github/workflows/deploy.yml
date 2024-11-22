@@ -15,7 +15,7 @@ jobs:
     environment: Deployment
     defaults:
       run:
-        working-directory: ./infrastructure
+        working-directory: infrastructure
     steps:
 
       - name: Set up QEMU
