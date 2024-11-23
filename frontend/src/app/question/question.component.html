@@ -55,10 +55,10 @@
     <ng-template pTemplate="header">
       <tr>
         <th class="w-4"></th>
-        <th class="w-4">Id</th>
+        <th class="w-40">Id</th>
         <th class="w-40">Subject</th>
+        <th class="max-w-max pr-20">Detail</th>
         <th class="w-40">Difficulty</th>
-        <th class="w-max">Detail</th>
         <th class="w-40"></th>
       </tr>
     </ng-template>
@@ -73,11 +73,11 @@
         <td>
           {{ getSubjectLabelById(question.subject) }}
         </td>
-        <td>
-          {{ getDifficultyLabelById(question.difficulty) }}
+        <td class="max-w-xs truncate pr-20" title="{{ question.detail }}">
+          {{ question.detail }}
         </td>
         <td>
-          {{ question.detail }}
+          {{ getDifficultyLabelById(question.difficulty) }}
         </td>
         <td>
           <p-button
