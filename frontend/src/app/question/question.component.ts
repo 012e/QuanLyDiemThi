@@ -57,7 +57,7 @@ import { debounceTime, distinctUntilChanged, Subject as RxSubject } from 'rxjs';
 export class QuestionComponent implements OnInit {
   private readonly DEFAULT_PAGE_SIZE = 10;
   questionForm!: FormGroup;
-  questionDialog: boolean = false;
+  questionDialog = false;
 
   questions!: Question[];
   question!: Question;
@@ -70,13 +70,13 @@ export class QuestionComponent implements OnInit {
   difficulties!: Difficulty[];
   difficulty!: Difficulty;
 
-  submitted: boolean = false;
+  submitted = false;
   searchValue: string | undefined;
 
   public count!: number;
-  public first: number = 0;
+  public first = 0;
   public rows: number = this.DEFAULT_PAGE_SIZE;
-  public searchText: string = '';
+  public searchText = '';
 
   private searchText$ = new RxSubject<string>();
 

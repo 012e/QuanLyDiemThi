@@ -2,20 +2,25 @@ import { Component, OnInit } from '@angular/core';
 import { MenubarModule } from 'primeng/menubar';
 import { MenuItem } from 'primeng/api';
 import { Router } from '@angular/router';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-nav-bar',
   standalone: true,
-  imports: [MenubarModule],
+  imports: [MenubarModule, ButtonModule],
   templateUrl: './nav-bar.component.html',
   styleUrl: './nav-bar.component.css',
 })
 export class NavBarComponent implements OnInit {
-  items: MenuItem[] | undefined;
+  public items: MenuItem[] | undefined;
 
-  constructor(private readonly router: Router) {}
+  public constructor(private readonly router: Router) {}
 
-  ngOnInit() {
+  public navigateToUser() {
+    this.router.navigate(['me']);
+  }
+
+  public ngOnInit() {
     this.items = [
       {
         label: 'Home',
@@ -37,14 +42,14 @@ export class NavBarComponent implements OnInit {
         icon: 'pi pi-question',
         command: () => {
           this.router.navigate(['question']);
-        }
+        },
       },
       {
         label: 'Admin',
         icon: 'pi pi-cog',
         command: () => {
           this.router.navigate(['admin']);
-        }
+        },
       },
     ];
   }

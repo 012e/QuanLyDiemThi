@@ -3,7 +3,7 @@ import {
   importProvidersFrom,
   provideZoneChangeDetection,
 } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withHashLocation } from '@angular/router';
 
 import { routes } from './app.routes';
 import { ApiModule, BASE_PATH } from './core/api';
@@ -15,11 +15,12 @@ import {
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
 import { MessageService } from 'primeng/api';
+import { environment } from '../environments/environment.development';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes),
+    provideRouter(routes, withHashLocation()),
     provideAnimations(),
     provideHttpClient(
       withXsrfConfiguration({
@@ -31,7 +32,7 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(ApiModule),
     {
       provide: BASE_PATH,
-      useValue: 'http://localhost:8000',
+      useValue: environment.apiUrl,
     },
     MessageService,
   ],

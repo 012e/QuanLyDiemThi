@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService, Login } from '../../../core/api';
 import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
@@ -25,16 +25,20 @@ import { RippleModule } from 'primeng/ripple';
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
-export class LoginComponent {
-  public username: string = '';
-  public email: string = '';
-  public password: string = '';
-  public checked: boolean = false;
+export class LoginComponent implements OnInit {
+  public username = '';
+  public email = '';
+  public password = '';
+  public checked = false;
   constructor(
     private authService: AuthService,
     private messageService: MessageService,
     private router: Router,
   ) {}
+
+  ngOnInit(): void {
+    console.log('Please login');
+  }
 
   public handleLogin(): void {
     const loginInfo: Login = {
