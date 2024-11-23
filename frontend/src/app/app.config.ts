@@ -15,6 +15,7 @@ import {
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
 import { MessageService } from 'primeng/api';
+import { environment } from '../environments/environment.development';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -31,7 +32,7 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(ApiModule),
     {
       provide: BASE_PATH,
-      useValue: 'http://localhost:8000',
+      useValue: environment.apiUrl,
     },
     MessageService,
   ],
