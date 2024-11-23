@@ -12,18 +12,13 @@ import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
-import { FileUploadModule } from 'primeng/fileupload';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { RadioButtonModule } from 'primeng/radiobutton';
-import { RatingModule } from 'primeng/rating';
 import { RippleModule } from 'primeng/ripple';
 import { TableModule, TablePageEvent } from 'primeng/table';
-import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
-import { ToolbarModule } from 'primeng/toolbar';
-import { DividerModule } from 'primeng/divider';
 
 import {
   Difficulty,
@@ -44,20 +39,15 @@ import { debounceTime, distinctUntilChanged, Subject as RxSubject } from 'rxjs';
     RippleModule,
     ButtonModule,
     ToastModule,
-    ToolbarModule,
     ConfirmDialogModule,
     InputTextModule,
     InputTextareaModule,
     CommonModule,
-    FileUploadModule,
     DropdownModule,
-    TagModule,
     RadioButtonModule,
-    RatingModule,
     InputTextModule,
     FormsModule,
     InputNumberModule,
-    DividerModule,
     ReactiveFormsModule,
   ],
   providers: [ConfirmationService],

@@ -6,6 +6,7 @@ import { isAuthenticatedGuard } from './core/guards/is-authenticated.guard';
 import { isUnauthenticatedGuard } from './core/guards/is-unauthenticated.guard';
 import { QuestionComponent } from './question/question.component';
 import { UserComponent } from './user/user.component';
+import { AdminComponent } from './admin/admin.component';
 
 export const routes: Routes = [
   {
@@ -25,6 +26,10 @@ export const routes: Routes = [
       {
         path: 'me',
         component: UserComponent,
+      },
+      {
+        path: 'admin',
+        component: AdminComponent,
       },
     ],
   },
