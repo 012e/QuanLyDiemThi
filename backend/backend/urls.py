@@ -8,6 +8,7 @@ from score_manager.views import (
     TestViewSet,
     ResultViewSet,
     ConfigView,
+    AnnualReportView,
 )
 from django.urls import path, include
 from drf_spectacular.views import (
@@ -43,4 +44,6 @@ urlpatterns = [
     ),
     path("auth/", include("dj_rest_auth.urls")),
     path("config/", ConfigView.as_view(), name="config-view"),
+    #Bieu mau 5
+    path("report/annual/", AnnualReportView.as_view(), name="annual-report"),
 ]

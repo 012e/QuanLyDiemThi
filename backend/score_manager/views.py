@@ -5,6 +5,7 @@ from rest_framework import status, viewsets
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django.db.models import Count, F
 
 from .models import Class, Difficulty, Question, Result, Student, Subject, Test
 from .serializers import (
@@ -264,3 +265,56 @@ class ConfigView(APIView):
             {"message": "Configuration updated successfully"},
             status=status.HTTP_200_OK,
         )
+
+class AnnualReportView(APIView):
+    """
+    Bao cao nam bao gom:
+    - Tong luong de thi
+    - so luong bai cham
+    - ti le de thi
+    - ti le bai cham
+    """
+    def get(self, request):
+        # Lay nam 
+        year = request.query_params.get('year')
+        if not year:
+            return Response({"error": "Year parameter is required."}, status=400)
+
+        try:
+            year = int(year)
+        except ValueError:
+            return Response({"error": "Year must be a valid integer."}, status=400)
+
+        # so luong de thi va de thi da cham
+        total_tests = Test.objects.filter(datetime__year=year).count()
+        total_graded_papers = Result.objects.filter(test__datetime__year=year).count()
+
+        # data mon thi
+        report_data = (
+            Test.objects.filter(datetime__year=year)
+            .values(subject_name=F("subject__name"))
+            .annotate(
+                num_tests=Count("id"),
+                num_graded_papers=Count("result"),
+            )
+            .order_by("subject_name")
+        )
+
+        # ti le bai thi
+        for item in report_data:
+            item["test_percentage"] = (
+                (item["num_tests"] / total_tests) * 100 if total_tests else 0
+            )
+            item["graded_paper_percentage"] = (
+                (item["num_graded_papers"] / total_graded_papers) * 100
+                if total_graded_papers
+                else 0
+            )
+
+        # tra ve
+        return Response({
+            "year": year,
+            "total_tests": total_tests,
+            "total_graded_papers": total_graded_papers,
+            "subjects": report_data,
+        })
