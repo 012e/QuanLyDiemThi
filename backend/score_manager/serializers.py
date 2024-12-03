@@ -44,7 +44,7 @@ class TestSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        representation["duration"] = humanize.precisedelta(instance.duration)
+        representation["duration"] = instance.duration.total_seconds()
         return representation
 
     class Meta:
