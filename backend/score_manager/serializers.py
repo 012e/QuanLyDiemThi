@@ -1,10 +1,18 @@
-import humanize
 import rest_framework.serializers as serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from score_manager.utils import get_role
 
-from .models import Class, Difficulty, Question, Result, Student, Subject, Test
+from .models import (
+    Class,
+    Difficulty,
+    Question,
+    Result,
+    Student,
+    StudentResult,
+    Subject,
+    Test,
+)
 
 
 class StudentSerializer(serializers.ModelSerializer):
@@ -52,10 +60,77 @@ class TestSerializer(serializers.ModelSerializer):
         exclude = ["created_at", "updated_at"]
 
 
+class StudentResultSerializer(serializers.ModelSerializer):
+    student = serializers.PrimaryKeyRelatedField(
+        queryset=Student.objects.all()
+    )  # Accept student IDs
+
+    class Meta:
+        model = StudentResult
+        fields = ["id", "student", "result", "score", "note"]
+
+
 class ResultSerializer(serializers.ModelSerializer):
+    student_results = StudentResultSerializer(
+        source="studentresult_set",  # Reverse relation
+        many=True
+    )  # Allow nested input for StudentResult
+
     class Meta:
         model = Result
-        exclude = ["created_at", "updated_at"]
+        fields = [
+            "id",
+            "test",
+            "teacher",
+            "classroom",
+            "student_results",
+        ]
+
+    def create(self, validated_data):
+        # Remove nested data from validated_data
+        student_results_data = validated_data.pop("studentresult_set", [])
+        
+        # Create the Result instance
+        result = Result.objects.create(**validated_data)
+
+        # Create StudentResult instances
+        for student_result_data in student_results_data:
+            student_result_data.pop("result")
+            StudentResult.objects.create(result=result, **student_result_data)
+
+        return result
+
+    def update(self, instance, validated_data):
+        # Remove nested data from validated_data
+        student_results_data = validated_data.pop("studentresult_set", [])
+        
+        # Update fields of the Result instance
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+
+        # Handle StudentResult updates
+        existing_student_results = {
+            sr.id: sr for sr in instance.studentresult_set.all()
+        }
+
+        for student_result_data in student_results_data:
+            sr_id = student_result_data.get("id")
+            if sr_id and sr_id in existing_student_results:
+                # Update existing StudentResult
+                student_result_instance = existing_student_results.pop(sr_id)
+                for attr, value in student_result_data.items():
+                    setattr(student_result_instance, attr, value)
+                student_result_instance.save()
+            else:
+                # Create a new StudentResult
+                StudentResult.objects.create(result=instance, **student_result_data)
+
+        # Delete any remaining StudentResult objects not included in input
+        for remaining_sr in existing_student_results.values():
+            remaining_sr.delete()
+
+        return instance
 
 
 class ConfigUpdateSerializer(serializers.Serializer):

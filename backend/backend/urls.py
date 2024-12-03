@@ -7,7 +7,8 @@ from score_manager.views import (
     SubjectViewSet,
     TestViewSet,
     ResultViewSet,
-    ConfigView,
+    StudentResultViewSet,
+    ConfigView
 )
 from django.urls import path, include
 from drf_spectacular.views import (
@@ -25,6 +26,7 @@ router.register(r"test", TestViewSet, basename="test")
 router.register(r"results", ResultViewSet, basename="result")
 router.register(r"student", StudentViewSet, basename="student")
 router.register(r"class", ClassViewSet, basename="class")
+router.register(r"studentresult", StudentResultViewSet, basename="studentresult")  
 
 
 urlpatterns = [

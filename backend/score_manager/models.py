@@ -81,17 +81,29 @@ class Test(models.Model):
 
 
 class Result(models.Model):
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
     test = models.ForeignKey(Test, on_delete=models.CASCADE)
-    score = models.DecimalField(max_digits=4, decimal_places=2)
     teacher = models.ForeignKey(User, on_delete=models.CASCADE)
+    classroom = models.ForeignKey(Class, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+    updated_at = models.DateTimeField(auto_now=True, db_index=True)
+
+    class Meta:
+        ordering = ["updated_at"]
+
+
+class StudentResult(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    result = models.ForeignKey(Result, on_delete=models.CASCADE)
+    score = models.DecimalField(max_digits=4, decimal_places=2)
     note = models.TextField(null=True, blank=False)
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     updated_at = models.DateTimeField(auto_now=True, db_index=True)
-    classes = models.ManyToManyField(Class)
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=["student", "test"], name="unique_result")
+            models.UniqueConstraint(
+                fields=["student", "result"], name="unique_student_result"
+            )
         ]
         ordering = ["updated_at"]
+

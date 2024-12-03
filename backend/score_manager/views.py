@@ -6,15 +6,16 @@ from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Class, Difficulty, Question, Result, Student, Subject, Test
+from .models import Class, Difficulty, Question, Result, Student, StudentResult, Subject, Test
 from .serializers import (
     ClassSerializer,
     DifficultySerializer,
     QuestionSerializer,
     ResultSerializer,
+    StudentResultSerializer,  
     StudentSerializer,
     SubjectSerializer,
-    TestSerializer,
+    TestSerializer
 )
 
 
@@ -88,9 +89,35 @@ class TestViewSet(viewsets.ModelViewSet):
 class ResultViewSet(viewsets.ModelViewSet):
     queryset = Result.objects.all()
     serializer_class = ResultSerializer
-
     filter_backends = [OrderingFilter]
     ordering = ["-updated_at"]
+
+    def perform_create(self, serializer):
+        result = serializer.save()
+        classes = self.request.data.get("classes")
+        if classes:
+            result.classes.set(classes)
+
+    def perform_update(self, serializer):
+        result = serializer.save()
+        classes = self.request.data.get("classes")
+        if classes:
+            result.classes.set(classes)
+            
+class StudentResultViewSet(viewsets.ModelViewSet):
+    queryset = StudentResult.objects.all()
+    serializer_class = StudentResultSerializer
+    filter_backends = [OrderingFilter]
+    ordering = ["-updated_at"]
+
+    def perform_create(self, serializer):
+        student_result = serializer.save()
+        student = student_result.student
+        student_result.classes.set(self.request.data.get("classes", []))
+
+    def perform_update(self, serializer):
+        student_result = serializer.save()
+        student_result.classes.set(self.request.data.get("classes", []))
 
 
 class ConfigView(APIView):

@@ -6,7 +6,16 @@ from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand
 from faker import Faker
 
-from score_manager.models import Difficulty, Question, Student, Subject, Test
+from score_manager.models import (
+    Class,
+    Difficulty,
+    Question,
+    Result,
+    Student,
+    StudentResult,
+    Subject,
+    Test,
+)
 
 fake = Faker()
 
@@ -17,6 +26,7 @@ TOTAL_USERS = 50
 TOTAL_STAFF = 10
 TOTAL_TESTS = 30
 TOTAL_STUDENTS = 100
+TOTAL_CLASSES = 20
 
 
 def bulk_create_users(users):
@@ -88,12 +98,17 @@ def seed_users():
     bulk_create_users(users)
 
 
+def seed_classes():
+    classes = []
+    for _ in range(TOTAL_CLASSES):
+        classes.append(Class(name=fake.name(), teacher_id=fake.random_int(1, 10)))
+    Class.objects.bulk_create(classes)
+
 def seed_students():
     students = []
-    total_class = Subject.objects.count()
     for _ in range(TOTAL_STUDENTS):
-        class_id = fake.random_int(1, total_class)
-        students.append(Student(name=fake.name(), class_id=class_id))
+        students.append(Student(name=fake.name(),student_code=fake.random_int(100000,999999)))
+    Student.objects.bulk_create(students)
 
 
 def seed_question():
@@ -142,6 +157,43 @@ def seed_test():
         test.questions.add(*question_ids)
 
 
+def seed_results():
+    results = []
+    student_results = []
+    total_tests = Test.objects.count()
+    total_students = Student.objects.count()
+    total_classes = Class.objects.count()
+
+    for _ in range(TOTAL_TESTS):
+        test_id = fake.random_int(1, total_tests)
+        teacher = User.objects.order_by("?")[0]
+        classroom = Class.objects.order_by("?")[0]
+        # Add classes to the result
+        result = Result(test_id=test_id, teacher=teacher, classroom=classroom)
+        results.append(result)
+
+    Result.objects.bulk_create(results)
+
+    for result in Result.objects.all():
+
+        # Create student results
+        class_student_count = fake.random_int(10, 20)
+        students_in_classes = Student.objects.order_by("?")[:class_student_count]
+        for student in students_in_classes:
+            score = fake.random_int(0, 10)
+            note = fake.text() if fake.boolean(chance_of_getting_true=50) else None
+            student_results.append(
+                StudentResult(
+                    student=student,
+                    result=result,
+                    score=score,
+                    note=note,
+                )
+            )
+
+    StudentResult.objects.bulk_create(student_results, ignore_conflicts=True)
+
+
 class Command(BaseCommand):
     def handle(self, *args, **options):
         try:
@@ -149,8 +201,10 @@ class Command(BaseCommand):
             seed_users()
             print("seeding staff")
             seed_staff()
-            # print("seeding student")
-            # seed_students()
+            print("seeding class")
+            seed_classes()
+            print("seeding student")
+            seed_students()
             print("seeding difficulty")
             seed_difficulty()
             print("seeding subject")
@@ -159,6 +213,8 @@ class Command(BaseCommand):
             seed_question()
             print("seeding test")
             seed_test()
+            print("seeding results")
+            seed_results()
         except Exception as e:
             log.error(e)
             log.error("Seed data failed")
