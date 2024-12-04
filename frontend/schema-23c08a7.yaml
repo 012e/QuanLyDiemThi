@@ -1379,6 +1379,170 @@ paths:
       responses:
         '204':
           description: No response body
+  /studentresult/:
+    get:
+      operationId: studentresult_list
+      parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      tags:
+      - studentresult
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedStudentResultList'
+          description: ''
+    post:
+      operationId: studentresult_create
+      tags:
+      - studentresult
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudentResult'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/StudentResult'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/StudentResult'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentResult'
+          description: ''
+  /studentresult/{id}/:
+    get:
+      operationId: studentresult_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this student result.
+        required: true
+      tags:
+      - studentresult
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentResult'
+          description: ''
+    put:
+      operationId: studentresult_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this student result.
+        required: true
+      tags:
+      - studentresult
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudentResult'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/StudentResult'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/StudentResult'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentResult'
+          description: ''
+    patch:
+      operationId: studentresult_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this student result.
+        required: true
+      tags:
+      - studentresult
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedStudentResult'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedStudentResult'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedStudentResult'
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentResult'
+          description: ''
+    delete:
+      operationId: studentresult_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this student result.
+        required: true
+      tags:
+      - studentresult
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '204':
+          description: No response body
   /subject/:
     get:
       operationId: subject_list
@@ -1844,6 +2008,29 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Student'
+    PaginatedStudentResultList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/StudentResult'
     PaginatedTestList:
       type: object
       required:
@@ -1946,23 +2133,16 @@ components:
         id:
           type: integer
           readOnly: true
-        score:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,2}(?:\.\d{0,2})?$
-        note:
-          type: string
-          nullable: true
-        student:
-          type: integer
         test:
           type: integer
         teacher:
           type: integer
-        classes:
+        classroom:
+          type: integer
+        student_results:
           type: array
           items:
-            type: integer
+            $ref: '#/components/schemas/StudentResult'
     PatchedStudent:
       type: object
       properties:
@@ -1975,6 +2155,23 @@ components:
         student_code:
           type: string
           maxLength: 10
+    PatchedStudentResult:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        student:
+          type: integer
+        result:
+          type: integer
+        score:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,2}(?:\.\d{0,2})?$
+        note:
+          type: string
+          nullable: true
     PatchedSubject:
       type: object
       properties:
@@ -2062,28 +2259,20 @@ components:
         id:
           type: integer
           readOnly: true
-        score:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,2}(?:\.\d{0,2})?$
-        note:
-          type: string
-          nullable: true
-        student:
-          type: integer
         test:
           type: integer
         teacher:
           type: integer
-        classes:
+        classroom:
+          type: integer
+        student_results:
           type: array
           items:
-            type: integer
+            $ref: '#/components/schemas/StudentResult'
       required:
-      - classes
+      - classroom
       - id
-      - score
-      - student
+      - student_results
       - teacher
       - test
     Student:
@@ -2102,6 +2291,28 @@ components:
       - id
       - name
       - student_code
+    StudentResult:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        student:
+          type: integer
+        result:
+          type: integer
+        score:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,2}(?:\.\d{0,2})?$
+        note:
+          type: string
+          nullable: true
+      required:
+      - id
+      - result
+      - score
+      - student
     Subject:
       type: object
       properties:

@@ -10,11 +10,10 @@
 import { StudentResult } from './student-result';
 
 
-export interface PatchedResult { 
-    readonly id?: number;
-    test?: number;
-    teacher?: number;
-    classroom?: number;
-    student_results?: Array<StudentResult>;
+export interface PaginatedStudentResultList { 
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<StudentResult>;
 }
 
