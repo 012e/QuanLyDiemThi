@@ -7,14 +7,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { StudentResult } from './student-result';
 
 
-export interface PatchedResult { 
+export interface PatchedStudentResult { 
     readonly id?: number;
-    test?: number;
-    teacher?: number;
-    classroom?: number;
-    student_results?: Array<StudentResult>;
+    student?: number;
+    result?: number;
+    score?: string;
+    note?: string | null;
 }
 

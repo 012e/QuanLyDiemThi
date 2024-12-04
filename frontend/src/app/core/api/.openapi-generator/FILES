@@ -18,6 +18,8 @@ api/results.service.ts
 api/results.serviceInterface.ts
 api/student.service.ts
 api/student.serviceInterface.ts
+api/studentresult.service.ts
+api/studentresult.serviceInterface.ts
 api/subject.service.ts
 api/subject.serviceInterface.ts
 api/test.service.ts
@@ -38,6 +40,7 @@ model/paginated-class-list.ts
 model/paginated-question-list.ts
 model/paginated-result-list.ts
 model/paginated-student-list.ts
+model/paginated-student-result-list.ts
 model/paginated-test-list.ts
 model/password-change.ts
 model/password-reset-confirm.ts
@@ -46,6 +49,7 @@ model/patched-class.ts
 model/patched-difficulty.ts
 model/patched-question.ts
 model/patched-result.ts
+model/patched-student-result.ts
 model/patched-student.ts
 model/patched-subject.ts
 model/patched-test.ts
@@ -53,6 +57,7 @@ model/patched-user-details.ts
 model/question.ts
 model/rest-auth-detail.ts
 model/result.ts
+model/student-result.ts
 model/student.ts
 model/subject.ts
 model/test.ts
