@@ -2,7 +2,8 @@ from datetime import datetime
 
 from constance import config
 from django.conf import settings
-from django.db.models import Count, F, Q
+from django.contrib.auth.models import User
+from django.db.models import Count, Q
 from django.utils import timezone
 from drf_spectacular.utils import (
     OpenApiExample,
@@ -33,6 +34,7 @@ from .serializers import (
     StudentResultSerializer,
     StudentSerializer,
     SubjectSerializer,
+    TeacherSerializer,
     TestSerializer,
 )
 
@@ -82,6 +84,13 @@ class SubjectViewSet(viewsets.ModelViewSet):
 
     filter_backends = [OrderingFilter]
     ordering = ["name"]
+
+
+class TeacherViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = TeacherSerializer
+    filter_backends = [OrderingFilter]
+    ordering = ["-date_joined"]
 
 
 class TestViewSet(viewsets.ModelViewSet):
@@ -451,23 +460,32 @@ class AnnualReportView(APIView):
         ).count()
 
         # Ensure we don't divide by zero
-        test_ratio_value = total_tests if total_tests > 0 else 1  # Prevent division by zero
-        result_ratio_value = total_results if total_results > 0 else 1  # Prevent division by zero
+        test_ratio_value = (
+            total_tests if total_tests > 0 else 1
+        )  # Prevent division by zero
+        result_ratio_value = (
+            total_results if total_results > 0 else 1
+        )  # Prevent division by zero
 
         # Group data by subject: total tests, total results, and their ratios for the given year
         subject_data = (
             Subject.objects.annotate(
-                total_tests=Count('test', filter=Q(test__datetime__range=(start_date, end_date))),
-                total_results=Count('test__result', filter=Q(test__datetime__range=(start_date, end_date))),
+                total_tests=Count(
+                    "test", filter=Q(test__datetime__range=(start_date, end_date))
+                ),
+                total_results=Count(
+                    "test__result",
+                    filter=Q(test__datetime__range=(start_date, end_date)),
+                ),
             )
-            .values('name', 'total_tests', 'total_results')
-            .order_by('name')
+            .values("name", "total_tests", "total_results")
+            .order_by("name")
         )
 
         # Loop through each subject and calculate the ratios
         for subject in subject_data:
-            subject['test_ratio'] = subject['total_tests'] / test_ratio_value
-            subject['result_ratio'] = subject['total_results'] / result_ratio_value
+            subject["test_ratio"] = subject["total_tests"] / test_ratio_value
+            subject["result_ratio"] = subject["total_results"] / result_ratio_value
 
         # Prepare the response data
         data = {
