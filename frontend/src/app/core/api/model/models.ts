@@ -10,6 +10,7 @@ export * from './paginated-question-list';
 export * from './paginated-result-list';
 export * from './paginated-student-list';
 export * from './paginated-student-result-list';
+export * from './paginated-teacher-list';
 export * from './paginated-test-list';
 export * from './password-change';
 export * from './password-reset';

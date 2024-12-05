@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TableModule, TablePageEvent } from 'primeng/table';
-import { Result, ResultsService } from '../core/api';
+import { Result, ResultsService, SubjectService, ClassService, UserService } from '../core/api';
 import { DatePipe } from '@angular/common';
 import { DividerModule } from 'primeng/divider';
 import { SkeletonModule } from 'primeng/skeleton';
@@ -42,6 +42,9 @@ export class ResultComponent implements OnInit {
   constructor(
     private readonly router: Router,
     private readonly resultsService: ResultsService,
+    private readonly subjectServive: SubjectService,
+    private readonly classService: ClassService,
+    private readonly userService: UserService,
     private readonly messageService: MessageService,
     private readonly confirmationService: ConfirmationService,
   ) {}
@@ -189,5 +192,35 @@ export class ResultComponent implements OnInit {
   }
   public createNew(): void {
     this.router.navigate(['/result/new']);
+  }
+  public findSubjectById(id: number)  {
+    return this.subjectServive.subjectRetrieve(id).subscribe({
+      next: (subject) => {
+        return subject.name;
+      },
+      error: (error) => {
+        return error;
+      },
+    });
+  }
+  public findClassById(id: number) {
+    return this.classService.classRetrieve(id).subscribe({
+      next: (classroom) => {
+        return classroom.name;
+      },
+      error: (error) => {
+        return error;
+      },
+    });
+  }
+  public findTeacherById(id: number) {
+    return this.userService.userRetrieve(id).subscribe({
+      next: (user) => {
+        return user.username;
+      },
+      error: (error) => {
+        return error;
+      },
+    });
   }
 }
