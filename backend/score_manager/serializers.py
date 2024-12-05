@@ -1,4 +1,5 @@
 import rest_framework.serializers as serializers
+from django.contrib.auth.models import User
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from score_manager.utils import get_role
@@ -70,10 +71,16 @@ class StudentResultSerializer(serializers.ModelSerializer):
         fields = ["id", "student", "result", "score", "note"]
 
 
+class TeacherSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["id", "username", "email", "first_name", "last_name"]
+
+
 class ResultSerializer(serializers.ModelSerializer):
     student_results = StudentResultSerializer(
         source="studentresult_set",  # Reverse relation
-        many=True
+        many=True,
     )  # Allow nested input for StudentResult
 
     class Meta:
@@ -89,7 +96,7 @@ class ResultSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         # Remove nested data from validated_data
         student_results_data = validated_data.pop("studentresult_set", [])
-        
+
         # Create the Result instance
         result = Result.objects.create(**validated_data)
 
@@ -103,7 +110,7 @@ class ResultSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         # Remove nested data from validated_data
         student_results_data = validated_data.pop("studentresult_set", [])
-        
+
         # Update fields of the Result instance
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
