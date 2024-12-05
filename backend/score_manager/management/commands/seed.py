@@ -5,6 +5,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand
 from faker import Faker
+import random
 
 from score_manager.models import (
     Class,
@@ -18,6 +19,9 @@ from score_manager.models import (
 )
 
 fake = Faker()
+fake.seed_instance(696969)
+random.seed(696969)
+
 
 log = logging.getLogger("main")
 
