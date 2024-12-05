@@ -22,8 +22,12 @@ api/studentresult.service.ts
 api/studentresult.serviceInterface.ts
 api/subject.service.ts
 api/subject.serviceInterface.ts
+api/summary.service.ts
+api/summary.serviceInterface.ts
 api/test.service.ts
 api/test.serviceInterface.ts
+api/user.service.ts
+api/user.serviceInterface.ts
 configuration.ts
 encoder.ts
 git_push.sh
@@ -41,6 +45,7 @@ model/paginated-question-list.ts
 model/paginated-result-list.ts
 model/paginated-student-list.ts
 model/paginated-student-result-list.ts
+model/paginated-teacher-list.ts
 model/paginated-test-list.ts
 model/password-change.ts
 model/password-reset-confirm.ts
@@ -52,6 +57,7 @@ model/patched-result.ts
 model/patched-student-result.ts
 model/patched-student.ts
 model/patched-subject.ts
+model/patched-teacher.ts
 model/patched-test.ts
 model/patched-user-details.ts
 model/question.ts
@@ -60,6 +66,10 @@ model/result.ts
 model/student-result.ts
 model/student.ts
 model/subject.ts
+model/summary-retrieve200-response-subjects-inner.ts
+model/summary-retrieve200-response.ts
+model/summary-retrieve400-response.ts
+model/teacher.ts
 model/test.ts
 model/token-refresh.ts
 model/token-verify.ts
