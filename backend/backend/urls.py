@@ -1,5 +1,6 @@
 from rest_framework.routers import DefaultRouter
 from score_manager.views import (
+    AnnualReportView,
     ClassViewSet,
     QuestionViewSet,
     DifficultyViewSet,
@@ -45,4 +46,5 @@ urlpatterns = [
     ),
     path("auth/", include("dj_rest_auth.urls")),
     path("config/", ConfigView.as_view(), name="config-view"),
+    path(r"summary", AnnualReportView.as_view(), name="summary")
 ]
