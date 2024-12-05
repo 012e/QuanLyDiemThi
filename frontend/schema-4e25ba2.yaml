@@ -1697,6 +1697,107 @@ paths:
       responses:
         '204':
           description: No response body
+  /summary:
+    get:
+      operationId: summary_retrieve
+      description: Fetches total tests and total results for a given year. Additionally,
+        the statistics are grouped by subjects with their respective totals, including
+        the ratio of tests and results for each subject.
+      summary: Retrieve yearly statistics for tests and results
+      parameters:
+      - in: query
+        name: year
+        schema:
+          type: integer
+        description: The year to retrieve statistics for (e.g., 2023).
+        required: true
+      tags:
+      - summary
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total_tests:
+                    type: integer
+                    example: 120
+                  total_results:
+                    type: integer
+                    example: 300
+                  subjects:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          example: Math
+                        total_tests:
+                          type: integer
+                          example: 50
+                        total_results:
+                          type: integer
+                          example: 120
+                        test_ratio:
+                          type: number
+                          format: float
+                          example: 0.42
+                        result_ratio:
+                          type: number
+                          format: float
+                          example: 0.4
+              examples:
+                SuccessfulResponse:
+                  value:
+                    total_tests: 120
+                    total_results: 300
+                    subjects:
+                    - name: Math
+                      total_tests: 50
+                      total_results: 120
+                      test_ratio: 0.42
+                      result_ratio: 0.4
+                    - name: Science
+                      total_tests: 70
+                      total_results: 180
+                      test_ratio: 0.58
+                      result_ratio: 0.6
+                  summary: Successful Response
+                  description: Example of a successful response with total tests,
+                    total results, and grouped statistics by subject including ratios.
+          description: Successfully retrieved the statistics for the given year.
+        '400':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Year parameter is required.
+              examples:
+                MissingYearParameter:
+                  value:
+                    error: Year parameter is required.
+                  summary: Missing Year Parameter
+                  description: Example of error response when 'year' parameter is
+                    not provided.
+                InvalidYearFormat:
+                  value:
+                    error: Invalid year format.
+                  summary: Invalid Year Format
+                  description: Example of error response for invalid year format.
+                YearOutOfRange:
+                  value:
+                    error: Year is out of range.
+                  summary: Year Out of Range
+                  description: Example of error response when the year is out of range.
+          description: Invalid request or missing 'year' parameter.
   /test/:
     get:
       operationId: test_list
@@ -1855,6 +1956,170 @@ paths:
         required: true
       tags:
       - test
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /user/:
+    get:
+      operationId: user_list
+      parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      tags:
+      - user
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTeacherList'
+          description: ''
+    post:
+      operationId: user_create
+      tags:
+      - user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Teacher'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Teacher'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Teacher'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Teacher'
+          description: ''
+  /user/{id}/:
+    get:
+      operationId: user_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this user.
+        required: true
+      tags:
+      - user
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Teacher'
+          description: ''
+    put:
+      operationId: user_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this user.
+        required: true
+      tags:
+      - user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Teacher'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Teacher'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Teacher'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Teacher'
+          description: ''
+    patch:
+      operationId: user_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this user.
+        required: true
+      tags:
+      - user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedTeacher'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedTeacher'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedTeacher'
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Teacher'
+          description: ''
+    delete:
+      operationId: user_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this user.
+        required: true
+      tags:
+      - user
       security:
       - jwtHeaderAuth: []
       - jwtCookieAuth: []
@@ -2031,6 +2296,29 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/StudentResult'
+    PaginatedTeacherList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Teacher'
     PaginatedTestList:
       type: object
       required:
@@ -2181,6 +2469,29 @@ components:
         name:
           type: string
           maxLength: 100
+    PatchedTeacher:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          title: Email address
+          maxLength: 254
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
     PatchedTest:
       type: object
       properties:
@@ -2325,6 +2636,32 @@ components:
       required:
       - id
       - name
+    Teacher:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          title: Email address
+          maxLength: 254
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+      required:
+      - id
+      - username
     Test:
       type: object
       properties:
