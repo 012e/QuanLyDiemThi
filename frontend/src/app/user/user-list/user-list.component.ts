@@ -18,6 +18,7 @@ import { Subject as RxSubject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { User, UserService } from '../../core/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { EditUserFormComponent } from '../edit-user-form/edit-user-form.component';
+import { CreateUserFormComponent } from '../create-user-form/create-user-form.component';
 
 @Component({
   selector: 'app-user-list',
@@ -125,26 +126,43 @@ export class UserListComponent implements OnInit, OnDestroy {
         user: teacher,
       },
     });
-    this.editUserDialogRef.onClose.subscribe((result: { success: boolean, data: User | string }) => {
-      if (!result || !result.success) {
-        this.showError(`Error Creating User: ${result.data}`);
-        return;
-      }
-      this.showSuccess('User Updated Successfully');
-    });
+    this.editUserDialogRef.onClose.subscribe(
+      (result: { success: boolean; data: User | string }) => {
+        if (!result) {
+          this.showError(`Error updating user`);
+          return;
+        }
+        if (!result.success) {
+          this.showError(`Error updating user: ${result.data}`);
+          return;
+        }
+        this.updatePage();
+        this.showSuccess('User updated successfully');
+      },
+    );
   }
 
   public openCreateDialog() {
-    this.editUserDialogRef = this.dialogService.open(EditUserFormComponent, {
-      header: 'Create New Teacher',
-    });
-    this.editUserDialogRef.onClose.subscribe((teacher?: User) => {
-      if (teacher) {
-        this.showSuccess('User Created Successfully');
-      } else {
-        this.showError('Error Creating User');
-      }
-    });
+    this.createUserDialogRef = this.dialogService.open(
+      CreateUserFormComponent,
+      {
+        header: 'Create New Teacher',
+      },
+    );
+    this.createUserDialogRef.onClose.subscribe(
+      (result: { success: boolean; data: User | string }) => {
+        if (!result) {
+          this.showError(`Error creating user`);
+          return;
+        }
+        if (!result.success) {
+          this.showError(`Error creating user: ${result.data}`);
+          return;
+        }
+        this.updatePage();
+        this.showSuccess('User created Successfully');
+      },
+    );
   }
 
   public deleteSelectedUsers() {
@@ -187,18 +205,18 @@ export class UserListComponent implements OnInit, OnDestroy {
     this.selectedUsers = [];
   }
 
-  public deleteUser(teacher: User) {
+  public deleteUser(user: User) {
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete question ' + teacher.id + '?',
+      message: 'Are you sure you want to delete question ' + user.id + '?',
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       acceptButtonStyleClass: 'p-button-danger',
       accept: () => {
-        this.userService.userDestroy(teacher.id).subscribe({
-          next: (response) => {
+        this.userService.userDestroy(user.id).subscribe({
+          next: (_response) => {
             if (this.selectedUsers) {
               this.selectedUsers = this.selectedUsers.filter(
-                (val) => val.id !== teacher.id,
+                (val) => val.id !== user.id,
               );
             }
             this.updatePage();
@@ -208,7 +226,7 @@ export class UserListComponent implements OnInit, OnDestroy {
           },
         });
         this.teacher = {} as User;
-        this.showSuccess('User Deleted');
+        this.showSuccess('User deleted');
       },
     });
   }
@@ -239,3 +257,4 @@ export class UserListComponent implements OnInit, OnDestroy {
     this.searchText$.next(query);
   }
 }
+

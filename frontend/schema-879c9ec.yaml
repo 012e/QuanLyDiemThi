@@ -2514,6 +2514,13 @@ components:
         last_name:
           type: string
           maxLength: 150
+        user_type:
+          allOf:
+          - $ref: '#/components/schemas/UserTypeEnum'
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
     PatchedUserDetails:
       type: object
       description: User model w/o password
@@ -2708,8 +2715,16 @@ components:
         last_name:
           type: string
           maxLength: 150
+        user_type:
+          allOf:
+          - $ref: '#/components/schemas/UserTypeEnum'
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
       required:
       - id
+      - user_type
       - username
     UserDetails:
       type: object
