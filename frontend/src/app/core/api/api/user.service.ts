@@ -17,11 +17,11 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { PaginatedTeacherList } from '../model/paginated-teacher-list';
+import { PaginatedUserList } from '../model/paginated-user-list';
 // @ts-ignore
-import { PatchedTeacher } from '../model/patched-teacher';
+import { PatchedUser } from '../model/patched-user';
 // @ts-ignore
-import { Teacher } from '../model/teacher';
+import { User } from '../model/user';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -98,16 +98,16 @@ export class UserService implements UserServiceInterface {
     }
 
     /**
-     * @param teacher 
+     * @param user 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public userCreate(teacher: Teacher, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Teacher>;
-    public userCreate(teacher: Teacher, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Teacher>>;
-    public userCreate(teacher: Teacher, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Teacher>>;
-    public userCreate(teacher: Teacher, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
-        if (teacher === null || teacher === undefined) {
-            throw new Error('Required parameter teacher was null or undefined when calling userCreate.');
+    public userCreate(user: User, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<User>;
+    public userCreate(user: User, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<User>>;
+    public userCreate(user: User, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<User>>;
+    public userCreate(user: User, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (user === null || user === undefined) {
+            throw new Error('Required parameter user was null or undefined when calling userCreate.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -170,10 +170,10 @@ export class UserService implements UserServiceInterface {
         }
 
         let localVarPath = `/user/`;
-        return this.httpClient.request<Teacher>('post', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<User>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: teacher,
+                body: user,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -265,9 +265,9 @@ export class UserService implements UserServiceInterface {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public userList(limit?: number, offset?: number, ordering?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<PaginatedTeacherList>;
-    public userList(limit?: number, offset?: number, ordering?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<PaginatedTeacherList>>;
-    public userList(limit?: number, offset?: number, ordering?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<PaginatedTeacherList>>;
+    public userList(limit?: number, offset?: number, ordering?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<PaginatedUserList>;
+    public userList(limit?: number, offset?: number, ordering?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<PaginatedUserList>>;
+    public userList(limit?: number, offset?: number, ordering?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<PaginatedUserList>>;
     public userList(limit?: number, offset?: number, ordering?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
@@ -333,7 +333,7 @@ export class UserService implements UserServiceInterface {
         }
 
         let localVarPath = `/user/`;
-        return this.httpClient.request<PaginatedTeacherList>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<PaginatedUserList>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,
@@ -349,14 +349,14 @@ export class UserService implements UserServiceInterface {
 
     /**
      * @param id A unique integer value identifying this user.
-     * @param patchedTeacher 
+     * @param patchedUser 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public userPartialUpdate(id: number, patchedTeacher?: PatchedTeacher, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Teacher>;
-    public userPartialUpdate(id: number, patchedTeacher?: PatchedTeacher, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Teacher>>;
-    public userPartialUpdate(id: number, patchedTeacher?: PatchedTeacher, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Teacher>>;
-    public userPartialUpdate(id: number, patchedTeacher?: PatchedTeacher, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public userPartialUpdate(id: number, patchedUser?: PatchedUser, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<User>;
+    public userPartialUpdate(id: number, patchedUser?: PatchedUser, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<User>>;
+    public userPartialUpdate(id: number, patchedUser?: PatchedUser, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<User>>;
+    public userPartialUpdate(id: number, patchedUser?: PatchedUser, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling userPartialUpdate.');
         }
@@ -421,10 +421,10 @@ export class UserService implements UserServiceInterface {
         }
 
         let localVarPath = `/user/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: undefined})}/`;
-        return this.httpClient.request<Teacher>('patch', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<User>('patch', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: patchedTeacher,
+                body: patchedUser,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -440,9 +440,9 @@ export class UserService implements UserServiceInterface {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public userRetrieve(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Teacher>;
-    public userRetrieve(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Teacher>>;
-    public userRetrieve(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Teacher>>;
+    public userRetrieve(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<User>;
+    public userRetrieve(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<User>>;
+    public userRetrieve(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<User>>;
     public userRetrieve(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling userRetrieve.');
@@ -497,7 +497,7 @@ export class UserService implements UserServiceInterface {
         }
 
         let localVarPath = `/user/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: undefined})}/`;
-        return this.httpClient.request<Teacher>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<User>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -512,19 +512,19 @@ export class UserService implements UserServiceInterface {
 
     /**
      * @param id A unique integer value identifying this user.
-     * @param teacher 
+     * @param user 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public userUpdate(id: number, teacher: Teacher, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Teacher>;
-    public userUpdate(id: number, teacher: Teacher, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Teacher>>;
-    public userUpdate(id: number, teacher: Teacher, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Teacher>>;
-    public userUpdate(id: number, teacher: Teacher, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public userUpdate(id: number, user: User, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<User>;
+    public userUpdate(id: number, user: User, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<User>>;
+    public userUpdate(id: number, user: User, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<User>>;
+    public userUpdate(id: number, user: User, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling userUpdate.');
         }
-        if (teacher === null || teacher === undefined) {
-            throw new Error('Required parameter teacher was null or undefined when calling userUpdate.');
+        if (user === null || user === undefined) {
+            throw new Error('Required parameter user was null or undefined when calling userUpdate.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -587,10 +587,10 @@ export class UserService implements UserServiceInterface {
         }
 
         let localVarPath = `/user/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: undefined})}/`;
-        return this.httpClient.request<Teacher>('put', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<User>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: teacher,
+                body: user,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

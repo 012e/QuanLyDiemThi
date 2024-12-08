@@ -71,10 +71,79 @@ class StudentResultSerializer(serializers.ModelSerializer):
         fields = ["id", "student", "result", "score", "note"]
 
 
-class TeacherSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
+    user_type = serializers.ChoiceField(
+        choices=["admin", "staff", "user"], write_only=True
+    )
+    password = serializers.CharField(write_only=True, required=False, allow_blank=False)
+
     class Meta:
         model = User
-        fields = ["id", "username", "email", "first_name", "last_name"]
+        fields = [
+            "id",
+            "username",
+            "email",
+            "first_name",
+            "last_name",
+            "user_type",
+            "password",
+        ]
+
+    def create(self, validated_data):
+        user_type = validated_data.pop(
+            "user_type", "user"
+        )  # Default to 'user' if not provided
+        password = validated_data.pop("password", None)
+        user = User.objects.create(**validated_data)
+
+        # Set user type (admin, staff, or user)
+        if user_type == "admin":
+            user.is_superuser = True
+            user.is_staff = True
+        elif user_type == "staff":
+            user.is_staff = True
+
+        if password:
+            user.set_password(password)
+
+        user.save()
+        return user
+
+    def update(self, instance, validated_data):
+        user_type = validated_data.pop("user_type", None)
+        password = validated_data.pop("password", None)
+
+        # Update the user instance fields
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+
+        # Handle user_type change (update staff and superuser status)
+        if user_type:
+            if user_type == "admin":
+                instance.is_superuser = True
+                instance.is_staff = True
+            elif user_type == "staff":
+                instance.is_staff = True
+            else:
+                instance.is_superuser = False
+                instance.is_staff = False
+
+        if password:
+            instance.set_password(password)
+
+        instance.save()
+        return instance
+
+    def to_representation(self, instance):
+        """Custom method to display the user_type in the response."""
+        representation = super().to_representation(instance)
+        if instance.is_superuser:
+            representation["user_type"] = "admin"
+        elif instance.is_staff:
+            representation["user_type"] = "staff"
+        else:
+            representation["user_type"] = "user"
+        return representation
 
 
 class ResultSerializer(serializers.ModelSerializer):
