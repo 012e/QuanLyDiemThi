@@ -73,6 +73,7 @@ model/test.ts
 model/token-refresh.ts
 model/token-verify.ts
 model/user-details.ts
+model/user-type-enum.ts
 model/user.ts
 param.ts
 variables.ts
