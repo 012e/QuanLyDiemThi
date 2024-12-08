@@ -20,6 +20,7 @@ export interface PatchedUser {
     first_name?: string;
     last_name?: string;
     user_type?: UserTypeEnum;
+    password?: string;
 }
 export namespace PatchedUser {
 }
