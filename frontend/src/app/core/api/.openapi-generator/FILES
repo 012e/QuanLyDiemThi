@@ -45,8 +45,8 @@ model/paginated-question-list.ts
 model/paginated-result-list.ts
 model/paginated-student-list.ts
 model/paginated-student-result-list.ts
-model/paginated-teacher-list.ts
 model/paginated-test-list.ts
+model/paginated-user-list.ts
 model/password-change.ts
 model/password-reset-confirm.ts
 model/password-reset.ts
@@ -57,9 +57,9 @@ model/patched-result.ts
 model/patched-student-result.ts
 model/patched-student.ts
 model/patched-subject.ts
-model/patched-teacher.ts
 model/patched-test.ts
 model/patched-user-details.ts
+model/patched-user.ts
 model/question.ts
 model/rest-auth-detail.ts
 model/result.ts
@@ -69,10 +69,11 @@ model/subject.ts
 model/summary-retrieve200-response-subjects-inner.ts
 model/summary-retrieve200-response.ts
 model/summary-retrieve400-response.ts
-model/teacher.ts
 model/test.ts
 model/token-refresh.ts
 model/token-verify.ts
 model/user-details.ts
+model/user-type-enum.ts
+model/user.ts
 param.ts
 variables.ts
