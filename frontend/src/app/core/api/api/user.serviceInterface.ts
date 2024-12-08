@@ -11,9 +11,9 @@ import { HttpHeaders }                                       from '@angular/comm
 
 import { Observable }                                        from 'rxjs';
 
-import { PaginatedTeacherList } from '../model/models';
-import { PatchedTeacher } from '../model/models';
-import { Teacher } from '../model/models';
+import { PaginatedUserList } from '../model/models';
+import { PatchedUser } from '../model/models';
+import { User } from '../model/models';
 
 
 import { Configuration }                                     from '../configuration';
@@ -27,9 +27,9 @@ export interface UserServiceInterface {
     /**
      * 
      * 
-     * @param teacher 
+     * @param user 
      */
-    userCreate(teacher: Teacher, extraHttpRequestParams?: any): Observable<Teacher>;
+    userCreate(user: User, extraHttpRequestParams?: any): Observable<User>;
 
     /**
      * 
@@ -45,29 +45,29 @@ export interface UserServiceInterface {
      * @param offset The initial index from which to return the results.
      * @param ordering Which field to use when ordering the results.
      */
-    userList(limit?: number, offset?: number, ordering?: string, extraHttpRequestParams?: any): Observable<PaginatedTeacherList>;
+    userList(limit?: number, offset?: number, ordering?: string, extraHttpRequestParams?: any): Observable<PaginatedUserList>;
 
     /**
      * 
      * 
      * @param id A unique integer value identifying this user.
-     * @param patchedTeacher 
+     * @param patchedUser 
      */
-    userPartialUpdate(id: number, patchedTeacher?: PatchedTeacher, extraHttpRequestParams?: any): Observable<Teacher>;
+    userPartialUpdate(id: number, patchedUser?: PatchedUser, extraHttpRequestParams?: any): Observable<User>;
 
     /**
      * 
      * 
      * @param id A unique integer value identifying this user.
      */
-    userRetrieve(id: number, extraHttpRequestParams?: any): Observable<Teacher>;
+    userRetrieve(id: number, extraHttpRequestParams?: any): Observable<User>;
 
     /**
      * 
      * 
      * @param id A unique integer value identifying this user.
-     * @param teacher 
+     * @param user 
      */
-    userUpdate(id: number, teacher: Teacher, extraHttpRequestParams?: any): Observable<Teacher>;
+    userUpdate(id: number, user: User, extraHttpRequestParams?: any): Observable<User>;
 
 }
