@@ -34,6 +34,7 @@ from .serializers import (
     StudentResultSerializer,
     StudentSerializer,
     SubjectSerializer,
+    UserSerializer,
     TestSerializer,
     UserSerializer,
 )
