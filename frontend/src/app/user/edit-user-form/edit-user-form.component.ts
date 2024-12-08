@@ -107,7 +107,7 @@ export class EditUserFormComponent implements OnInit {
   }
 
   private closeWithSuccess(user: User) {
-    this.selfRef.close({ success: true, data: user });
+    this.selfRef.close(user);
   }
 
   private toSentenceCase(input: string): string {

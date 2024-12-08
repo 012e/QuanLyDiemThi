@@ -126,20 +126,12 @@ export class UserListComponent implements OnInit, OnDestroy {
         user: teacher,
       },
     });
-    this.editUserDialogRef.onClose.subscribe(
-      (result: { success: boolean; data: User | string }) => {
-        if (!result) {
-          this.showError(`Error updating user`);
-          return;
-        }
-        if (!result.success) {
-          this.showError(`Error updating user: ${result.data}`);
-          return;
-        }
+    this.editUserDialogRef.onClose.subscribe((user: User) => {
+      if (user) {
         this.updatePage();
         this.showSuccess('User updated successfully');
-      },
-    );
+      }
+    });
   }
 
   public openCreateDialog() {
@@ -149,20 +141,12 @@ export class UserListComponent implements OnInit, OnDestroy {
         header: 'Create New Teacher',
       },
     );
-    this.createUserDialogRef.onClose.subscribe(
-      (result: { success: boolean; data: User | string }) => {
-        if (!result) {
-          this.showError(`Error creating user`);
-          return;
-        }
-        if (!result.success) {
-          this.showError(`Error creating user: ${result.data}`);
-          return;
-        }
+    this.createUserDialogRef.onClose.subscribe((user: User) => {
+      if (user) {
         this.updatePage();
-        this.showSuccess('User created Successfully');
-      },
-    );
+        this.showSuccess('User created successfully');
+      }
+    });
   }
 
   public deleteSelectedUsers() {
@@ -257,4 +241,3 @@ export class UserListComponent implements OnInit, OnDestroy {
     this.searchText$.next(query);
   }
 }
-

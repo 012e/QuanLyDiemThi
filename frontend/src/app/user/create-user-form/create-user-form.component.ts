@@ -98,12 +98,8 @@ export class CreateUserFormComponent implements OnInit {
     });
   }
 
-  private closeWithError(msg: string) {
-    this.selfRef.close({ success: false, data: msg });
-  }
-
   private closeWithSuccess(user: User) {
-    this.selfRef.close({ success: true, data: user });
+    this.selfRef.close(user);
   }
 
   private toSentenceCase(input: string): string {
