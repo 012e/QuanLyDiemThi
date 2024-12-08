@@ -1,11 +1,11 @@
 import logging
+import random
 from datetime import datetime, timedelta
 
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand
 from faker import Faker
-import random
 
 from score_manager.models import (
     Class,
@@ -62,12 +62,15 @@ def seed_subject():
     Subject.objects.update_or_create(name="Music")
     Subject.objects.update_or_create(name="Art")
 
+
 def seed_staff():
     users = [
         User(
             username="staff",
             email=fake.email(),
             password=make_password("staff"),
+            first_name=fake.first_name(),
+            last_name=fake.last_name(),
             is_staff=True,
         )
     ]
@@ -77,6 +80,8 @@ def seed_staff():
                 username=fake.user_name(),
                 email=fake.email(),
                 password=make_password(fake.password()),
+                first_name=fake.first_name(),
+                last_name=fake.last_name(),
                 is_staff=True,
             )
         )
@@ -89,6 +94,8 @@ def seed_users():
             username="user",
             password=make_password("user"),
             email=fake.email(),
+            first_name=fake.first_name(),
+            last_name=fake.last_name(),
             is_staff=False,
         )
     ]
@@ -98,6 +105,8 @@ def seed_users():
                 username=fake.user_name(),
                 email=fake.email(),
                 password=make_password(fake.password()),
+                first_name=fake.first_name(),
+                last_name=fake.last_name(),
             )
         )
 
@@ -110,10 +119,13 @@ def seed_classes():
         classes.append(Class(name=fake.name(), teacher_id=fake.random_int(1, 10)))
     Class.objects.bulk_create(classes)
 
+
 def seed_students():
     students = []
     for _ in range(TOTAL_STUDENTS):
-        students.append(Student(name=fake.name(),student_code=fake.random_int(100000,999999)))
+        students.append(
+            Student(name=fake.name(), student_code=fake.random_int(100000, 999999))
+        )
     Student.objects.bulk_create(students)
 
 
@@ -181,7 +193,6 @@ def seed_results():
     Result.objects.bulk_create(results)
 
     for result in Result.objects.all():
-
         # Create student results
         class_student_count = fake.random_int(10, 20)
         students_in_classes = Student.objects.order_by("?")[:class_student_count]
