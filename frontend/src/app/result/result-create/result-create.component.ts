@@ -24,13 +24,13 @@ import {
   UserService,
   ClassService,
   Subject,
+  User,
   Class,
-  Teacher,
   Result,
   ResultsService
 } from '../../core/api';
-import { isNumberValidator } from '../../core/validators/is-number.validator';
 import { ScoreCreateComponent } from '../score-create/score-create.component';
+import { ScoreEditorComponent } from '../score-editor/score-editor.component';
 ScoreCreateComponent
 @Component({
   selector: 'app-result-create',
@@ -73,7 +73,7 @@ export class ResultCreateComponent implements OnInit {
 
   public classes: Class[] = [];
   public subjects: Subject[] = [];
-  public teachers: Teacher[] = [];
+  public teachers: User[] = [];
 
   public ngOnInit(): void {
     this.initForm();
@@ -92,6 +92,9 @@ export class ResultCreateComponent implements OnInit {
     });
     this.subjectService.subjectList().subscribe((subjects) => {
       this.subjects = subjects;
+    });
+    this.classService.classList().subscribe((classes) => {
+      this.classes = classes.results;
     });
   }
 
@@ -243,6 +246,29 @@ export class ResultCreateComponent implements OnInit {
         this.syncStudentsTableToForm();
         this.showSuccess('Removed student from list');
       },
+    });
+  }
+
+  public editStudent(index: number): void {
+    this.scoreCreateRef = this.dialogService.open(ScoreEditorComponent, {
+      header: 'Edit Student',
+      width: '70%',
+      contentStyle: { overflow: 'auto' },
+      data: {
+        student: this.students[index],
+      },
+      baseZIndex: 10000,
+    });
+
+    this.scoreCreateRef.onClose.subscribe((student: Student) => {
+      if (!student) {
+        return;
+      }
+      console.log(`Dialog returned ${student}`);
+
+      this.students[index] = student;
+      this.syncStudentsTableToForm();
+      this.showSuccess('Student updated successfully');
     });
   }
 }

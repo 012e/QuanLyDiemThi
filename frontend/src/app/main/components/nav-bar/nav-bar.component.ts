@@ -27,20 +27,27 @@ export class NavBarComponent implements OnInit {
         icon: 'pi pi-question',
         command: () => {
           this.router.navigate(['question']);
-        }
+        },
+      },
+      {
+        label: 'Test',
+        icon: 'pi pi-list-check',
+        command: () => {
+          this.router.navigate(['test']);
+        },
       },
       {
         label: 'Admin',
         icon: 'pi pi-cog',
         command: () => {
           this.router.navigate(['admin']);
-        }
+        },
       },
       {
-        label: 'Admin',
-        icon: 'pi pi-cog',
+        label: 'Result',
+        icon: 'pi pi-user',
         command: () => {
-          this.router.navigate(['admin']);
+          this.router.navigate(['result']);
         },
       },
     ];
