@@ -6,11 +6,11 @@ from score_manager.views import (
     DifficultyViewSet,
     StudentViewSet,
     SubjectViewSet,
-    TeacherViewSet,
     TestViewSet,
     ResultViewSet,
     StudentResultViewSet,
-    ConfigView
+    ConfigView,
+    UserViewSet
 )
 from django.urls import path, include
 from drf_spectacular.views import (
@@ -25,7 +25,7 @@ router.register(r"question", QuestionViewSet, basename="question")
 router.register(r"difficulty", DifficultyViewSet, basename="difficulty")
 router.register(r"subject", SubjectViewSet, basename="subject")
 router.register(r"test", TestViewSet, basename="test")
-router.register(r"user", TeacherViewSet, basename="teacher")
+router.register(r"user", UserViewSet, basename="user")
 router.register(r"results", ResultViewSet, basename="result")
 router.register(r"student", StudentViewSet, basename="student")
 router.register(r"class", ClassViewSet, basename="class")

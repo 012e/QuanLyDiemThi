@@ -46,8 +46,8 @@ from .serializers import (
     StudentResultSerializer,
     StudentSerializer,
     SubjectSerializer,
-    TeacherSerializer,
     TestSerializer,
+    UserSerializer,
 )
 
 
@@ -98,9 +98,9 @@ class SubjectViewSet(viewsets.ModelViewSet):
     ordering = ["name"]
 
 
-class TeacherViewSet(viewsets.ModelViewSet):
+class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
-    serializer_class = TeacherSerializer
+    serializer_class = UserSerializer
     filter_backends = [OrderingFilter]
     ordering = ["-date_joined"]
 

@@ -5,6 +5,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand
 from faker import Faker
+import random
 
 from score_manager.models import (
     Class,
@@ -18,6 +19,9 @@ from score_manager.models import (
 )
 
 fake = Faker()
+fake.seed_instance(696969)
+random.seed(696969)
+
 
 log = logging.getLogger("main")
 
@@ -39,22 +43,24 @@ def bulk_create_users(users):
 
 
 def seed_difficulty():
-    Difficulty.objects.update_or_create(name="Dễ")
-    Difficulty.objects.update_or_create(name="Trung Bình")
-    Difficulty.objects.update_or_create(name="Phức Tạp")
-    Difficulty.objects.update_or_create(name="Khó")
+    Difficulty.objects.update_or_create(name="Easy")
+    Difficulty.objects.update_or_create(name="Average")
+    Difficulty.objects.update_or_create(name="Complex")
+    Difficulty.objects.update_or_create(name="Difficult")
 
 
 def seed_subject():
-    Subject.objects.update_or_create(name="Toán")
-    Subject.objects.update_or_create(name="Văn")
-    Subject.objects.update_or_create(name="Anh")
-    Subject.objects.update_or_create(name="Lý")
-    Subject.objects.update_or_create(name="Hóa")
-    Subject.objects.update_or_create(name="Sinh")
-    Subject.objects.update_or_create(name="Sử")
-    Subject.objects.update_or_create(name="Địa")
-
+    Subject.objects.update_or_create(name="Math")
+    Subject.objects.update_or_create(name="Literature")
+    Subject.objects.update_or_create(name="English")
+    Subject.objects.update_or_create(name="Physics")
+    Subject.objects.update_or_create(name="Chemistry")
+    Subject.objects.update_or_create(name="Biology")
+    Subject.objects.update_or_create(name="History")
+    Subject.objects.update_or_create(name="Geography")
+    Subject.objects.update_or_create(name="Physical Education")
+    Subject.objects.update_or_create(name="Music")
+    Subject.objects.update_or_create(name="Art")
 
 def seed_staff():
     users = [
