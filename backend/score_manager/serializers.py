@@ -72,6 +72,11 @@ class StudentResultSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
+    user_type = serializers.ChoiceField(
+        choices=["admin", "staff", "user"], write_only=True
+    )
+    password = serializers.CharField(write_only=True, required=False, allow_blank=False)
+
     class Meta:
         model = User
         fields = [
