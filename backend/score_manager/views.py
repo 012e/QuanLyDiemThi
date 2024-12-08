@@ -34,7 +34,6 @@ from .serializers import (
     StudentResultSerializer,
     StudentSerializer,
     SubjectSerializer,
-    UserSerializer,
     TestSerializer,
     UserSerializer,
 )
@@ -90,7 +89,8 @@ class SubjectViewSet(viewsets.ModelViewSet):
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    filter_backends = [OrderingFilter]
+    filter_backends = [OrderingFilter, SearchFilter]
+    search_fields = ["username", "email", "first_name", "last_name"]
     ordering = ["-date_joined"]
 
 
@@ -98,7 +98,8 @@ class TestViewSet(viewsets.ModelViewSet):
     queryset = Test.objects.all()
     serializer_class = TestSerializer
 
-    filter_backends = [OrderingFilter]
+    filter_backends = [OrderingFilter, SearchFilter]
+    search_fields = [ "subject__name", "questions__detail"]
     ordering = ["-updated_at"]
 
     def perform_create(self, serializer):
