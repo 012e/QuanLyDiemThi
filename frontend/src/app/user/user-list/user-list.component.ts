@@ -106,7 +106,7 @@ export class UserListComponent implements OnInit, OnDestroy {
 
   public updatePage(): void {
     this.loading = true;
-    this.userService.userList(this.rows, this.first, undefined).subscribe({
+    this.userService.userList(this.rows, this.first, undefined, this.searchText).subscribe({
       next: (data) => {
         this.loading = false;
         this.teachers = data.results;
