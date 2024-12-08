@@ -6,6 +6,7 @@ from score_manager.views import (
     DifficultyViewSet,
     StudentViewSet,
     SubjectViewSet,
+    UserViewSet,
     TestViewSet,
     ResultViewSet,
     StudentResultViewSet,

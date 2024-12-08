@@ -13,10 +13,10 @@ import { Router } from '@angular/router';
   selector: 'app-user',
   standalone: true,
   imports: [DividerModule, InputTextModule, ButtonModule, ReactiveFormsModule],
-  templateUrl: './user.component.html',
-  styleUrl: './user.component.css',
+  templateUrl: './user-info.component.html',
+  styleUrl: './user-info.component.css',
 })
-export class UserComponent implements OnInit {
+export class UserInfoComponent implements OnInit {
   public userRole!: string;
   public userDetails!: UserDetails;
   public userDetailsForm!: FormGroup;

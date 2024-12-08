@@ -1,0 +1,58 @@
+<div class="flex flex-col gap-5">
+  <form [formGroup]="form">
+    <div class="flex flex-col gap-4 justify-center">
+      <div class="flex flex-col gap-1">
+        <label for="username" class="px-1 text-sm font-bold">Username</label>
+        @if (form.get('username')?.touched && form.get('username')?.invalid) {
+          <div class="px-1 text-sm text-red-500">
+            Please input valid username
+          </div>
+        }
+        <input type="text" pInputText formControlName="username" />
+      </div>
+      <div class="grid grid-cols-5 gap-5">
+        <div class="flex flex-col col-span-3 gap-1">
+          <label for="first_name" class="px-1 text-sm font-bold"
+            >First name</label
+          >
+          @if (form.get('first_name')?.touched && !form.get('first_name')?.value) {
+            <div class="px-1 text-sm text-red-500">First name is required</div>
+          }
+          <input pInputText formControlName="first_name" />
+        </div>
+        <div class="flex flex-col col-span-2 gap-1">
+          <label for="last_name" class="px-1 text-sm font-bold"
+            >Last name</label
+          >
+          @if (form.get('last_name')?.touched && !form.get('last_name')?.value) {
+            <div class="px-1 text-sm text-red-500">Last name is required</div>
+          }
+          <input pInputText formControlName="last_name" />
+        </div>
+      </div>
+      <div class="flex flex-col gap-1">
+        <label for="User Type" class="px-1 text-sm font-bold">User Type</label>
+        <p-dropdown
+          formControlName="user_type"
+          [options]="userTypes"
+          optionLabel="name"
+          optionValue="type"
+          placeholder="Select User Type"
+        />
+      </div>
+      <div class="flex flex-col gap-1">
+        <label for="email" class="px-1 text-sm font-bold">Email</label>
+        @if (form.get('email')?.touched && !form.get('email')?.value) {
+          <div class="px-1 text-sm text-red-500">Please input valid email</div>
+        } @else if (form.get('email')?.touched && form.get('email')?.invalid) {
+          <div class="px-1 text-sm text-red-500">Please input valid email</div>
+        }
+        <input type="text" pInputText formControlName="email" />
+      </div>
+    </div>
+  </form>
+
+  <div class="flex justify-end">
+    <p-button (click)="submit()" severity="success">Submit</p-button>
+  </div>
+</div>

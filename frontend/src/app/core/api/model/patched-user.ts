@@ -7,7 +7,6 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { UserTypeEnum } from './user-type-enum';
 
 
 export interface PatchedUser { 
@@ -19,10 +18,5 @@ export interface PatchedUser {
     email?: string;
     first_name?: string;
     last_name?: string;
-    user_type?: UserTypeEnum;
-    password?: string;
 }
-export namespace PatchedUser {
-}
-
 
