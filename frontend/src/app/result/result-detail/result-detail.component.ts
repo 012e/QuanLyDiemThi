@@ -31,6 +31,8 @@ import {
 import { ScoreCreateComponent } from '../score-create/score-create.component';
 import { ScoreEditorComponent } from '../score-editor/score-editor.component';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { StudentResultPickerComponent } from '../student-result-picker/student-result-picker.component';
+
 @Component({
   selector: 'app-result-detail',
   standalone: true,
@@ -51,6 +53,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
   styleUrl: './result-detail.component.css',
 })
 export class ResultDetailComponent implements OnInit {
+  
   constructor(
     private readonly fb: FormBuilder,
     private readonly dialogService: DialogService,
@@ -72,6 +75,7 @@ export class ResultDetailComponent implements OnInit {
   public resultForm!: FormGroup;
   public scoreCreateRef: DynamicDialogRef | null = null;
 
+  public studentResults!: Result[];
   public students: Student[] = [];
   public selectedStudents: Student[] | null = null;
   public subjects: Subject[] = [];
@@ -127,20 +131,21 @@ export class ResultDetailComponent implements OnInit {
 
     this.resultId = this.getResultId();
     this.resultsService.resultsRetrieve(this.resultId).subscribe((data) => {
+      console.log(data);
       this.resultForm.patchValue({
         ...data,
       });
-      this.updateStudents();
+      this.updateStudentResults();
     });
   }
 
   public initForm(): void {
     this.resultForm = this.fb.group({
       id: [undefined],
-      subject: [null, Validators.required],
-      class: [null, [Validators.required]],
+      test: [null, Validators.required],
+      classroom: [null, [Validators.required]],
       teacher: [null, Validators.required],
-      students: [[]],
+      student_results: [[]],
     });
     this.resultForm.disable();
   }
@@ -165,21 +170,23 @@ export class ResultDetailComponent implements OnInit {
     const selectedStudentIds = this.students.map((student) => {
       return student.id;
     });
-    this.resultForm.get('students')?.setValue(selectedStudentIds);
+    this.resultForm.get('student_results')?.setValue(selectedStudentIds);
   }
 
-  public updateStudents(): void {
+  public updateStudentResults(): void {
     const studentIds: Array<number> =
-      this.resultForm.get('students')?.value ?? [];
+      this.resultForm.get('student_results')?.value ?? [];
 
     const size = studentIds.length;
-    this.students = new Array<Student>(size);
+    this.studentResults = new Array<Result>(size);
     this.clearSelectedStudents();
+    
 
     studentIds.forEach((id, index) => {
-      this.studentService.studentRetrieve(id).subscribe({
-        next: (student) => {
-          this.students[index] = student;
+      console.log(`Fetching student ${id}`);
+      this.resultsService.resultsRetrieve(id).subscribe({
+        next: (studentResult) => {
+          this.studentResults[index] = studentResult;
         },
         error: (error) => {
           this.showError(`Failed to fetch students: ${error.message}`);
@@ -198,13 +205,13 @@ export class ResultDetailComponent implements OnInit {
   }
 
   public addStudent(): void {
-    this.scoreCreateRef = this.dialogService.open(ScoreCreateComponent, {
+    this.scoreCreateRef = this.dialogService.open(StudentResultPickerComponent, {
       header: 'Select Students',
       width: '70%',
-      contentStyle: { overflow: 'auto' },
       data: {
-        exceptStudents: this.resultForm.get('students')?.value || [],
+        studentResultExceptions: this.resultForm.get('student_results')?.value || [],
       },
+      contentStyle: { overflow: 'auto' },
       baseZIndex: 10000,
     });
 
@@ -214,15 +221,15 @@ export class ResultDetailComponent implements OnInit {
       }
       console.log(`Dialog returned ${newStudents}`);
 
-      const currentStudents = this.resultForm.get('students')?.value || [];
+      const currentStudents = this.resultForm.get('student_results')?.value || [];
 
       this.resultForm
-        .get('students')
+        .get('student_results')
         ?.setValue(this.mergeStudentIds(currentStudents, newStudents));
 
       this.showSuccess('Students added successfully');
-      console.log(`New student ids ${this.resultForm.get('students')?.value}`);
-      this.updateStudents();
+      console.log(`New student ids ${this.resultForm.get('student_results')?.value}`);
+      this.updateStudentResults();
     });
   }
 
@@ -230,10 +237,10 @@ export class ResultDetailComponent implements OnInit {
     const data = this.resultForm.value;
     const score: Result = {
       id: data.id,
-      test: data.subject,
-      teacher: data.semester,
-      classroom: data.datetime,
-      student_results: data.students,
+      test: data.test,
+      teacher: data.teacher,
+      classroom: data.classroom,
+      student_results: data.student_results,
     };
     return score;
   }
@@ -244,7 +251,8 @@ export class ResultDetailComponent implements OnInit {
       this.showError('Form is not valid, please check the fields.');
       return;
     }
-    this.resultsService.resultsCreate(this.getFormValue()).subscribe({
+    console.log(this.getFormValue());
+    this.resultsService.resultsUpdate(this.resultId, this.getFormValue()).subscribe({
       next: (response) => {
         this.showSuccess('Result created successfully');
         this.router.navigate(['/result']);
@@ -285,28 +293,28 @@ export class ResultDetailComponent implements OnInit {
     });
   }
 
-  public editStudent(index: number): void {
-    this.scoreCreateRef = this.dialogService.open(ScoreEditorComponent, {
-      header: 'Edit Student',
-      width: '70%',
-      contentStyle: { overflow: 'auto' },
-      data: {
-        student: this.students[index],
-      },
-      baseZIndex: 10000,
-    });
+  // public editStudent(index: number): void {
+  //   this.scoreCreateRef = this.dialogService.open(ScoreEditorComponent, {
+  //     header: 'Edit Student',
+  //     width: '70%',
+  //     contentStyle: { overflow: 'auto' },
+  //     data: {
+  //       student: this.students[index],
+  //     },
+  //     baseZIndex: 10000,
+  //   });
 
-    this.scoreCreateRef.onClose.subscribe((student: Student) => {
-      if (!student) {
-        return;
-      }
-      console.log(`Dialog returned ${student}`);
+  //   this.scoreCreateRef.onClose.subscribe((student: Student) => {
+  //     if (!student) {
+  //       return;
+  //     }
+  //     console.log(`Dialog returned ${student}`);
 
-      this.students[index] = student;
-      this.syncStudentsTableToForm();
-      this.showSuccess('Student updated successfully');
-    });
-  }
+  //     this.students[index] = student;
+  //     this.syncStudentsTableToForm();
+  //     this.showSuccess('Student updated successfully');
+  //   });
+  // }
 
   public deleteResult(): void {
     this.confirmationService.confirm({

@@ -104,14 +104,17 @@ export class ResultComponent implements OnInit {
 
   public loadData(): void {
     this.classService.classList().subscribe((classes) => {
+      console.log(classes);
       this.classes = classes.results;
     });
 
     this.subjectServive.subjectList().subscribe((subjects) => {
+      console.log(subjects);
       this.subjects = subjects;
     });
 
     this.userService.userList().subscribe((users) => {
+      console.log(users);
       this.teachers = users.results;
     });
   }

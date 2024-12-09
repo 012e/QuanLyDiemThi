@@ -21,37 +21,37 @@
     </div>
     <form [formGroup]="resultForm" class="flex flex-col gap-5">
       <div class="flex flex-col gap-1">
-        <label for="subject" class="px-1 text-sm font-bold">Subject</label>
-        @if ( this.resultForm.get('subject')?.invalid &&
-        this.resultForm.get('subject')?.touched ) {
+        <label for="test" class="px-1 text-sm font-bold">Subject</label>
+        @if ( this.resultForm.get('test')?.invalid &&
+        this.resultForm.get('test')?.touched ) {
         <div class="px-1 text-sm text-red-500">Please select a subject</div>
         }
         <p-dropdown
           [style]="{ minWidth: '100%' }"
-          formControlName="subject"
+          formControlName="test"
           [filter]="true"
           [options]="subjects"
           optionLabel="name"
           optionValue="id"
           placeholder="Select a Subject"
-          inputId="subject"
+          inputId="test"
         />
       </div>
       <div class="flex flex-col gap-1">
-        <label for="class" class="px-1 text-sm font-bold">Class</label>
-        @if ( this.resultForm.get('class')?.invalid &&
-        this.resultForm.get('class')?.touched ) {
+        <label for="classroom" class="px-1 text-sm font-bold">Class</label>
+        @if ( this.resultForm.get('classroom')?.invalid &&
+        this.resultForm.get('classroom')?.touched ) {
         <div class="px-1 text-sm text-red-500">Please select a class</div>
         }
         <p-dropdown
           [style]="{ minWidth: '100%' }"
-          formControlName="class"
+          formControlName="classroom"
           [filter]="true"
           [options]="classes"
           optionLabel="name"
           optionValue="id"
           placeholder="Select a Class"
-          inputId="class"
+          inputId="classroom"
         />
       </div>
       <div class="flex flex-col gap-1">
@@ -65,7 +65,7 @@
           formControlName="teacher"
           [filter]="true"
           [options]="teachers"
-          optionLabel="name"
+          optionLabel="username"
           optionValue="id"
           placeholder="Select a Teacher"
           inputId="teacher"
@@ -117,13 +117,13 @@
                 {{ getTeacherLabelById(result.teacher) }}
               </td>
               <td>
-                <p-button
+                <!-- <p-button
                   [rounded]="true"
                   icon="pi pi-pencil"
                   severity="success"
                   [outlined]="true"
                   (onClick)="editStudent(index)"
-                />
+                /> -->
                 <p-button
                   [rounded]="true"
                   icon="pi pi-trash"

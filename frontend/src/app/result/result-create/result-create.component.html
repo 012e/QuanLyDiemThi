@@ -48,7 +48,7 @@
           formControlName="teacher"
           [filter]="true"
           [options]="teachers"
-          optionLabel="name"
+          optionLabel="username"
           optionValue="id"
           placeholder="Select a Teacher"
           inputId="teacher"
@@ -94,18 +94,20 @@
               <td pReorderableRowHandle>
                 {{ getSubjectLabelById(result.subject) }}
               </td>
-              <td>{{ getClassLabelById(result.class) }}</td>
-              <td>
+              <td pReorderableRowHandle>
+                {{ getClassLabelById(result.class) }}
+              </td>
+              <td pReorderableRowHandle>
                 {{ getTeacherLabelById(result.teacher) }}
               </td>
               <td>
-                <p-button
+                <!-- <p-button
                   [rounded]="true"
                   icon="pi pi-pencil"
                   severity="success"
                   [outlined]="true"
                   (onClick)="editStudent(index)"
-                />
+                /> -->
                 <p-button
                   [rounded]="true"
                   icon="pi pi-trash"

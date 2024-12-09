@@ -31,7 +31,8 @@ import {
 } from '../../core/api';
 import { ScoreCreateComponent } from '../score-create/score-create.component';
 import { ScoreEditorComponent } from '../score-editor/score-editor.component';
-ScoreCreateComponent
+import { StudentResultPickerComponent } from '../student-result-picker/student-result-picker.component';
+
 @Component({
   selector: 'app-result-create',
   standalone: true,
@@ -68,6 +69,8 @@ export class ResultCreateComponent implements OnInit {
   public resultForm!: FormGroup;
   public scoreCreateRef: DynamicDialogRef | null = null;
 
+  public studentResults!: Result[];
+
   public students: Student[] = [];
   public selectedStudents: Student[] = [];
 
@@ -88,6 +91,7 @@ export class ResultCreateComponent implements OnInit {
 
   public loadData(): void {
     this.userService.userList().subscribe((users) => {
+      console.log(users);
       this.teachers = users.results;
     });
     this.subjectService.subjectList().subscribe((subjects) => {
@@ -128,21 +132,22 @@ export class ResultCreateComponent implements OnInit {
     const selectedStudentIds = this.students.map((student) => {
       return student.id;
     });
-    this.resultForm.get('students')?.setValue(selectedStudentIds);
+    this.resultForm.get('student_results')?.setValue(selectedStudentIds);
   }
 
-  public updateStudents(): void {
+  public updateStudentResults(): void {
     const studentIds: Array<number> =
-      this.resultForm.get('students')?.value ?? [];
+      this.resultForm.get('student_results')?.value ?? [];
 
     const size = studentIds.length;
-    this.students = new Array<Student>(size);
+    this.studentResults = new Array<Result>(size);
     this.clearSelectedStudents();
+    console.log(`Student ids ${studentIds}`);
 
     studentIds.forEach((id, index) => {
-      this.studentService.studentRetrieve(id).subscribe({
-        next: (student) => {
-          this.students[index] = student;
+      this.resultsService.resultsRetrieve(id).subscribe({
+        next: (studentResult) => {
+          this.studentResults[index] = studentResult;
         },
         error: (error) => {
           this.showError(`Failed to fetch students: ${error.message}`);
@@ -161,13 +166,13 @@ export class ResultCreateComponent implements OnInit {
   }
 
   public addStudent(): void {
-    this.scoreCreateRef = this.dialogService.open(ScoreCreateComponent, {
-      header: 'Select Students',
+    this.scoreCreateRef = this.dialogService.open(StudentResultPickerComponent, {
+      header: 'Add Students',
       width: '70%',
-      contentStyle: { overflow: 'auto' },
       data: {
-        exceptStudents: this.resultForm.get('students')?.value || [],
+        studentResultExceptions: this.resultForm.get('student_results')?.value || [],
       },
+      contentStyle: { overflow: 'auto' },
       baseZIndex: 10000,
     });
 
@@ -177,15 +182,15 @@ export class ResultCreateComponent implements OnInit {
       }
       console.log(`Dialog returned ${newStudents}`);
 
-      const currentStudents = this.resultForm.get('students')?.value || [];
+      const currentStudents = this.resultForm.get('student_results')?.value || [];
 
       this.resultForm
-        .get('students')
+        .get('student_results')
         ?.setValue(this.mergeStudentIds(currentStudents, newStudents));
 
       this.showSuccess('Students added successfully');
-      console.log(`New student ids ${this.resultForm.get('students')?.value}`);
-      this.updateStudents();
+      console.log(`New student ids ${this.resultForm.get('student_results')?.value}`);
+      this.updateStudentResults();
     });
   }
 
@@ -194,10 +199,11 @@ export class ResultCreateComponent implements OnInit {
     const score: Result = {
       id: data.id,
       test: data.subject,
-      teacher: data.semester,
-      classroom: data.datetime,
+      teacher: data.teacher,
+      classroom: data.class,
       student_results: data.students,
     };
+    console.log(score);
     return score;
   }
 
@@ -213,6 +219,7 @@ export class ResultCreateComponent implements OnInit {
         this.router.navigate(['/result']);
       },
       error: (error) => {
+        
         this.showError(`Failed to create result: ${error.message}`);
       },
     });
@@ -249,26 +256,26 @@ export class ResultCreateComponent implements OnInit {
     });
   }
 
-  public editStudent(index: number): void {
-    this.scoreCreateRef = this.dialogService.open(ScoreEditorComponent, {
-      header: 'Edit Student',
-      width: '70%',
-      contentStyle: { overflow: 'auto' },
-      data: {
-        student: this.students[index],
-      },
-      baseZIndex: 10000,
-    });
+  // public editStudent(index: number): void {
+  //   this.scoreCreateRef = this.dialogService.open(ScoreEditorComponent, {
+  //     header: 'Edit Student',
+  //     width: '70%',
+  //     contentStyle: { overflow: 'auto' },
+  //     data: {
+  //       student: this.students[index],
+  //     },
+  //     baseZIndex: 10000,
+  //   });
 
-    this.scoreCreateRef.onClose.subscribe((student: Student) => {
-      if (!student) {
-        return;
-      }
-      console.log(`Dialog returned ${student}`);
+  //   this.scoreCreateRef.onClose.subscribe((student: Student) => {
+  //     if (!student) {
+  //       return;
+  //     }
+  //     console.log(`Dialog returned ${student}`);
 
-      this.students[index] = student;
-      this.syncStudentsTableToForm();
-      this.showSuccess('Student updated successfully');
-    });
-  }
+  //     this.students[index] = student;
+  //     this.syncStudentsTableToForm();
+  //     this.showSuccess('Student updated successfully');
+  //   });
+  // }
 }
