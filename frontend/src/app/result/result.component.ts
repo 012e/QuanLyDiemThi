@@ -1,6 +1,15 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TableModule, TablePageEvent } from 'primeng/table';
-import { Result, ResultsService, SubjectService, ClassService, UserService } from '../core/api';
+import {
+  Result,
+  ResultsService,
+  SubjectService,
+  ClassService,
+  UserService,
+  Class,
+  User,
+  Subject,
+} from '../core/api';
 import { DividerModule } from 'primeng/divider';
 import { SkeletonModule } from 'primeng/skeleton';
 import { CardModule } from 'primeng/card';
@@ -15,7 +24,7 @@ import {
   forkJoin,
   map,
   of,
-  Subject,
+  Subject as RxSubject,
   tap,
 } from 'rxjs';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -32,10 +41,10 @@ import { Router } from '@angular/router';
     ButtonModule,
     InputTextModule,
     ConfirmDialogModule,
-],
+  ],
   providers: [ConfirmationService],
   templateUrl: './result.component.html',
-  styleUrl: './result.component.css'
+  styleUrl: './result.component.css',
 })
 export class ResultComponent implements OnInit {
   constructor(
@@ -45,10 +54,13 @@ export class ResultComponent implements OnInit {
     private readonly classService: ClassService,
     private readonly userService: UserService,
     private readonly messageService: MessageService,
-    private readonly confirmationService: ConfirmationService,
+    private readonly confirmationService: ConfirmationService
   ) {}
 
   public results!: Result[];
+  public subjects!: Subject[];
+  public classes!: Class[];
+  public teachers!: User[];
   public count!: number;
   public selectedResults: Result[] = [];
 
@@ -57,7 +69,7 @@ export class ResultComponent implements OnInit {
   public isLoading: boolean = false;
 
   public searchText: string = '';
-  private searchText$ = new Subject<string>();
+  private searchText$ = new RxSubject<string>();
 
   public onPage(event: TablePageEvent): void {
     this.first = event.first;
@@ -79,6 +91,7 @@ export class ResultComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+    this.loadData()
     this.searchText$
       .pipe(debounceTime(300), distinctUntilChanged())
       .subscribe((query: string) => {
@@ -87,6 +100,20 @@ export class ResultComponent implements OnInit {
         this.updatePage();
       });
     this.updatePage();
+  }
+
+  public loadData(): void {
+    this.classService.classList().subscribe((classes) => {
+      this.classes = classes.results;
+    });
+
+    this.subjectServive.subjectList().subscribe((subjects) => {
+      this.subjects = subjects;
+    });
+
+    this.userService.userList().subscribe((users) => {
+      this.teachers = users.results;
+    });
   }
 
   public clearSelectedResults(): void {
@@ -113,8 +140,8 @@ export class ResultComponent implements OnInit {
             catchError(() => {
               this.showError(`Failed to delete result with id ${result.id}`);
               return of({ id: result.id, success: false });
-            }),
-          ),
+            })
+          )
         );
 
         forkJoin(delete$).subscribe({
@@ -123,7 +150,9 @@ export class ResultComponent implements OnInit {
             this.updatePage();
             this.clearSelectedResults();
             this.showSuccess(
-              `Successfully deleted ${results.length} ${results.length === 1 ? 'result' : 'results'}.`,
+              `Successfully deleted ${results.length} ${
+                results.length === 1 ? 'result' : 'results'
+              }.`
             );
           },
           error: (error) => {
@@ -172,14 +201,16 @@ export class ResultComponent implements OnInit {
             this.updatePage();
             if (this.selectedResults.includes(result)) {
               this.selectedResults = this.selectedResults.filter(
-                (selected) => selected !== result,
+                (selected) => selected !== result
               );
             }
-            this.showSuccess(`Successfully deleted result with id ${result.id}`);
+            this.showSuccess(
+              `Successfully deleted result with id ${result.id}`
+            );
           },
           error: (error) => {
             this.showError(
-              `Failed to delete result with id ${result.id}: ${error.message}`,
+              `Failed to delete result with id ${result.id}: ${error.message}`
             );
           },
         });
@@ -192,34 +223,15 @@ export class ResultComponent implements OnInit {
   public createNew(): void {
     this.router.navigate(['/result/new']);
   }
-  public getSubjectLabelById(id: number)  {
-    this.subjectServive.subjectRetrieve(id).subscribe({
-      next: (subject) => {
-        return subject.name;
-      },
-      error: (error) => {
-        return error;
-      },
-    });
+  public getClassLabelById(index: number) {
+    return this.classes.find((classroom) => classroom.id === index)?.name;
   }
-  public getClassLabelById(id: number) {
-    this.classService.classRetrieve(id).subscribe({
-      next: (classroom) => {
-        return classroom.name;
-      },
-      error: (error) => {
-        return error;
-      },
-    });
+
+  public getSubjectLabelById(index: number) {
+    return this.subjects.find((subject) => subject.id === index)?.name;
   }
-  public getTeacherlabelById(id: number) {
-    this.userService.userRetrieve(id).subscribe({
-      next: (user) => {
-        return user.username;
-      },
-      error: (error) => {
-        return error;
-      },
-    });
+
+  public getTeacherLabelById(index: number) {
+    return this.teachers.find((teacher) => teacher.id === index)?.username;
   }
 }

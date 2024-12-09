@@ -161,7 +161,7 @@ export class ResultCreateComponent implements OnInit {
   }
 
   public addStudent(): void {
-    this.scoreCreateRef = this.dialogService.open(ResultCreateComponent, {
+    this.scoreCreateRef = this.dialogService.open(ScoreCreateComponent, {
       header: 'Select Students',
       width: '70%',
       contentStyle: { overflow: 'auto' },

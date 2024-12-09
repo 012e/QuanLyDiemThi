@@ -1,1 +1,73 @@
-<p>score-editor works!</p>
+<div class="flex justify-center w-screen py-10">
+    <div class="w-1/2">
+      <h1 class="text-4xl p-0 m-0 capitalize">Create new student form</h1>
+      <p-divider></p-divider>
+      <form [formGroup]="scoreForm" class="flex flex-col gap-5">
+        <div class="flex flex-col gap-1">
+          <label for="student" class="px-1 text-sm font-bold">Student</label>
+          @if ( this.scoreForm.get('student')?.invalid &&
+          this.scoreForm.get('student')?.touched ) {
+          <div class="px-1 text-sm text-red-500">Please select a student</div>
+          }
+          <p-dropdown
+            [style]="{ minWidth: '100%' }"
+            formControlName="student"
+            [filter]="true"
+            [options]="students"
+            optionLabel="name"
+            optionValue="id"
+            placeholder="Select a Student"
+            inputId="student"
+          />
+        </div>
+        <div class="flex flex-col gap-1">
+          <label for="result" class="px-1 text-sm font-bold">Result</label>
+          @if ( this.scoreForm.get('result')?.invalid &&
+          this.scoreForm.get('result')?.touched ) {
+          <div class="px-1 text-sm text-red-500">Please enter a result</div>
+          }
+          <p-inputNumber
+            [style]="{ minWidth: '100%' }"
+            formControlName="result"
+            placeholder="Enter result"
+            inputId="result"
+          />
+        </div>
+        <div class="flex flex-col gap-1">
+          <label for="score" class="px-1 text-sm font-bold">Score</label>
+          @if ( this.scoreForm.get('score')?.invalid &&
+          this.scoreForm.get('score')?.touched ) {
+          <div class="px-1 text-sm text-red-500">Please enter a score</div>
+          }
+          <p-inputNumber
+            [style]="{ minWidth: '100%' }"
+            formControlName="score"
+            placeholder="Enter score"
+            inputId="score"
+          />
+        </div>
+        <div class="flex flex-col gap-1">
+          <label for="note" class="px-1 text-sm font-bold">Note</label>
+          <p-inputTextarea
+            [style]="{ minWidth: '100%' }"
+            formControlName="note"
+            placeholder="Enter note"
+            inputId="note"
+          />
+        </div>
+        
+        <p-button
+          (click)="submit()"
+          label="Submit"
+          icon="pi pi-check"
+          severity="success"
+        />
+      </form>
+    </div>
+  </div>
+  
+  <p-confirmDialog
+    header="Confirmation"
+    icon="pi pi-exclamation-triangle"
+  ></p-confirmDialog>
+  
