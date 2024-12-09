@@ -1,55 +1,46 @@
 import { Routes } from '@angular/router';
 import { isAuthenticatedGuard } from './core/guards/is-authenticated.guard';
 import { isUnauthenticatedGuard } from './core/guards/is-unauthenticated.guard';
-import { AdminComponent } from './admin/admin.component';
-import { LoginComponent } from './login/components/login/login.component';
-import { MainComponent } from './main/components/main/main.component';
-import { QuestionComponent } from './question/question.component';
-import { TestCreateComponent } from './test/test-create/test-create.component';
-import { TestDetailComponent } from './test/test-detail/test-detail.component';
-import { TestListComponent } from './test/test-list/test-list.component';
-import { UserInfoComponent } from './user-info/user-info.component';
-import { UserListComponent } from './user/user-list/user-list.component';
 
 export const routes: Routes = [
   {
     path: '',
-    component: MainComponent,
+    loadComponent: () => import('./main/components/main/main.component').then((m) => m.MainComponent),
     canActivate: [isAuthenticatedGuard],
     children: [
       {
         path: 'question',
-        component: QuestionComponent,
+        loadComponent: () => import('./question/question.component').then((m) => m.QuestionComponent),
       },
       {
         path: 'me',
-        component: UserInfoComponent,
+        loadComponent: () => import('./user-info/user-info.component').then((m) => m.UserInfoComponent),
       },
       {
         path: 'user',
-        component: UserListComponent,
+        loadComponent: () => import('./user/user-list/user-list.component').then((m) => m.UserListComponent),
       },
       {
         path: 'admin',
-        component: AdminComponent,
+        loadComponent: () => import('./admin/admin.component').then((m) => m.AdminComponent),
       },
       {
         path: 'test',
-        component: TestListComponent,
+        loadComponent: () => import('./test/test-list/test-list.component').then((m) => m.TestListComponent),
       },
       {
         path: 'test/new',
-        component: TestCreateComponent,
+        loadComponent: () => import('./test/test-create/test-create.component').then((m) => m.TestCreateComponent),
       },
       {
         path: 'test/:id',
-        component: TestDetailComponent,
+        loadComponent: () => import('./test/test-detail/test-detail.component').then((m) => m.TestDetailComponent),
       },
     ],
   },
   {
     path: 'auth/login',
-    component: LoginComponent,
+    loadComponent: () => import('./login/components/login/login.component').then((m) => m.LoginComponent),
     canActivate: [isUnauthenticatedGuard],
   },
 ];
