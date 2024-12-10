@@ -143,11 +143,9 @@ class StudentResultViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         student_result = serializer.save()
         student = student_result.student
-        student_result.classes.set(self.request.data.get("classes", []))
 
     def perform_update(self, serializer):
         student_result = serializer.save()
-        student_result.classes.set(self.request.data.get("classes", []))
 
 
 class ConfigView(APIView):
