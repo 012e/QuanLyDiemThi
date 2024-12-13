@@ -3,7 +3,7 @@ from datetime import datetime
 from constance import config
 from django.conf import settings
 from django.contrib.auth.models import User
-from django.db.models import Count, Q
+from django.db.models import Count
 from django.utils import timezone
 from drf_spectacular.utils import (
     OpenApiExample,
@@ -99,7 +99,7 @@ class TestViewSet(viewsets.ModelViewSet):
     serializer_class = TestSerializer
 
     filter_backends = [OrderingFilter, SearchFilter]
-    search_fields = [ "subject__name", "questions__detail"]
+    search_fields = ["subject__name", "questions__detail"]
     ordering = ["-updated_at"]
 
     def perform_create(self, serializer):
@@ -452,46 +452,67 @@ class AnnualReportView(APIView):
         start_date = datetime(year, 1, 1)
         end_date = datetime(year + 1, 1, 1)
 
+        # Get the overall totals
         total_tests = Test.objects.filter(
             datetime__range=(start_date, end_date)
         ).count()
-        total_results = Result.objects.filter(
-            created_at__range=(start_date, end_date)
+        total_results = StudentResult.objects.filter(
+            result__test__datetime__range=(start_date, end_date)
         ).count()
 
-        # Ensure we don't divide by zero
-        test_ratio_value = (
-            total_tests if total_tests > 0 else 1
-        )  # Prevent division by zero
-        result_ratio_value = (
-            total_results if total_results > 0 else 1
-        )  # Prevent division by zero
-
-        # Group data by subject: total tests, total results, and their ratios for the given year
-        subject_data = (
-            Subject.objects.annotate(
-                total_tests=Count(
-                    "test", filter=Q(test__datetime__range=(start_date, end_date))
-                ),
-                total_results=Count(
-                    "test__result",
-                    filter=Q(test__datetime__range=(start_date, end_date)),
-                ),
-            )
-            .values("name", "total_tests", "total_results")
-            .order_by("name")
+        # Query 1: Total number of tests per subject in the given year, grouped by subject name
+        total_tests_query = (
+            Test.objects.filter(datetime__range=(start_date, end_date))
+            .values("subject__name")  # Grouping by subject name
+            .annotate(total_tests=Count("id"))  # Counting tests per subject
         )
+        total_tests_dict = {
+            test["subject__name"]: test["total_tests"] for test in total_tests_query
+        }
 
-        # Loop through each subject and calculate the ratios
-        for subject in subject_data:
-            subject["test_ratio"] = subject["total_tests"] / test_ratio_value
-            subject["result_ratio"] = subject["total_results"] / result_ratio_value
+        # Query 2: Total number of distinct student results per subject in the given year, grouped by subject name
+        total_results_query = (
+            StudentResult.objects.filter(
+                result__test__datetime__range=(start_date, end_date)
+            )
+            .values("result__test__subject__name")  # Grouping by subject name
+            .annotate(
+                total_results=Count("id", distinct=True)
+            )  # Counting distinct results per subject
+        )
+        total_results_dict = {
+            result["result__test__subject__name"]: result["total_results"]
+            for result in total_results_query
+        }
 
-        # Prepare the response data
+        # Prepare data for response
+        subjects = Subject.objects.all()
+        subject_data = []
+
+        for subject in subjects:
+            # Fetch total tests and total results from the dictionaries
+            subject_total_tests = total_tests_dict.get(subject.name, 0)
+            subject_total_results = total_results_dict.get(subject.name, 0)
+
+            # Prevent division by zero for ratios
+            test_ratio_value = total_tests if total_tests > 0 else 1
+            result_ratio_value = total_results if total_results > 0 else 1
+
+            subject_data.append(
+                {
+                    "name": subject.name,
+                    "total_tests": subject_total_tests,
+                    "total_results": subject_total_results,
+                    "test_ratio": subject_total_tests / test_ratio_value,
+                    "result_ratio": subject_total_results / result_ratio_value,
+                }
+            )
+
+        # Response data
         data = {
             "total_tests": total_tests,
             "total_results": total_results,
-            "subjects": list(subject_data),
+            "subjects": subject_data,
         }
 
         return Response(data, status=status.HTTP_200_OK)
