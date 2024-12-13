@@ -10,6 +10,7 @@ import { TestDetailComponent } from './test/test-detail/test-detail.component';
 import { TestListComponent } from './test/test-list/test-list.component';
 import { UserInfoComponent } from './user-info/user-info.component';
 import { UserListComponent } from './user/user-list/user-list.component';
+import { SummaryComponent } from './summary/summary.component';
 
 export const routes: Routes = [
   {
@@ -17,6 +18,11 @@ export const routes: Routes = [
     component: MainComponent,
     canActivate: [isAuthenticatedGuard],
     children: [
+      {
+        path: 'summary/:year',
+        component: SummaryComponent,
+        title: 'Yearly Summary',
+      },
       {
         path: 'question',
         component: QuestionComponent,

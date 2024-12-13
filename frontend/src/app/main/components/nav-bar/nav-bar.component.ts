@@ -23,6 +23,13 @@ export class NavBarComponent implements OnInit {
   public ngOnInit() {
     this.items = [
       {
+        label: 'Summary',
+        icon: 'pi pi-percentage',
+        command: () => {
+          this.router.navigate(['summary', new Date().getFullYear()]);
+        },
+      },
+      {
         label: 'Teachers',
         icon: 'pi pi-users',
         command: () => {
