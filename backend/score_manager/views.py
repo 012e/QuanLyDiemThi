@@ -42,14 +42,9 @@ from .serializers import (
 class StudentViewSet(viewsets.ModelViewSet):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
-    filter_backends = [OrderingFilter]
+    filter_backends = [OrderingFilter, SearchFilter]
     ordering = ["name"]
-
-    def perform_update(self, serializer):
-        student = serializer.save()
-        classes = self.request.data.get("classes")
-        if classes is not None:  # Neu "classes" key duoc cung cap trong request
-            student.classes.set(classes)  # update student class truc tiep
+    search_fields = ["name", "student_code", "classroom__name"]
 
 
 class ClassViewSet(viewsets.ModelViewSet):

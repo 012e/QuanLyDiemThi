@@ -17,15 +17,53 @@ from .models import (
 
 
 class StudentSerializer(serializers.ModelSerializer):
+    classroom = serializers.PrimaryKeyRelatedField(queryset=Class.objects.all())
+
     class Meta:
         model = Student
-        exclude = ["created_at", "updated_at"]
+        fields = [
+            "id",
+            "name",
+            "student_code",
+            "classroom",
+            "created_at",
+            "updated_at",
+        ]
 
 
 class ClassSerializer(serializers.ModelSerializer):
+    students = StudentSerializer(many=True)  # Make students writable
+
     class Meta:
         model = Class
-        fields = "__all__"
+        fields = ["id", "name", "teacher", "students"]
+
+    def create(self, validated_data):
+        students_data = validated_data.pop("students", [])
+        classroom = Class.objects.create(**validated_data)
+        for student_data in students_data:
+            Student.objects.create(classroom=classroom, **student_data)
+        return classroom
+
+    def update(self, instance, validated_data):
+        students_data = validated_data.pop("students", [])
+        instance.name = validated_data.get("name", instance.name)
+        instance.teacher = validated_data.get("teacher", instance.teacher)
+        instance.save()
+
+        for student_data in students_data:
+            student_id = student_data.get("id", None)
+            if student_id:
+                student = Student.objects.get(id=student_id)
+                student.name = student_data.get("name", student.name)
+                student.student_code = student_data.get(
+                    "student_code", student.student_code
+                )
+                student.save()
+            else:
+                Student.objects.create(classroom=instance, **student_data)
+
+        return instance
 
 
 class QuestionSerializer(serializers.ModelSerializer):
@@ -172,7 +210,7 @@ class ResultSerializer(serializers.ModelSerializer):
         # Create StudentResult instances
         for student_result_data in student_results_data:
             student_result_data.pop("result")
-            StudentResult.objects.create(result=result, **student_result_data)
+            StudentResult.objects.create(**student_result_data)
 
         return result
 
@@ -200,7 +238,7 @@ class ResultSerializer(serializers.ModelSerializer):
                 student_result_instance.save()
             else:
                 # Create a new StudentResult
-                StudentResult.objects.create(result=instance, **student_result_data)
+                StudentResult.objects.create(**student_result_data)
 
         # Delete any remaining StudentResult objects not included in input
         for remaining_sr in existing_student_results.values():

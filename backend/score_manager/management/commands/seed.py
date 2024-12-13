@@ -122,9 +122,10 @@ def seed_classes():
 
 def seed_students():
     students = []
+    total_classes = Class.objects.count()
     for _ in range(TOTAL_STUDENTS):
         students.append(
-            Student(name=fake.name(), student_code=fake.random_int(100000, 999999))
+            Student(name=fake.name(), student_code=fake.random_int(100000, 999999), classroom_id=fake.random_int(1, total_classes))
         )
     Student.objects.bulk_create(students)
 

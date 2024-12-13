@@ -11,7 +11,6 @@ from score_manager.views import (
     ResultViewSet,
     StudentResultViewSet,
     ConfigView,
-    UserViewSet
 )
 from django.urls import path, include
 from drf_spectacular.views import (
