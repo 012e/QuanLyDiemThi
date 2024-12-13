@@ -1,0 +1,64 @@
+<div class="flex flex-col gap-5 mb-10">
+  <div class="flex justify-center items-center py-5">
+    <h1 class="p-0 m-0 font-sans text-6xl">Yearly Summary</h1>
+  </div>
+  <div class="flex justify-around">
+    @if (data) {
+      <p class="font-bold">
+        Total Tests: <span class="text-2xl">{{ data.total_tests }}</span>
+      </p>
+      <p class="font-bold">
+        Total Results: <span class="text-2xl">{{ data.total_results }}</span>
+      </p>
+    }
+  </div>
+  <div>
+    <p-table
+      [value]="data?.subjects!"
+      [sortMode]="'multiple'"
+      [rowHover]="true"
+    >
+      <ng-template pTemplate="caption">
+        <div class="flex justify-center">
+          <h1 class="p-0 m-0 text-3xl">Subject Summaries</h1>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="name" class="font-bold">
+            Subject Name
+            <p-sortIcon field="name"></p-sortIcon>
+          </th>
+          <th pSortableColumn="total_tests">
+            Total Tests <p-sortIcon field="total_tests"></p-sortIcon>
+          </th>
+          <th pSortableColumn="test_ratio">
+            Test Ratio <p-sortIcon field="test_ratio"></p-sortIcon>
+          </th>
+          <th pSortableColumn="total_results">
+            Total Results <p-sortIcon field="total_results"></p-sortIcon>
+          </th>
+          <th pSortableColumn="result_ratio">
+            Result Ratio <p-sortIcon field="result_ratio"></p-sortIcon>
+          </th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-subject>
+        <tr>
+          <td class="font-bold">
+            {{ subject.name }}
+          </td>
+          <td>
+            {{ subject.total_tests }}
+          </td>
+          <td>{{ subject.test_ratio * 100 | number: '1.0-2' }}%</td>
+          <td>
+            {{ subject.total_results }}
+          </td>
+          <td>{{ subject.result_ratio * 100 | number: '1.0-2' }}%</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
