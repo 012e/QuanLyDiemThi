@@ -9,7 +9,7 @@ RUN npm install --save-dev
 
 COPY . .
 
-RUN ["ng", "build", "--configuration", "production"]
+RUN ["ng", "build", "--configuration", "development"]
 
 FROM nginx:1.17.1-alpine
 
