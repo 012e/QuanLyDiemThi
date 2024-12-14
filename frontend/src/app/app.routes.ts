@@ -11,6 +11,7 @@ import { TestListComponent } from './test/test-list/test-list.component';
 import { UserInfoComponent } from './user-info/user-info.component';
 import { UserListComponent } from './user/user-list/user-list.component';
 import { SummaryComponent } from './summary/summary.component';
+import { StudentComponent } from './student/student.component';
 
 export const routes: Routes = [
   {
@@ -50,6 +51,10 @@ export const routes: Routes = [
       {
         path: 'test/:id',
         component: TestDetailComponent,
+      },
+      {
+        path: 'student',
+        component: StudentComponent,
       },
     ],
   },

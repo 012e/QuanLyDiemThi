@@ -1,0 +1,44 @@
+<div class="flex flex-col gap-5">
+    <form [formGroup]="form">
+      <div class="flex flex-col gap-4 justify-center">
+        <div class="flex flex-col gap-1">
+          <label for="name" class="px-1 text-sm font-bold">Name</label>
+          @if (form.get('name')?.touched && form.get('name')?.invalid) {
+          <div class="px-1 text-sm text-red-500">Please input valid name</div>
+          }
+          <input type="text" pInputText formControlName="name" />
+        </div>
+        <div class="grid grid-cols-5 gap-5">
+          <div class="flex flex-col col-span-3 gap-1">
+            <label for="student_code" class="px-1 text-sm font-bold"
+              >Student code</label
+            >
+            @if (form.get('student_code')?.touched &&
+            !form.get('student_code')?.value) {
+            <div class="px-1 text-sm text-red-500">Student code is required</div>
+            }
+            <input pInputText formControlName="student_code" />
+          </div>
+        </div>
+  
+        <div class="flex flex-col gap-1">
+          <label for="Class Id" class="px-1 text-sm font-bold">Class Id</label>
+          @if (form.get('class_id')?.touched && !form.get('class_id')?.value) {
+          <div class="px-1 text-sm text-red-500">Class Id is required</div>
+          }
+          <p-dropdown
+            formControlName="class_id"
+            [options]="classes"
+            optionLabel="name"
+            optionValue="id"
+            placeholder="Select Class Id"
+          />
+        </div>
+      </div>
+    </form>
+  
+    <div class="flex justify-end">
+      <p-button (click)="submit()" severity="success">Submit</p-button>
+    </div>
+  </div>
+  

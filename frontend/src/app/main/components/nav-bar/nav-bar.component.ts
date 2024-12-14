@@ -63,6 +63,14 @@ export class NavBarComponent implements OnInit {
         },
         disabled: !isAdmin,
       },
+      {
+        label: 'Student',
+        icon: 'pi pi-cog',
+        command: () => {
+          this.router.navigate(['student']);
+        },
+        disabled: !isAdmin,
+      },
     ];
   }
 }
