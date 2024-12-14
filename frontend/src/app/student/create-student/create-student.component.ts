@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -27,6 +27,9 @@ import {
 import { Class, ClassService, Student, StudentService } from '../../core/api';
 import { noWhitespaceValidator } from '../../core/validators/no-whitespace.validator';
 import { MessageService } from 'primeng/api';
+import { ClassPickerComponent } from '../class-picker/class-picker.component';
+import { Router } from '@angular/router';
+import { Divider, DividerModule } from 'primeng/divider';
 
 @Component({
   selector: 'app-create-student',
@@ -48,26 +51,26 @@ import { MessageService } from 'primeng/api';
     InputNumberModule,
     ReactiveFormsModule,
     DropdownModule,
+    DividerModule
   ],
+  providers: [DialogService],
   templateUrl: './create-student.component.html',
-  styleUrl: './create-student.component.css'
+  styleUrl: './create-student.component.css',
 })
-export class CreateStudentComponent implements OnInit {
+export class CreateStudentComponent implements OnInit, OnDestroy {
   student!: Student;
-  classes!: Class[];
+  classroom: Class | undefined;
   form!: FormGroup;
-  self: DynamicDialogComponent | undefined;
+  public classPickerRef: DynamicDialogRef | null = null;
 
   constructor(
     private readonly fb: FormBuilder,
+    private readonly router: Router,
     private readonly studentService: StudentService,
     private readonly classService: ClassService,
     private readonly messageService: MessageService,
-    dialogService: DialogService,
-    public selfRef: DynamicDialogRef,
-  ) {
-    this.self = dialogService.getInstance(selfRef);
-  }
+    private readonly dialogService: DialogService
+  ) {}
 
   ngOnInit(): void {
     console.log('CreateStudentComponent init');
@@ -77,29 +80,14 @@ export class CreateStudentComponent implements OnInit {
         [Validators.required, Validators.minLength(1), noWhitespaceValidator()],
       ],
       student_code: [undefined, [Validators.required]],
-      class_id: [undefined, [Validators.required]],
+      classroom: [undefined, [Validators.required]],
     });
-    // this.loadData();
   }
 
-  // private loadData() {
-  //   this.classService.classList().subscribe({
-  //     next: (response) => {
-  //       this.classes = response.results;
-  //     },
-  //     error: (error) => {
-  //       console.error(error);
-  //       this.messageService.add({
-  //         severity: 'error',
-  //         summary: 'Error',
-  //         detail: 'Failed to load classes',
-  //       });
-  //     },
-  //   });
-  // }
-
-  private closeWithSuccess(student: Student) {
-    this.selfRef.close(student);
+  public ngOnDestroy(): void {
+    if (this.classPickerRef) {
+      this.classPickerRef.close();
+    }
   }
 
   private toSentenceCase(input: string): string {
@@ -108,38 +96,70 @@ export class CreateStudentComponent implements OnInit {
     return input.charAt(0).toUpperCase() + input.slice(1).toLowerCase();
   }
 
+  private showSuccess(message: string): void {
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Success',
+      detail: message,
+    });
+  }
+
+  private showError(message: string): void {
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: message,
+    });
+  }
+
+  public selectClass(): void {
+    this.classPickerRef = this.dialogService.open(ClassPickerComponent, {
+      header: 'Select Classroom',
+      width: '70%',
+      contentStyle: { overflow: 'auto' },
+      data: {
+        exceptQuestions: this.form.get('classroom')?.value || [],
+      },
+      baseZIndex: 10000,
+    });
+
+    this.classPickerRef.onClose.subscribe((classroom: Class) => {
+      if (!classroom) {
+        return;
+      }
+      console.log(`Dialog returned ${classroom}`);
+      this.classroom = classroom;
+
+      this.form.get('classroom')?.setValue(classroom.id);
+
+      this.showSuccess('Select classroom successfully');
+      console.log(`New question ids ${this.form.get('classroom')?.value}`);
+    });
+  }
+
   public submit() {
     this.form.markAllAsTouched();
+
     if (this.form.invalid) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: 'Form is invalid, please check the form.',
-      });
+      this.showError('Please fill in all required fields');
       return;
     }
     const formValue: Student = this.form.value;
+
     this.studentService.studentCreate(formValue).subscribe({
       next: (response) => {
         console.log(response);
-        this.closeWithSuccess(response);
+        this.showSuccess('Student updated successfully');
+        this.router.navigate(['/student']);
       },
       error: (error) => {
         console.error(error);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Failed to update student',
-        });
+        this.showError('Failed to update student');
         const response = error.error;
         for (const key in response) {
           const keyErrors = response[key];
           for (const keyError of keyErrors) {
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Error',
-              detail: `${this.toSentenceCase(key)}: ${this.toSentenceCase(keyError)}`,
-            });
+            this.showError(`${this.toSentenceCase(key)}: ${keyError}`);
           }
         }
       },

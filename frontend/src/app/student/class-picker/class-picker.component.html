@@ -1,0 +1,64 @@
+<div class="flex flex-col gap-5 pt-2">
+  <div class="flex justify-between items-center">
+    <p class="text-xl">Select class for the current student</p>
+  </div>
+  <p-table
+    (onPage)="onPage($event)"
+    [autoLayout]="true"
+    [first]="first"
+    [lazy]="true"
+    [paginator]="true"
+    [rowHover]="true"
+    [rows]="rows"
+    [showCurrentPageReport]="true"
+    [totalRecords]="count"
+    [value]="classes"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    dataKey="id"
+  >
+    <ng-template pTemplate="caption">
+      <div class="flex flex-row justify-between w-full">
+        <span class="p-input-icon-left">
+          <i class="pi pi-search"></i>
+          <input
+            pInputText
+            type="text"
+            (keyup)="handleSearch(getValue($event))"
+            placeholder="Search..."
+          />
+        </span>
+      </div>
+    </ng-template>
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Teacher</th>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-class>
+      <tr>
+        <td>
+          <span>{{ class.id }}</span>
+        </td>
+        <td>
+          <span>{{ class.name }}</span>
+        </td>
+        <td class="overflow-hidden whitespace-nowrap text-ellipsis max-w-60">
+          <span>{{ class.teacher }}</span>
+        </td>
+        <td>
+          <p-button
+            (click)="select(class)"
+            icon="pi pi-plus"
+            severity="success"
+            [text]="true"
+            [rounded]="true"
+          />
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

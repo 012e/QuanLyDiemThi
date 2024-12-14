@@ -19,6 +19,7 @@ import { Student, StudentService, Class, ClassService } from '../core/api';
 import { CreateStudentComponent } from './create-student/create-student.component'; 
 import { EditStudentComponent } from './edit-student/edit-student.component';
 import { NgxPermissionsModule, NgxPermissionsService, NgxRolesService } from 'ngx-permissions';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-student',
@@ -69,6 +70,7 @@ export class StudentComponent implements OnInit {
   private searchText$ = new RxSubject<string>();
 
   constructor(
+    private readonly router: Router,
     private readonly messageService: MessageService,
     private readonly confirmationService: ConfirmationService,
     private readonly dialogService: DialogService,
@@ -113,12 +115,11 @@ export class StudentComponent implements OnInit {
 
   public updatePage(): void {
     this.loading = true;
-    this.studentService.studentList(this.rows, this.first, undefined).subscribe({ //this.searchText
+    this.studentService.studentList(this.rows, this.first, undefined, this.searchText).subscribe({ 
       next: (data) => {
         this.loading = false;
         this.students = data.results;
         this.count = data.count;
-        this.class 
       },
       error: (error) => {
         this.loading = false;
@@ -127,36 +128,12 @@ export class StudentComponent implements OnInit {
     });
   }
 
-  public openEditDialog(student: Student) {
-    this.editStudentDialogRef = this.dialogService.open(EditStudentComponent, {
-      header: 'Edit Student',
-      data: {
-        student: student,
-      },
-    });
-    this.editStudentDialogRef.onClose.subscribe((student: Student) => {
-      if (student) {
-        this.updatePage();
-        this.showSuccess('Student updated successfully');
-      }
-    });
+  public editStudent(student: Student) {
+    this.router.navigate(['/student', student.id]);
   }
 
-  public openCreateDialog() {
-    console.log('openCreateDialog');
-    this.createStudentDialogRef = this.dialogService.open(
-      CreateStudentComponent,
-      {
-        header: 'Create New Student',
-      },
-    );
-    console.log('createStudentDialogRef', this.createStudentDialogRef);
-    this.createStudentDialogRef.onClose.subscribe((student: Student) => {
-      if (student) {
-        this.updatePage();
-        this.showSuccess('Student created successfully');
-      }
-    });
+  public createNew(): void {
+    this.router.navigate(['/student/new']);
   }
 
   public deleteSelectedStudents() {
