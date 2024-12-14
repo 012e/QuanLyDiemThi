@@ -3,7 +3,7 @@ import {
   importProvidersFrom,
   provideZoneChangeDetection,
 } from '@angular/core';
-import { provideRouter, withHashLocation } from '@angular/router';
+import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 import { ApiModule, BASE_PATH } from './core/api';
@@ -21,7 +21,7 @@ import { UnauthorizedInterceptorInterceptor } from './core/interceptors/unauthor
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes, withHashLocation()),
+    provideRouter(routes),
     provideAnimations(),
     provideHttpClient(
       withXsrfConfiguration({
