@@ -73,7 +73,6 @@ export class StudentComponent implements OnInit {
     private readonly confirmationService: ConfirmationService,
     private readonly dialogService: DialogService,
     private readonly studentService: StudentService,
-    private readonly classService: ClassService,
     private readonly roleService: NgxRolesService,
     private readonly permissionService: NgxPermissionsService,
   ) {}
@@ -103,20 +102,8 @@ export class StudentComponent implements OnInit {
         this.updatePage();
       });
 
-    // this.loadData();
     this.updatePage();
   }
-
-  // private loadData() {
-  //   this.classService.classList().subscribe({
-  //     next: (data) => {
-  //       this.classes = data.results;
-  //     },
-  //     error: (error) => {
-  //       console.error(error);
-  //     },
-  //   });
-  // }
 
   public onPage(event: TablePageEvent): void {
     this.first = event.first;
@@ -131,6 +118,7 @@ export class StudentComponent implements OnInit {
         this.loading = false;
         this.students = data.results;
         this.count = data.count;
+        this.class 
       },
       error: (error) => {
         this.loading = false;
