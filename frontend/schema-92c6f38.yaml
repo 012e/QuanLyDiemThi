@@ -1237,6 +1237,12 @@ paths:
         description: Which field to use when ordering the results.
         schema:
           type: string
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
       tags:
       - student
       security:
@@ -2151,9 +2157,14 @@ components:
           maxLength: 100
         teacher:
           type: integer
+        students:
+          type: array
+          items:
+            $ref: '#/components/schemas/Student'
       required:
       - id
       - name
+      - students
       - teacher
     Difficulty:
       type: object
@@ -2405,6 +2416,10 @@ components:
           maxLength: 100
         teacher:
           type: integer
+        students:
+          type: array
+          items:
+            $ref: '#/components/schemas/Student'
     PatchedDifficulty:
       type: object
       properties:
@@ -2455,6 +2470,16 @@ components:
         student_code:
           type: string
           maxLength: 10
+        classroom:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
     PatchedStudentResult:
       type: object
       properties:
@@ -2617,10 +2642,23 @@ components:
         student_code:
           type: string
           maxLength: 10
+        classroom:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
       required:
+      - classroom
+      - created_at
       - id
       - name
       - student_code
+      - updated_at
     StudentResult:
       type: object
       properties:
