@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
 import { decodeJwt } from 'jose';
 import { UserRole } from '../enums/user-role';
+import { NgxPermissionsService } from 'ngx-permissions';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
+  constructor(private readonly permissionService: NgxPermissionsService) {
+  }
   public tokenExpired(token: string): boolean {
     if (!token) return true;
     try {
@@ -23,6 +26,13 @@ export class AuthService {
     const token = localStorage.getItem('access_token');
     if (!token || this.tokenExpired(token)) return false;
     return true;
+  }
+
+  // TODO: handle user changing role in the middle of the session
+  public updateRole(): void {
+    //const role = this.getRole();
+    //this.permissionService.flushPermissions();
+    //this.permissionService.addPermission([role]);
   }
 
   public getRole(): UserRole {

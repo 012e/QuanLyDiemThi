@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
+import { AuthService as AppAuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -31,9 +32,10 @@ export class LoginComponent implements OnInit {
   public password = '';
   public checked = false;
   constructor(
-    private authService: AuthService,
-    private messageService: MessageService,
-    private router: Router,
+    private readonly authService: AuthService,
+    private readonly appAuthService: AppAuthService,
+    private readonly messageService: MessageService,
+    private readonly router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -54,6 +56,7 @@ export class LoginComponent implements OnInit {
           summary: 'Success Message',
           detail: 'Login successful',
         });
+        this.appAuthService.updateRole();
         this.router.navigate(['/']);
       },
       error: (error) => {
