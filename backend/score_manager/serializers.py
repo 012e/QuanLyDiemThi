@@ -16,8 +16,23 @@ from .models import (
 )
 
 
+class ClassSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Class
+        fields = ["id", "name", "teacher"]
+
+
 class StudentSerializer(serializers.ModelSerializer):
-    classroom = serializers.PrimaryKeyRelatedField(queryset=Class.objects.all())
+    classroom = serializers.PrimaryKeyRelatedField(
+        queryset=Class.objects.all(), allow_null=False, required=True
+    )
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        # Serialize the entire Class object when getting a Student
+        if instance.classroom:
+            representation["classroom"] = ClassSerializer(instance.classroom).data
+        return representation
 
     class Meta:
         model = Student
@@ -29,41 +44,6 @@ class StudentSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
         ]
-
-
-class ClassSerializer(serializers.ModelSerializer):
-    students = StudentSerializer(many=True)  # Make students writable
-
-    class Meta:
-        model = Class
-        fields = ["id", "name", "teacher", "students"]
-
-    def create(self, validated_data):
-        students_data = validated_data.pop("students", [])
-        classroom = Class.objects.create(**validated_data)
-        for student_data in students_data:
-            Student.objects.create(classroom=classroom, **student_data)
-        return classroom
-
-    def update(self, instance, validated_data):
-        students_data = validated_data.pop("students", [])
-        instance.name = validated_data.get("name", instance.name)
-        instance.teacher = validated_data.get("teacher", instance.teacher)
-        instance.save()
-
-        for student_data in students_data:
-            student_id = student_data.get("id", None)
-            if student_id:
-                student = Student.objects.get(id=student_id)
-                student.name = student_data.get("name", student.name)
-                student.student_code = student_data.get(
-                    "student_code", student.student_code
-                )
-                student.save()
-            else:
-                Student.objects.create(classroom=instance, **student_data)
-
-        return instance
 
 
 class QuestionSerializer(serializers.ModelSerializer):
