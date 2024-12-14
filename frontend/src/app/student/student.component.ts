@@ -103,20 +103,20 @@ export class StudentComponent implements OnInit {
         this.updatePage();
       });
 
-    this.loadData();
+    // this.loadData();
     this.updatePage();
   }
 
-  private loadData() {
-    this.classService.classList().subscribe({
-      next: (data) => {
-        this.classes = data.results;
-      },
-      error: (error) => {
-        console.error(error);
-      },
-    });
-  }
+  // private loadData() {
+  //   this.classService.classList().subscribe({
+  //     next: (data) => {
+  //       this.classes = data.results;
+  //     },
+  //     error: (error) => {
+  //       console.error(error);
+  //     },
+  //   });
+  // }
 
   public onPage(event: TablePageEvent): void {
     this.first = event.first;
