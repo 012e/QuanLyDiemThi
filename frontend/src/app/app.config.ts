@@ -17,6 +17,7 @@ import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
 import { MessageService } from 'primeng/api';
 import { environment } from '../environments/environment.development';
 import { UnauthorizedInterceptorInterceptor } from './core/interceptors/unauthorized-interceptor.interceptor';
+import { NgxPermissionsModule } from 'ngx-permissions';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -36,5 +37,6 @@ export const appConfig: ApplicationConfig = {
       useValue: environment.apiUrl,
     },
     MessageService,
+    importProvidersFrom(NgxPermissionsModule.forRoot()),
   ],
 };

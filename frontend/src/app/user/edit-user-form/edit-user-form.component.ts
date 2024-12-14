@@ -27,6 +27,7 @@ import { User, UserService } from '../../core/api';
 import { noWhitespaceValidator } from '../../core/validators/no-whitespace.validator';
 import { MessageService } from 'primeng/api';
 import { CommonModule } from '@angular/common';
+import { NgxPermissionsModule } from 'ngx-permissions';
 
 @Component({
   selector: 'app-edit-user-form',
@@ -48,6 +49,7 @@ import { CommonModule } from '@angular/common';
     InputNumberModule,
     ReactiveFormsModule,
     DropdownModule,
+    NgxPermissionsModule,
   ],
   templateUrl: './edit-user-form.component.html',
   styleUrl: './edit-user-form.component.css',
@@ -115,7 +117,6 @@ export class EditUserFormComponent implements OnInit {
     input = input.trim(); // Remove leading and trailing whitespace
     return input.charAt(0).toUpperCase() + input.slice(1).toLowerCase();
   }
-
 
   public submit() {
     this.form.markAllAsTouched();

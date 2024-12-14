@@ -3,6 +3,8 @@ import { MenubarModule } from 'primeng/menubar';
 import { MenuItem } from 'primeng/api';
 import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
+import { AuthService } from '../../../core/services/auth.service';
+import { UserRole } from '../../../core/enums/user-role';
 
 @Component({
   selector: 'app-nav-bar',
@@ -14,28 +16,16 @@ import { ButtonModule } from 'primeng/button';
 export class NavBarComponent implements OnInit {
   public items: MenuItem[] | undefined;
 
-  public constructor(private readonly router: Router) {}
+  public constructor(private readonly router: Router, private readonly authService: AuthService) {}
 
   public navigateToUser() {
     this.router.navigate(['me']);
   }
 
   public ngOnInit() {
+    const isAdmin = this.authService.getRole() === UserRole.Admin;
+    const isStaff = this.authService.getRole() === UserRole.Staff || isAdmin;
     this.items = [
-      {
-        label: 'Summary',
-        icon: 'pi pi-percentage',
-        command: () => {
-          this.router.navigate(['summary', new Date().getFullYear()]);
-        },
-      },
-      {
-        label: 'Teachers',
-        icon: 'pi pi-users',
-        command: () => {
-          this.router.navigate(['user']);
-        },
-      },
       {
         label: 'Question',
         icon: 'pi pi-question',
@@ -51,11 +41,27 @@ export class NavBarComponent implements OnInit {
         },
       },
       {
+        label: 'Teachers',
+        icon: 'pi pi-users',
+        command: () => {
+          this.router.navigate(['user']);
+        },
+      },
+      {
+        label: 'Summary',
+        icon: 'pi pi-percentage',
+        command: () => {
+          this.router.navigate(['summary', new Date().getFullYear()]);
+        },
+        disabled: !isStaff,
+      },
+      {
         label: 'Admin',
         icon: 'pi pi-cog',
         command: () => {
           this.router.navigate(['admin']);
         },
+        disabled: !isAdmin,
       },
     ];
   }

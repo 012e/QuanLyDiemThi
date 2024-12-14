@@ -19,6 +19,7 @@ import { User, UserService } from '../../core/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { EditUserFormComponent } from '../edit-user-form/edit-user-form.component';
 import { CreateUserFormComponent } from '../create-user-form/create-user-form.component';
+import { NgxPermissionsModule, NgxPermissionsService, NgxRolesService } from 'ngx-permissions';
 
 @Component({
   selector: 'app-user-list',
@@ -39,6 +40,7 @@ import { CreateUserFormComponent } from '../create-user-form/create-user-form.co
     FormsModule,
     InputNumberModule,
     ReactiveFormsModule,
+    NgxPermissionsModule,
   ],
   providers: [ConfirmationService, DialogService],
   templateUrl: './user-list.component.html',
@@ -71,6 +73,8 @@ export class UserListComponent implements OnInit, OnDestroy {
     private readonly confirmationService: ConfirmationService,
     private readonly dialogService: DialogService,
     private readonly userService: UserService,
+    private readonly roleService: NgxRolesService,
+    private readonly permissionService: NgxPermissionsService,
   ) {}
 
   ngOnDestroy(): void {
@@ -83,6 +87,9 @@ export class UserListComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit() {
+    let permissions = this.permissionService.permissions$.subscribe((permissions) => {
+      console.log(permissions);
+    });
     this.loadInitialData();
   }
 
