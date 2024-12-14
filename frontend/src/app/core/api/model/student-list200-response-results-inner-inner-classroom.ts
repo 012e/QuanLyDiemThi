@@ -9,8 +9,8 @@
  */
 
 
-export interface PatchedClass { 
-    readonly id?: number;
+export interface StudentList200ResponseResultsInnerInnerClassroom { 
+    id?: number;
     name?: string;
     teacher?: number;
 }

@@ -1,4 +1,5 @@
 import rest_framework.serializers as serializers
+from drf_spectacular.utils import extend_schema_field
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
@@ -27,6 +28,7 @@ class StudentSerializer(serializers.ModelSerializer):
         queryset=Class.objects.all(), allow_null=False, required=True
     )
 
+    @extend_schema_field(ClassSerializer)
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         # Serialize the entire Class object when getting a Student

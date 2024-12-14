@@ -7,13 +7,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Student } from './student';
 
 
 export interface Class { 
     readonly id: number;
     name: string;
     teacher: number;
-    students: Array<Student>;
 }
 

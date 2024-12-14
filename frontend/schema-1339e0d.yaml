@@ -1218,6 +1218,8 @@ paths:
   /student/:
     get:
       operationId: student_list
+      description: Retrieve a list of students with detailed classroom information.
+        Supports ordering by `name` and searching by `name`, `student_code`, and `classroom__name`.
       parameters:
       - name: limit
         required: false
@@ -1253,7 +1255,60 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedStudentList'
+                type: object
+                required:
+                - count
+                - results
+                properties:
+                  count:
+                    type: integer
+                    example: 123
+                  next:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?offset=400&limit=100
+                  previous:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?offset=200&limit=100
+                  results:
+                    type: array
+                    items:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          name:
+                            type: string
+                            example: John Doe
+                          student_code:
+                            type: string
+                            example: STU123
+                          classroom:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                                example: 1
+                              name:
+                                type: string
+                                example: Class A
+                              teacher:
+                                type: integer
+                                example: 2
+                          created_at:
+                            type: string
+                            format: date-time
+                            example: '2024-12-14T10:00:00Z'
+                          updated_at:
+                            type: string
+                            format: date-time
+                            example: '2024-12-14T12:00:00Z'
           description: ''
     post:
       operationId: student_create
@@ -1284,6 +1339,7 @@ paths:
   /student/{id}/:
     get:
       operationId: student_retrieve
+      description: Retrieve a single student with detailed classroom information.
       parameters:
       - in: path
         name: id
@@ -1301,7 +1357,37 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Student'
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  name:
+                    type: string
+                    example: John Doe
+                  student_code:
+                    type: string
+                    example: STU123
+                  classroom:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: Class A
+                      teacher:
+                        type: integer
+                        example: 2
+                  created_at:
+                    type: string
+                    format: date-time
+                    example: '2024-12-14T10:00:00Z'
+                  updated_at:
+                    type: string
+                    format: date-time
+                    example: '2024-12-14T12:00:00Z'
           description: ''
     put:
       operationId: student_update
@@ -2157,14 +2243,9 @@ components:
           maxLength: 100
         teacher:
           type: integer
-        students:
-          type: array
-          items:
-            $ref: '#/components/schemas/Student'
       required:
       - id
       - name
-      - students
       - teacher
     Difficulty:
       type: object
@@ -2273,29 +2354,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Result'
-    PaginatedStudentList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Student'
     PaginatedStudentResultList:
       type: object
       required:
@@ -2416,10 +2474,6 @@ components:
           maxLength: 100
         teacher:
           type: integer
-        students:
-          type: array
-          items:
-            $ref: '#/components/schemas/Student'
     PatchedDifficulty:
       type: object
       properties:
