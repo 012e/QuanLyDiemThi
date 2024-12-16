@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -15,9 +15,7 @@ import { TableModule, TablePageEvent } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { Subject as RxSubject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { Student, StudentService, Class, ClassService, StudentList200ResponseResultsInnerInnerClassroom } from '../core/api';
-import { CreateStudentComponent } from './create-student/create-student.component'; 
-import { EditStudentComponent } from './edit-student/edit-student.component';
+import { Student, StudentService, Class, ClassService, StudentList200ResponseResultsInnerClassroom } from '../core/api';
 import { NgxPermissionsModule, NgxPermissionsService, NgxRolesService } from 'ngx-permissions';
 import { Router } from '@angular/router';
 
@@ -52,11 +50,11 @@ export class StudentComponent implements OnInit {
   editStudentDialogRef: DynamicDialogRef | undefined;
   createStudentDialogRef: DynamicDialogRef | undefined;
 
-  students!: Student[];
+  students!: StudentList200ResponseResultsInnerClassroom[];
   student!: Student;
   classes!: Class[];
 
-  selectedStudents!: Student[];
+  selectedStudents!: StudentList200ResponseResultsInnerClassroom[];
 
   submitted = false;
   searchValue: string | undefined;
@@ -154,8 +152,8 @@ export class StudentComponent implements OnInit {
           (val) => !this.selectedStudents.includes(val),
         );
 
-        this.selectedStudents.forEach((student: { id: number }) => {
-          this.studentService.studentDestroy(student.id).subscribe({
+        this.selectedStudents.forEach((student) => {
+          this.studentService.studentDestroy(student.id!).subscribe({
             next: (response) => {
               console.log(response);
               this.updatePage();

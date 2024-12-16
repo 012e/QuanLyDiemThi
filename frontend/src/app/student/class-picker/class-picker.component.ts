@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import {
   DialogService,
@@ -8,19 +8,14 @@ import {
 } from 'primeng/dynamicdialog';
 import { TableModule, TablePageEvent } from 'primeng/table';
 import { Subject as RxSubject, debounceTime, distinctUntilChanged } from 'rxjs';
-import {
-  User,
-  UserService,
-  Class,
-  ClassService,
-} from '../../core/api';
+import { Class, ClassService } from '../../core/api';
 import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
   selector: 'app-class-picker',
   standalone: true,
   imports: [TableModule, ButtonModule, InputTextModule],
-  providers: [ConfirmationService, MessageService],
+  providers: [MessageService],
   templateUrl: './class-picker.component.html',
   styleUrl: './class-picker.component.css',
 })
@@ -32,8 +27,6 @@ export class ClassPickerComponent implements OnInit {
     public dialogRef: DynamicDialogRef,
     private readonly dialogService: DialogService,
     private readonly classService: ClassService,
-    private readonly userService: UserService,
-    private readonly confirmationService: ConfirmationService,
     private readonly messageService: MessageService
   ) {
     this.instance = this.dialogService.getInstance(this.dialogRef);
@@ -43,9 +36,6 @@ export class ClassPickerComponent implements OnInit {
 
   classes!: Class[];
   class!: Class;
-
-  teachers!: User[];
-  teacher!: User;
 
   submitted: boolean = false;
   searchValue: string | undefined;
@@ -88,16 +78,6 @@ export class ClassPickerComponent implements OnInit {
       });
 
     this.updatePage();
-
-    this.classService.classList().subscribe({
-      next: (data) => {
-        this.classes = data.results;
-      },
-      error: (error) => {
-        console.error(error);
-        this.showError('Failed to load classes');
-      },
-    });
   }
 
   public onPage(event: TablePageEvent): void {
@@ -108,7 +88,7 @@ export class ClassPickerComponent implements OnInit {
 
   public updatePage(): void {
     this.classService
-      .classList(this.rows, this.first, undefined)
+      .classList(this.rows, this.first, undefined) //this.searchText
       .subscribe((data) => {
         this.classes = data.results;
         this.count = data.count;
