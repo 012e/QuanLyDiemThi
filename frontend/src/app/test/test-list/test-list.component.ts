@@ -68,7 +68,7 @@ export class TestListComponent implements OnInit, OnDestroy {
 
   public updatePage(): void {
     this.isLoading = true;
-    this.testService.testList(this.rows, this.first).subscribe((data) => {
+    this.testService.testList(this.rows, this.first, undefined, this.searchText).subscribe((data) => {
       this.tests = data.results;
       this.count = data.count;
       this.isLoading = false;

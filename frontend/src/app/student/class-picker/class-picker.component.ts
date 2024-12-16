@@ -8,7 +8,11 @@ import {
 } from 'primeng/dynamicdialog';
 import { TableModule, TablePageEvent } from 'primeng/table';
 import { Subject as RxSubject, debounceTime, distinctUntilChanged } from 'rxjs';
-import { Class, ClassService } from '../../core/api';
+import {
+
+  Class,
+  ClassService,
+} from '../../core/api';
 import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
@@ -21,7 +25,7 @@ import { InputTextModule } from 'primeng/inputtext';
 })
 export class ClassPickerComponent implements OnInit {
   public instance: DynamicDialogComponent | undefined;
-  public exceptClasses!: Array<number>;
+  public exceptClass!: Class;
 
   constructor(
     public dialogRef: DynamicDialogRef,
@@ -35,7 +39,6 @@ export class ClassPickerComponent implements OnInit {
   private readonly DEFAULT_PAGE_SIZE = 10;
 
   classes!: Class[];
-  class!: Class;
 
   submitted: boolean = false;
   searchValue: string | undefined;
@@ -61,7 +64,8 @@ export class ClassPickerComponent implements OnInit {
       throw new Error('Data is not defined');
     }
     // TODO: implements exceptions
-    this.exceptClasses = data.questionExceptions;
+    this.exceptClass = data.exceptClass;
+    console.log('Except class:', this.exceptClass);
   }
 
   public resetPage() {

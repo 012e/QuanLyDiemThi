@@ -58,7 +58,7 @@ import { Divider, DividerModule } from 'primeng/divider';
   styleUrl: './edit-student.component.css',
 })
 export class EditStudentComponent implements OnInit, OnDestroy {
-  classId!: number;
+  studentId!: number;
   student!: Student;
   form!: FormGroup;
   classroom: Class | undefined;
@@ -83,18 +83,23 @@ export class EditStudentComponent implements OnInit, OnDestroy {
       ],
       student_code: [undefined, [Validators.required]],
       classroom: [undefined, [Validators.required]],
+      classroom_id: [undefined, [Validators.required]],
     });
-    this.classId = this.getClassId();
+    this.studentId = this.getStudentId();
 
-    this.studentService.studentRetrieve(this.classId).subscribe((data) => {
+    this.studentService.studentRetrieve(this.studentId).subscribe((data) => {
       this.form.patchValue({
         ...data,
+        classroom_id: data.classroom.id,
       });
-      console.log(data);
-      this.classService.classRetrieve((data as any).classroom.id).subscribe((data) => {
-        console.log(data.id);
-        this.classroom = data;
-      });
+
+      console.log(this.form.value);
+
+      this.classService
+        .classRetrieve((data as any).classroom.id)
+        .subscribe((data) => {
+          this.classroom = data;
+        });
     });
   }
 
@@ -104,7 +109,7 @@ export class EditStudentComponent implements OnInit, OnDestroy {
     }
   }
 
-  private getClassId(): number {
+  private getStudentId(): number {
     const idStr = this.route.snapshot.paramMap.get('id');
     const id = Number(idStr);
     if (!idStr || isNaN(Number(idStr))) {
@@ -146,7 +151,7 @@ export class EditStudentComponent implements OnInit, OnDestroy {
       width: '70%',
       contentStyle: { overflow: 'auto' },
       data: {
-        exceptQuestions: this.form.get('classroom')?.value || [],
+        exceptClass: this.form.get('classroom')?.value || [],
       },
       baseZIndex: 10000,
     });
@@ -155,12 +160,11 @@ export class EditStudentComponent implements OnInit, OnDestroy {
       if (!classroom) {
         return;
       }
-      console.log(`Dialog returned ${classroom}`);
 
       this.classroom = classroom;
-
       this.showSuccess('Select class successfully');
-      console.log(`Class ids ${this.form.get('classroom')?.value}`);
+      this.form.get('classroom_id')?.setValue(classroom.id);
+      this.form.get('classroom')?.setValue(classroom);
     });
   }
 
@@ -170,10 +174,10 @@ export class EditStudentComponent implements OnInit, OnDestroy {
       this.showError('Please fill in all required fields');
       return;
     }
-    this.form.get('classroom')?.setValue(this.classroom?.id);
+
     const formValue: Student = this.form.value;
-    console.log(formValue.classroom);
-    this.studentService.studentUpdate(this.classId ,formValue).subscribe({
+    console.log(this.form.value);
+    this.studentService.studentUpdate(this.studentId, formValue).subscribe({
       next: (response) => {
         console.log(response);
         this.showSuccess('Student updated successfully');
@@ -182,13 +186,6 @@ export class EditStudentComponent implements OnInit, OnDestroy {
       error: (error) => {
         console.error(error);
         this.showError('Failed to update student');
-        const response = error.error;
-        for (const key in response) {
-          const keyErrors = response[key];
-          for (const keyError of keyErrors) {
-            this.showError(`${this.toSentenceCase(key)}: ${keyError}`);
-          }
-        }
       },
     });
   }

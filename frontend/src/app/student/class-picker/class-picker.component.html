@@ -39,7 +39,8 @@
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-class>
-      <tr>
+      
+      <tr [class]="{ 'bg-gray-50': class.id === exceptClass.id }">
         <td>
           <span>{{ class.id }}</span>
         </td>
@@ -47,7 +48,7 @@
           <span>{{ class.name }}</span>
         </td>
         <td class="overflow-hidden whitespace-nowrap text-ellipsis max-w-60">
-          <span>{{ class.teacher }}</span>
+          <span>{{ class.teacher.username }}</span>
         </td>
         <td>
           <p-button
@@ -56,6 +57,7 @@
             severity="success"
             [text]="true"
             [rounded]="true"
+            [disabled]="class.id === exceptClass.id"
           />
         </td>
       </tr>

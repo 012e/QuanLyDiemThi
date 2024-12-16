@@ -15,7 +15,7 @@ import { TableModule, TablePageEvent } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { Subject as RxSubject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { Student, StudentService, Class, ClassService, StudentList200ResponseResultsInnerClassroom } from '../core/api';
+import { Student, StudentService, Class, ClassService } from '../core/api';
 import { NgxPermissionsModule, NgxPermissionsService, NgxRolesService } from 'ngx-permissions';
 import { Router } from '@angular/router';
 
@@ -50,11 +50,11 @@ export class StudentComponent implements OnInit {
   editStudentDialogRef: DynamicDialogRef | undefined;
   createStudentDialogRef: DynamicDialogRef | undefined;
 
-  students!: StudentList200ResponseResultsInnerClassroom[];
+  students!: Student[];
   student!: Student;
   classes!: Class[];
 
-  selectedStudents!: StudentList200ResponseResultsInnerClassroom[];
+  selectedStudents!: Student[];
 
   submitted = false;
   searchValue: string | undefined;

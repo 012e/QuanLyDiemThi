@@ -81,6 +81,7 @@ export class CreateStudentComponent implements OnInit, OnDestroy {
       ],
       student_code: [undefined, [Validators.required]],
       classroom: [undefined, [Validators.required]],
+      classroom_id: [undefined, [Validators.required]],
     });
   }
 
@@ -118,7 +119,7 @@ export class CreateStudentComponent implements OnInit, OnDestroy {
       width: '70%',
       contentStyle: { overflow: 'auto' },
       data: {
-        exceptQuestions: this.form.get('classroom')?.value || [],
+        exceptClass: this.form.get('classroom')?.value || [],
       },
       baseZIndex: 10000,
     });
@@ -127,13 +128,10 @@ export class CreateStudentComponent implements OnInit, OnDestroy {
       if (!classroom) {
         return;
       }
-      console.log(`Dialog returned ${classroom}`);
       this.classroom = classroom;
-
-      this.form.get('classroom')?.setValue(classroom.id);
-
+      this.form.get('classroom_id')?.setValue(classroom.id);
+      this.form.get('classroom')?.setValue(classroom);
       this.showSuccess('Select classroom successfully');
-      console.log(`New question ids ${this.form.get('classroom')?.value}`);
     });
   }
 
@@ -145,7 +143,7 @@ export class CreateStudentComponent implements OnInit, OnDestroy {
       return;
     }
     const formValue: Student = this.form.value;
-
+    console.log(formValue.classroom_id);
     this.studentService.studentCreate(formValue).subscribe({
       next: (response) => {
         console.log(response);
