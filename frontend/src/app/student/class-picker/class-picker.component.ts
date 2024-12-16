@@ -8,11 +8,7 @@ import {
 } from 'primeng/dynamicdialog';
 import { TableModule, TablePageEvent } from 'primeng/table';
 import { Subject as RxSubject, debounceTime, distinctUntilChanged } from 'rxjs';
-import {
-
-  Class,
-  ClassService,
-} from '../../core/api';
+import { Class, ClassService } from '../../core/api';
 import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
@@ -63,9 +59,7 @@ export class ClassPickerComponent implements OnInit {
     if (!data) {
       throw new Error('Data is not defined');
     }
-    // TODO: implements exceptions
     this.exceptClass = data.exceptClass;
-    console.log('Except class:', this.exceptClass);
   }
 
   public resetPage() {
@@ -92,7 +86,7 @@ export class ClassPickerComponent implements OnInit {
 
   public updatePage(): void {
     this.classService
-      .classList(this.rows, this.first, undefined) //this.searchText
+      .classList(this.rows, this.first, undefined, this.searchText)
       .subscribe((data) => {
         this.classes = data.results;
         this.count = data.count;
