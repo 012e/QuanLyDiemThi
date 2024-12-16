@@ -15,7 +15,7 @@ import { TableModule, TablePageEvent } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { Subject as RxSubject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { Student, StudentService, Class, ClassService } from '../core/api';
+import { Student, StudentService, Class, ClassService, StudentList200ResponseResultsInnerInnerClassroom } from '../core/api';
 import { CreateStudentComponent } from './create-student/create-student.component'; 
 import { EditStudentComponent } from './edit-student/edit-student.component';
 import { NgxPermissionsModule, NgxPermissionsService, NgxRolesService } from 'ngx-permissions';
@@ -154,15 +154,15 @@ export class StudentComponent implements OnInit {
           (val) => !this.selectedStudents.includes(val),
         );
 
-        this.selectedStudents.forEach((question: { id: number }) => {
-          this.studentService.studentDestroy(question.id).subscribe({
+        this.selectedStudents.forEach((student: { id: number }) => {
+          this.studentService.studentDestroy(student.id).subscribe({
             next: (response) => {
               console.log(response);
               this.updatePage();
             },
 
             error: (error) => {
-              this.showError(`Error deleting question: ${error.message}`);
+              this.showError(`Error deleting student: ${error.message}`);
             },
           });
         });
@@ -178,7 +178,7 @@ export class StudentComponent implements OnInit {
 
   public deleteStudent(student: Student) {
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete question ' + student.id + '?',
+      message: 'Are you sure you want to delete student ' + student.id + '?',
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       acceptButtonStyleClass: 'p-button-danger',
