@@ -34,6 +34,18 @@ class ClassSerializer(serializers.ModelSerializer):
         classroom = Class.objects.create(**validated_data, teacher=teacher_id)
         return classroom
 
+    def update(self, instance, validated_data):
+        # Update fields on the instance
+        teacher_id = validated_data.pop("teacher_id", None)
+        if teacher_id:
+            instance.teacher = teacher_id  # Update teacher
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+
+        instance.save()  # Save changes to the database
+        return instance
+
     class Meta:
         model = Class
         fields = ["id", "name", "teacher", "teacher_id"]
@@ -49,6 +61,18 @@ class StudentSerializer(serializers.ModelSerializer):
         classroom_id = validated_data.pop("classroom_id")
         student = Student.objects.create(**validated_data, classroom=classroom_id)
         return student
+
+    def update(self, instance, validated_data):
+        # Update fields on the instance
+        classroom_id = validated_data.pop("classroom_id", None)
+        if classroom_id:
+            instance.classroom = classroom_id  # Update classroom
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+
+        instance.save()  # Save changes to the database
+        return instance
 
     class Meta:
         model = Student
