@@ -52,7 +52,8 @@ class ClassViewSet(viewsets.ModelViewSet):
     queryset = Class.objects.all()
     serializer_class = ClassSerializer
 
-    filter_backends = [OrderingFilter]
+    filter_backends = [OrderingFilter, SearchFilter]
+    search_fields = ["name", "teacher__first_name", "teacher__last_name"]
     ordering = ["name"]
 
 
