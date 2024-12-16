@@ -1,5 +1,4 @@
 import rest_framework.serializers as serializers
-from drf_spectacular.utils import extend_schema_field
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
@@ -17,24 +16,39 @@ from .models import (
 )
 
 
+class SafeUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["id", "username", "first_name", "last_name"]
+
+
 class ClassSerializer(serializers.ModelSerializer):
+    teacher_id = serializers.PrimaryKeyRelatedField(
+        write_only=True, queryset=User.objects.all(), allow_null=False, required=True
+    )
+
+    teacher = SafeUserSerializer(read_only=True)
+
+    def create(self, validated_data):
+        teacher_id = validated_data.pop("teacher_id")
+        classroom = Class.objects.create(**validated_data, teacher=teacher_id)
+        return classroom
+
     class Meta:
         model = Class
-        fields = ["id", "name", "teacher"]
+        fields = ["id", "name", "teacher", "teacher_id"]
 
 
 class StudentSerializer(serializers.ModelSerializer):
-    classroom = serializers.PrimaryKeyRelatedField(
-        queryset=Class.objects.all(), allow_null=False, required=True
+    classroom_id = serializers.PrimaryKeyRelatedField(
+        write_only=True, queryset=Class.objects.all(), allow_null=False, required=True
     )
+    classroom = ClassSerializer(read_only=True)
 
-    @extend_schema_field(ClassSerializer)
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        # Serialize the entire Class object when getting a Student
-        if instance.classroom:
-            representation["classroom"] = ClassSerializer(instance.classroom).data
-        return representation
+    def create(self, validated_data):
+        classroom_id = validated_data.pop("classroom_id")
+        student = Student.objects.create(**validated_data, classroom=classroom_id)
+        return student
 
     class Meta:
         model = Student
@@ -43,6 +57,7 @@ class StudentSerializer(serializers.ModelSerializer):
             "name",
             "student_code",
             "classroom",
+            "classroom_id",
             "created_at",
             "updated_at",
         ]

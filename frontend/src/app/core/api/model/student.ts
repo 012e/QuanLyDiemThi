@@ -7,13 +7,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Class } from './class';
 
 
 export interface Student { 
     readonly id: number;
     name: string;
     student_code: string;
-    classroom: number;
+    readonly classroom: Class;
+    classroom_id: number;
     readonly created_at: string;
     readonly updated_at: string;
 }

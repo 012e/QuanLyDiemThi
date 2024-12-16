@@ -17,13 +17,11 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
+import { PaginatedStudentList } from '../model/paginated-student-list';
+// @ts-ignore
 import { PatchedStudent } from '../model/patched-student';
 // @ts-ignore
 import { Student } from '../model/student';
-// @ts-ignore
-import { StudentList200Response } from '../model/student-list200-response';
-// @ts-ignore
-import { StudentList200ResponseResultsInner } from '../model/student-list200-response-results-inner';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -261,7 +259,6 @@ export class StudentService implements StudentServiceInterface {
     }
 
     /**
-     * Retrieve a list of students with detailed classroom information. Supports ordering by &#x60;name&#x60; and searching by &#x60;name&#x60;, &#x60;student_code&#x60;, and &#x60;classroom__name&#x60;.
      * @param limit Number of results to return per page.
      * @param offset The initial index from which to return the results.
      * @param ordering Which field to use when ordering the results.
@@ -269,9 +266,9 @@ export class StudentService implements StudentServiceInterface {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public studentList(limit?: number, offset?: number, ordering?: string, search?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<StudentList200Response>;
-    public studentList(limit?: number, offset?: number, ordering?: string, search?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<StudentList200Response>>;
-    public studentList(limit?: number, offset?: number, ordering?: string, search?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<StudentList200Response>>;
+    public studentList(limit?: number, offset?: number, ordering?: string, search?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<PaginatedStudentList>;
+    public studentList(limit?: number, offset?: number, ordering?: string, search?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<PaginatedStudentList>>;
+    public studentList(limit?: number, offset?: number, ordering?: string, search?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<PaginatedStudentList>>;
     public studentList(limit?: number, offset?: number, ordering?: string, search?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
@@ -341,7 +338,7 @@ export class StudentService implements StudentServiceInterface {
         }
 
         let localVarPath = `/student/`;
-        return this.httpClient.request<StudentList200Response>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<PaginatedStudentList>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,
@@ -444,14 +441,13 @@ export class StudentService implements StudentServiceInterface {
     }
 
     /**
-     * Retrieve a single student with detailed classroom information.
      * @param id A unique integer value identifying this student.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public studentRetrieve(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<StudentList200ResponseResultsInner>;
-    public studentRetrieve(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<StudentList200ResponseResultsInner>>;
-    public studentRetrieve(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<StudentList200ResponseResultsInner>>;
+    public studentRetrieve(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Student>;
+    public studentRetrieve(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Student>>;
+    public studentRetrieve(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Student>>;
     public studentRetrieve(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling studentRetrieve.');
@@ -506,7 +502,7 @@ export class StudentService implements StudentServiceInterface {
         }
 
         let localVarPath = `/student/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: undefined})}/`;
-        return this.httpClient.request<StudentList200ResponseResultsInner>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<Student>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,

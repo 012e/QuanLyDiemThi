@@ -43,6 +43,7 @@ model/models.ts
 model/paginated-class-list.ts
 model/paginated-question-list.ts
 model/paginated-result-list.ts
+model/paginated-student-list.ts
 model/paginated-student-result-list.ts
 model/paginated-test-list.ts
 model/paginated-user-list.ts
@@ -62,9 +63,7 @@ model/patched-user.ts
 model/question.ts
 model/rest-auth-detail.ts
 model/result.ts
-model/student-list200-response-results-inner-classroom.ts
-model/student-list200-response-results-inner.ts
-model/student-list200-response.ts
+model/safe-user.ts
 model/student-result.ts
 model/student.ts
 model/subject.ts

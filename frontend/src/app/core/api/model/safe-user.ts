@@ -7,13 +7,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { SafeUser } from './safe-user';
 
 
-export interface Class { 
+export interface SafeUser { 
     readonly id: number;
-    name: string;
-    readonly teacher: SafeUser;
-    teacher_id: number;
+    /**
+     * Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+     */
+    username: string;
+    first_name?: string;
+    last_name?: string;
 }
 
