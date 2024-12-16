@@ -14,7 +14,7 @@ import { Observable }                                        from 'rxjs';
 import { PatchedStudent } from '../model/models';
 import { Student } from '../model/models';
 import { StudentList200Response } from '../model/models';
-import { StudentList200ResponseResultsInnerInner } from '../model/models';
+import { StudentList200ResponseResultsInner } from '../model/models';
 
 
 import { Configuration }                                     from '../configuration';
@@ -62,7 +62,7 @@ export interface StudentServiceInterface {
      * Retrieve a single student with detailed classroom information.
      * @param id A unique integer value identifying this student.
      */
-    studentRetrieve(id: number, extraHttpRequestParams?: any): Observable<StudentList200ResponseResultsInnerInner>;
+    studentRetrieve(id: number, extraHttpRequestParams?: any): Observable<StudentList200ResponseResultsInner>;
 
     /**
      * 

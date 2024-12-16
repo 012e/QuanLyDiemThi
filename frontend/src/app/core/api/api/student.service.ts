@@ -23,7 +23,7 @@ import { Student } from '../model/student';
 // @ts-ignore
 import { StudentList200Response } from '../model/student-list200-response';
 // @ts-ignore
-import { StudentList200ResponseResultsInnerInner } from '../model/student-list200-response-results-inner-inner';
+import { StudentList200ResponseResultsInner } from '../model/student-list200-response-results-inner';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -449,9 +449,9 @@ export class StudentService implements StudentServiceInterface {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public studentRetrieve(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<StudentList200ResponseResultsInnerInner>;
-    public studentRetrieve(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<StudentList200ResponseResultsInnerInner>>;
-    public studentRetrieve(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<StudentList200ResponseResultsInnerInner>>;
+    public studentRetrieve(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<StudentList200ResponseResultsInner>;
+    public studentRetrieve(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<StudentList200ResponseResultsInner>>;
+    public studentRetrieve(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<StudentList200ResponseResultsInner>>;
     public studentRetrieve(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling studentRetrieve.');
@@ -506,7 +506,7 @@ export class StudentService implements StudentServiceInterface {
         }
 
         let localVarPath = `/student/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: undefined})}/`;
-        return this.httpClient.request<StudentList200ResponseResultsInnerInner>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<StudentList200ResponseResultsInner>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,

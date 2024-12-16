@@ -62,8 +62,8 @@ model/patched-user.ts
 model/question.ts
 model/rest-auth-detail.ts
 model/result.ts
-model/student-list200-response-results-inner-inner-classroom.ts
-model/student-list200-response-results-inner-inner.ts
+model/student-list200-response-results-inner-classroom.ts
+model/student-list200-response-results-inner.ts
 model/student-list200-response.ts
 model/student-result.ts
 model/student.ts

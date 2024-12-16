@@ -7,13 +7,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { StudentList200ResponseResultsInnerInner } from './student-list200-response-results-inner-inner';
+import { StudentList200ResponseResultsInner } from './student-list200-response-results-inner';
 
 
 export interface StudentList200Response { 
     count: number;
     next?: string | null;
     previous?: string | null;
-    results: Array<Array<StudentList200ResponseResultsInnerInner>>;
+    results: Array<StudentList200ResponseResultsInner>;
 }
 

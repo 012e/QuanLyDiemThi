@@ -1276,39 +1276,37 @@ paths:
                   results:
                     type: array
                     items:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          id:
-                            type: integer
-                            example: 1
-                          name:
-                            type: string
-                            example: John Doe
-                          student_code:
-                            type: string
-                            example: STU123
-                          classroom:
-                            type: object
-                            properties:
-                              id:
-                                type: integer
-                                example: 1
-                              name:
-                                type: string
-                                example: Class A
-                              teacher:
-                                type: integer
-                                example: 2
-                          created_at:
-                            type: string
-                            format: date-time
-                            example: '2024-12-14T10:00:00Z'
-                          updated_at:
-                            type: string
-                            format: date-time
-                            example: '2024-12-14T12:00:00Z'
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: John Doe
+                        student_code:
+                          type: string
+                          example: STU123
+                        classroom:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            name:
+                              type: string
+                              example: Class A
+                            teacher:
+                              type: integer
+                              example: 2
+                        created_at:
+                          type: string
+                          format: date-time
+                          example: '2024-12-14T10:00:00Z'
+                        updated_at:
+                          type: string
+                          format: date-time
+                          example: '2024-12-14T12:00:00Z'
           description: ''
     post:
       operationId: student_create
