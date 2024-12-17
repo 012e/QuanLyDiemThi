@@ -1,0 +1,104 @@
+<div class="card">
+    <h1 class="m-5">Manage Classes</h1>
+    <p-table
+      #dt
+      [value]="classes"
+      [rows]="rows"
+      [paginator]="true"
+      [tableStyle]="{ 'min-width': '75rem' }"
+      [(selection)]="selectedClasses"
+      [rowHover]="true"
+      dataKey="id"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+      [showCurrentPageReport]="true"
+      [paginator]="true"
+      [lazy]="true"
+      [rows]="rows"
+      [first]="first"
+      [totalRecords]="count"
+      (onPage)="onPage($event)"
+      [loading]="loading"
+    >
+      <ng-template pTemplate="caption">
+        <div class="flex flex-row justify-between w-full">
+          <div class="flex gap-2" *ngxPermissionsOnly="'staff'">
+            <p-button
+              severity="success"
+              label="New"
+              icon="pi pi-plus"
+              (onClick)="createNew()"
+            />
+            <p-button
+              severity="danger"
+              label="Delete"
+              icon="pi pi-trash"
+              (onClick)="deleteSelectedClasses()"
+              [disabled]="!selectedClasses || !selectedClasses.length"
+            />
+            <p-button
+              label="Clear"
+              icon="pi pi-times"
+              (onClick)="clearSelectedClasses()"
+            />
+          </div>
+          <span class="p-input-icon-left">
+            <i class="pi pi-search"></i>
+            <input
+              pInputText
+              type="text"
+              (keyup)="handleSearch(getValue($event))"
+              placeholder="Search..."
+            />
+          </span>
+        </div>
+      </ng-template>
+  
+      <ng-template pTemplate="header">
+        <tr>
+          <th *ngxPermissionsOnly="'staff'"></th>
+          <th>Id</th>
+          <th>Name</th>
+          <th>Teacher</th>
+          <th *ngxPermissionsOnly="'staff'"></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-classroom>
+        <tr>
+          <td *ngxPermissionsOnly="'staff'">
+            <p-tableCheckbox [value]="classroom" />
+          </td>
+          <td>
+            {{ classroom.id }}
+          </td>
+          <td>
+            {{ classroom.name }}
+          </td>
+          <td>
+            {{ classroom.teacher.username }}
+          </td>
+          <td class="flex flex-row" *ngxPermissionsOnly="'staff'">
+            <p-button
+              icon="pi pi-pencil"
+              class="mr-2"
+              [rounded]="true"
+              [outlined]="true"
+              severity="success"
+              (onClick)="editClass(classroom)"
+            />
+  
+            <p-button
+              icon="pi pi-trash"
+              severity="danger"
+              [rounded]="true"
+              [outlined]="true"
+              (onClick)="deleteClass(classroom)"
+            />
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  
+    <p-dialog />
+    <p-confirmDialog [style]="{ width: '450px' }" />
+  </div>
+  

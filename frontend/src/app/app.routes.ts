@@ -14,6 +14,9 @@ import { SummaryComponent } from './summary/summary.component';
 import { StudentComponent } from './student/student.component';
 import { CreateStudentComponent } from './student/create-student/create-student.component';
 import { EditStudentComponent } from './student/edit-student/edit-student.component';
+import { ClassroomComponent } from './classroom/classroom.component';
+import { CreateClassroomComponent } from './classroom/create-classroom/create-classroom.component';
+import { EditClassroomComponent } from './classroom/edit-classroom/edit-classroom.component';
 
 export const routes: Routes = [
   {
@@ -65,6 +68,18 @@ export const routes: Routes = [
       {
         path: 'student/:id',
         component: EditStudentComponent,
+      },
+      {
+        path: 'classroom',
+        component: ClassroomComponent,
+      },
+      {
+        path: 'classroom/new',
+        component: CreateClassroomComponent,
+      },
+      {
+        path: 'classroom/:id',
+        component: EditClassroomComponent,
       },
     ],
   },
