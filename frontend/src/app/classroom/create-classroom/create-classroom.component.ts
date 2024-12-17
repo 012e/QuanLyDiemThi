@@ -50,7 +50,7 @@ import { Divider, DividerModule } from 'primeng/divider';
     InputTextareaModule,
     DividerModule,
   ],
-  providers: [DialogService, MessageService],
+  providers: [DialogService],
   templateUrl: './create-classroom.component.html',
   styleUrl: './create-classroom.component.css',
 })
