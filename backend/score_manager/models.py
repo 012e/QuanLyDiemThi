@@ -66,7 +66,7 @@ class Question(models.Model):
 
 
 class Test(models.Model):
-    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, db_index=True)
     semester = models.PositiveSmallIntegerField(null=False, blank=False)
     datetime = models.DateTimeField()
     duration = models.DurationField()
@@ -93,8 +93,8 @@ class Result(models.Model):
 
 
 class StudentResult(models.Model):
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    result = models.ForeignKey(Result, on_delete=models.CASCADE)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, db_index=True)
+    result = models.ForeignKey(Result, on_delete=models.CASCADE, db_index=True)
     score = models.DecimalField(max_digits=4, decimal_places=2)
     note = models.TextField(null=True, blank=False)
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)

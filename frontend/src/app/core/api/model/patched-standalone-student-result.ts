@@ -7,13 +7,16 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Student } from './student';
 
 
-export interface PatchedStudentResult { 
+export interface PatchedStandaloneStudentResult { 
     readonly id?: number;
-    student?: number;
-    result?: number;
+    readonly student?: Student;
+    student_id?: number;
     score?: string;
     note?: string | null;
+    readonly created_at?: string;
+    readonly updated_at?: string;
 }
 

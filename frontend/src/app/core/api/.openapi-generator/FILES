@@ -15,8 +15,8 @@ api/difficulty.service.ts
 api/difficulty.serviceInterface.ts
 api/question.service.ts
 api/question.serviceInterface.ts
-api/results.service.ts
-api/results.serviceInterface.ts
+api/result.service.ts
+api/result.serviceInterface.ts
 api/student.service.ts
 api/student.serviceInterface.ts
 api/studentresult.service.ts
@@ -44,8 +44,8 @@ model/models.ts
 model/paginated-class-list.ts
 model/paginated-question-list.ts
 model/paginated-result-list.ts
+model/paginated-standalone-student-result-list.ts
 model/paginated-student-list.ts
-model/paginated-student-result-list.ts
 model/paginated-test-list.ts
 model/paginated-user-list.ts
 model/password-change.ts
@@ -55,7 +55,7 @@ model/patched-class.ts
 model/patched-difficulty.ts
 model/patched-question.ts
 model/patched-result.ts
-model/patched-student-result.ts
+model/patched-standalone-student-result.ts
 model/patched-student.ts
 model/patched-subject.ts
 model/patched-test.ts
@@ -65,7 +65,7 @@ model/question.ts
 model/rest-auth-detail.ts
 model/result.ts
 model/safe-user.ts
-model/student-result.ts
+model/standalone-student-result.ts
 model/student.ts
 model/subject.ts
 model/summary-retrieve200-response-subjects-inner.ts
