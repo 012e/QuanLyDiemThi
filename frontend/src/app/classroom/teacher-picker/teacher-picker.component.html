@@ -1,1 +1,67 @@
-<p>teacher-picker works!</p>
+<div class="flex flex-col gap-5 pt-2">
+    <div class="flex justify-between items-center">
+      <p class="text-xl">Select teacher for the current class</p>
+    </div>
+    <p-table
+      (onPage)="onPage($event)"
+      [autoLayout]="true"
+      [first]="first"
+      [lazy]="true"
+      [paginator]="true"
+      [rowHover]="true"
+      [rows]="rows"
+      [showCurrentPageReport]="true"
+      [totalRecords]="count"
+      [value]="teachers"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+      dataKey="id"
+    >
+      <ng-template pTemplate="caption">
+        <div class="flex flex-row justify-between w-full">
+          <span class="p-input-icon-left">
+            <i class="pi pi-search"></i>
+            <input
+              pInputText
+              type="text"
+              (keyup)="handleSearch(getValue($event))"
+              placeholder="Search..."
+            />
+          </span>
+        </div>
+      </ng-template>
+  
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Id</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-teacher>
+        
+        <tr [class]="{ 'bg-gray-50': teacher.id === exceptTeacher.id }">
+          <td>
+            <span>{{ teacher.id }}</span>
+          </td>
+          <td>
+            <span>{{ teacher.username }}</span>
+          </td>
+          <td class="overflow-hidden whitespace-nowrap text-ellipsis max-w-60">
+            <span>{{ teacher.email }}</span>
+          </td>
+          <td>
+            <p-button
+              (click)="select(teacher)"
+              icon="pi pi-plus"
+              severity="success"
+              [text]="true"
+              [rounded]="true"
+              [disabled]="teacher.id === exceptTeacher.id"
+            />
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  

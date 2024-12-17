@@ -10,7 +10,7 @@
               @if (form.get('name')?.touched && form.get('name')?.invalid) {
               <div class="px-1 text-sm text-red-500">Please input valid class name</div>
               }
-              <input type="text" pInputText formControlName="name" />
+              <input type="text" placeholder="Enter class name" pInputText formControlName="name" />
             </div>
             <div class="flex flex-col gap-1">
               <label for="Class Name" class="px-1 text-sm font-bold"
@@ -25,7 +25,7 @@
                   <input
                     pInputText
                     [disabled]="true"
-                    [value]="teacher?.username ?? ''"
+                    [value]="teacher?.username ?? 'Select teacher'"
                     [style]="{ width: '100%' }"
                   />
                 </div>
@@ -35,7 +35,7 @@
                     (onClick)="selectTeacher()"
                     severity="success"
                     icon="pi pi-plus"
-                    label="Select Class"
+                    label="Select Teacher"
                     [style]="{ width: '100%' }"
                   />
                 </div>
