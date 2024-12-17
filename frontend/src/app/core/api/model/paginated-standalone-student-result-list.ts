@@ -7,13 +7,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { StudentResult } from './student-result';
+import { StandaloneStudentResult } from './standalone-student-result';
 
 
-export interface PaginatedStudentResultList { 
+export interface PaginatedStandaloneStudentResultList { 
     count: number;
     next?: string | null;
     previous?: string | null;
-    results: Array<StudentResult>;
+    results: Array<StandaloneStudentResult>;
 }
 

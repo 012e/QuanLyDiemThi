@@ -7,14 +7,20 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { StudentResult } from './student-result';
+import { Class } from './class';
+import { SafeUser } from './safe-user';
 
 
 export interface Result { 
     readonly id: number;
     test: number;
-    teacher: number;
-    classroom: number;
-    student_results: Array<StudentResult>;
+    test_id: number;
+    readonly teacher: SafeUser;
+    teacher_id: number;
+    readonly classroom: Class;
+    classroom_id: number;
+    readonly total_results: number;
+    readonly created_at: string;
+    readonly updated_at: string;
 }
 

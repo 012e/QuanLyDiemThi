@@ -3,6 +3,7 @@ from datetime import datetime
 from constance import config
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.db import IntegrityError
 from django.db.models import Count
 from django.utils import timezone
 from drf_spectacular.utils import (
@@ -10,11 +11,11 @@ from drf_spectacular.utils import (
     OpenApiParameter,
     OpenApiResponse,
     extend_schema,
-    extend_schema_view,
 )
 from rest_framework import status, viewsets
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.response import Response
+from rest_framework.schemas.coreapi import serializers
 from rest_framework.views import APIView
 
 from .models import (
@@ -32,7 +33,7 @@ from .serializers import (
     DifficultySerializer,
     QuestionSerializer,
     ResultSerializer,
-    StudentResultSerializer,
+    StandaloneStudentResultSerializer,
     StudentSerializer,
     SubjectSerializer,
     TestSerializer,
@@ -113,27 +114,51 @@ class TestViewSet(viewsets.ModelViewSet):
 
 
 class ResultViewSet(viewsets.ModelViewSet):
-    queryset = Result.objects.all()
-    serializer_class = ResultSerializer
-    filter_backends = [OrderingFilter]
+    queryset = Result.objects.prefetch_related("studentresult_set__student")
+    filter_backends = [OrderingFilter, SearchFilter]
     ordering = ["-updated_at"]
+    search_fields = [
+        "test__subject__name",
+        "teacher__first_name",
+        "teacher__last_name",
+        "class__name",
+    ]
+    serializer_class = ResultSerializer
+
+
+class ResultDetailViewSet(viewsets.ModelViewSet):
+    filter_backends = [OrderingFilter, SearchFilter]
+    ordering = ["-updated_at"]
+    search_fields = [
+        "student__name",
+        "score",
+        "note",
+        "student__classroom__name",
+    ]
+    serializer_class = StandaloneStudentResultSerializer
 
     def perform_create(self, serializer):
-        result = serializer.save()
-        classes = self.request.data.get("classes")
-        if classes:
-            result.classes.set(classes)
+        try:
+            result = Result.objects.get(id=self.kwargs.get("result_pk"))
+            student = Student.objects.get(id=self.request.data.get("student_id"))
+            student_result = serializer.save(student=student, result=result)
+            return student_result
+        except (Result.DoesNotExist, Student.DoesNotExist):
+            raise serializers.ValidationError(
+                {"detail": "Invalid result or student ID provided."}
+            )
+        except IntegrityError:
+            raise serializers.ValidationError(
+                {"detail": "Student result already exists for this student and result."}
+            )
 
-    def perform_update(self, serializer):
-        result = serializer.save()
-        classes = self.request.data.get("classes")
-        if classes:
-            result.classes.set(classes)
+    def get_queryset(self):
+        return StudentResult.objects.filter(result_id=self.kwargs.get("result_pk"))
 
 
 class StudentResultViewSet(viewsets.ModelViewSet):
     queryset = StudentResult.objects.all()
-    serializer_class = StudentResultSerializer
+    serializer_class = StandaloneStudentResultSerializer
     filter_backends = [OrderingFilter]
     ordering = ["-updated_at"]
 

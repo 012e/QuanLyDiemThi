@@ -17,11 +17,11 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { PaginatedStudentResultList } from '../model/paginated-student-result-list';
+import { PaginatedStandaloneStudentResultList } from '../model/paginated-standalone-student-result-list';
 // @ts-ignore
-import { PatchedStudentResult } from '../model/patched-student-result';
+import { PatchedStandaloneStudentResult } from '../model/patched-standalone-student-result';
 // @ts-ignore
-import { StudentResult } from '../model/student-result';
+import { StandaloneStudentResult } from '../model/standalone-student-result';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -98,16 +98,16 @@ export class StudentresultService implements StudentresultServiceInterface {
     }
 
     /**
-     * @param studentResult 
+     * @param standaloneStudentResult 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public studentresultCreate(studentResult: StudentResult, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<StudentResult>;
-    public studentresultCreate(studentResult: StudentResult, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<StudentResult>>;
-    public studentresultCreate(studentResult: StudentResult, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<StudentResult>>;
-    public studentresultCreate(studentResult: StudentResult, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
-        if (studentResult === null || studentResult === undefined) {
-            throw new Error('Required parameter studentResult was null or undefined when calling studentresultCreate.');
+    public studentresultCreate(standaloneStudentResult: StandaloneStudentResult, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<StandaloneStudentResult>;
+    public studentresultCreate(standaloneStudentResult: StandaloneStudentResult, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<StandaloneStudentResult>>;
+    public studentresultCreate(standaloneStudentResult: StandaloneStudentResult, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<StandaloneStudentResult>>;
+    public studentresultCreate(standaloneStudentResult: StandaloneStudentResult, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (standaloneStudentResult === null || standaloneStudentResult === undefined) {
+            throw new Error('Required parameter standaloneStudentResult was null or undefined when calling studentresultCreate.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -170,10 +170,10 @@ export class StudentresultService implements StudentresultServiceInterface {
         }
 
         let localVarPath = `/studentresult/`;
-        return this.httpClient.request<StudentResult>('post', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<StandaloneStudentResult>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: studentResult,
+                body: standaloneStudentResult,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -265,9 +265,9 @@ export class StudentresultService implements StudentresultServiceInterface {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public studentresultList(limit?: number, offset?: number, ordering?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<PaginatedStudentResultList>;
-    public studentresultList(limit?: number, offset?: number, ordering?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<PaginatedStudentResultList>>;
-    public studentresultList(limit?: number, offset?: number, ordering?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<PaginatedStudentResultList>>;
+    public studentresultList(limit?: number, offset?: number, ordering?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<PaginatedStandaloneStudentResultList>;
+    public studentresultList(limit?: number, offset?: number, ordering?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<PaginatedStandaloneStudentResultList>>;
+    public studentresultList(limit?: number, offset?: number, ordering?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<PaginatedStandaloneStudentResultList>>;
     public studentresultList(limit?: number, offset?: number, ordering?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
@@ -333,7 +333,7 @@ export class StudentresultService implements StudentresultServiceInterface {
         }
 
         let localVarPath = `/studentresult/`;
-        return this.httpClient.request<PaginatedStudentResultList>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<PaginatedStandaloneStudentResultList>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,
@@ -349,14 +349,14 @@ export class StudentresultService implements StudentresultServiceInterface {
 
     /**
      * @param id A unique integer value identifying this student result.
-     * @param patchedStudentResult 
+     * @param patchedStandaloneStudentResult 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public studentresultPartialUpdate(id: number, patchedStudentResult?: PatchedStudentResult, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<StudentResult>;
-    public studentresultPartialUpdate(id: number, patchedStudentResult?: PatchedStudentResult, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<StudentResult>>;
-    public studentresultPartialUpdate(id: number, patchedStudentResult?: PatchedStudentResult, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<StudentResult>>;
-    public studentresultPartialUpdate(id: number, patchedStudentResult?: PatchedStudentResult, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public studentresultPartialUpdate(id: number, patchedStandaloneStudentResult?: PatchedStandaloneStudentResult, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<StandaloneStudentResult>;
+    public studentresultPartialUpdate(id: number, patchedStandaloneStudentResult?: PatchedStandaloneStudentResult, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<StandaloneStudentResult>>;
+    public studentresultPartialUpdate(id: number, patchedStandaloneStudentResult?: PatchedStandaloneStudentResult, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<StandaloneStudentResult>>;
+    public studentresultPartialUpdate(id: number, patchedStandaloneStudentResult?: PatchedStandaloneStudentResult, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling studentresultPartialUpdate.');
         }
@@ -421,10 +421,10 @@ export class StudentresultService implements StudentresultServiceInterface {
         }
 
         let localVarPath = `/studentresult/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: undefined})}/`;
-        return this.httpClient.request<StudentResult>('patch', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<StandaloneStudentResult>('patch', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: patchedStudentResult,
+                body: patchedStandaloneStudentResult,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -440,9 +440,9 @@ export class StudentresultService implements StudentresultServiceInterface {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public studentresultRetrieve(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<StudentResult>;
-    public studentresultRetrieve(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<StudentResult>>;
-    public studentresultRetrieve(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<StudentResult>>;
+    public studentresultRetrieve(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<StandaloneStudentResult>;
+    public studentresultRetrieve(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<StandaloneStudentResult>>;
+    public studentresultRetrieve(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<StandaloneStudentResult>>;
     public studentresultRetrieve(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling studentresultRetrieve.');
@@ -497,7 +497,7 @@ export class StudentresultService implements StudentresultServiceInterface {
         }
 
         let localVarPath = `/studentresult/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: undefined})}/`;
-        return this.httpClient.request<StudentResult>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<StandaloneStudentResult>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -512,19 +512,19 @@ export class StudentresultService implements StudentresultServiceInterface {
 
     /**
      * @param id A unique integer value identifying this student result.
-     * @param studentResult 
+     * @param standaloneStudentResult 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public studentresultUpdate(id: number, studentResult: StudentResult, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<StudentResult>;
-    public studentresultUpdate(id: number, studentResult: StudentResult, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<StudentResult>>;
-    public studentresultUpdate(id: number, studentResult: StudentResult, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<StudentResult>>;
-    public studentresultUpdate(id: number, studentResult: StudentResult, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public studentresultUpdate(id: number, standaloneStudentResult: StandaloneStudentResult, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<StandaloneStudentResult>;
+    public studentresultUpdate(id: number, standaloneStudentResult: StandaloneStudentResult, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<StandaloneStudentResult>>;
+    public studentresultUpdate(id: number, standaloneStudentResult: StandaloneStudentResult, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<StandaloneStudentResult>>;
+    public studentresultUpdate(id: number, standaloneStudentResult: StandaloneStudentResult, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling studentresultUpdate.');
         }
-        if (studentResult === null || studentResult === undefined) {
-            throw new Error('Required parameter studentResult was null or undefined when calling studentresultUpdate.');
+        if (standaloneStudentResult === null || standaloneStudentResult === undefined) {
+            throw new Error('Required parameter standaloneStudentResult was null or undefined when calling studentresultUpdate.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -587,10 +587,10 @@ export class StudentresultService implements StudentresultServiceInterface {
         }
 
         let localVarPath = `/studentresult/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: undefined})}/`;
-        return this.httpClient.request<StudentResult>('put', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<StandaloneStudentResult>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: studentResult,
+                body: standaloneStudentResult,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

@@ -1,5 +1,6 @@
 import rest_framework.serializers as serializers
 from django.contrib.auth.models import User
+from django.db import IntegrityError
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from score_manager.utils import get_role
@@ -120,14 +121,26 @@ class TestSerializer(serializers.ModelSerializer):
         exclude = ["created_at", "updated_at"]
 
 
-class StudentResultSerializer(serializers.ModelSerializer):
-    student = serializers.PrimaryKeyRelatedField(
-        queryset=Student.objects.all()
-    )  # Accept student IDs
+class StandaloneStudentResultSerializer(serializers.ModelSerializer):
+    student = StudentSerializer(read_only=True)
+    student_id = serializers.PrimaryKeyRelatedField(
+        queryset=Student.objects.all(),
+        source="student",
+        required=True,
+        write_only=True,
+    )
 
     class Meta:
         model = StudentResult
-        fields = ["id", "student", "result", "score", "note"]
+        fields = [
+            "id",
+            "student",
+            "student_id",
+            "score",
+            "note",
+            "created_at",
+            "updated_at",
+        ]
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -205,65 +218,89 @@ class UserSerializer(serializers.ModelSerializer):
         return representation
 
 
+class StudentResultSerializer(serializers.ModelSerializer):
+    student_id = serializers.PrimaryKeyRelatedField(
+        queryset=Student.objects.all(), source="student", required=True
+    )
+
+    class Meta:
+        model = StudentResult
+        fields = ["id", "student_id", "score", "note", "created_at", "updated_at"]
+
+
 class ResultSerializer(serializers.ModelSerializer):
-    student_results = StudentResultSerializer(
-        source="studentresult_set",  # Reverse relation
-        many=True,
-    )  # Allow nested input for StudentResult
+    teacher_id = serializers.PrimaryKeyRelatedField(
+        write_only=True, queryset=User.objects.all(), allow_null=False, required=True
+    )
+    teacher = SafeUserSerializer(read_only=True)
+
+    classroom_id = serializers.PrimaryKeyRelatedField(
+        write_only=True, queryset=Class.objects.all(), allow_null=False, required=True
+    )
+    classroom = ClassSerializer(read_only=True)
+
+    test_id = serializers.PrimaryKeyRelatedField(
+        write_only=True, queryset=Test.objects.all(), allow_null=False, required=True
+    )
+    total_results = serializers.IntegerField(
+        source="studentresult_set.count", read_only=True
+    )
 
     class Meta:
         model = Result
         fields = [
             "id",
             "test",
+            "test_id",
             "teacher",
+            "teacher_id",
             "classroom",
-            "student_results",
+            "classroom_id",
+            "total_results",
+            "created_at",
+            "updated_at",
         ]
 
     def create(self, validated_data):
-        # Remove nested data from validated_data
-        student_results_data = validated_data.pop("studentresult_set", [])
-
-        # Create the Result instance
+        student_results_data = validated_data.pop("student_results", [])
         result = Result.objects.create(**validated_data)
-
-        # Create StudentResult instances
-        for student_result_data in student_results_data:
-            student_result_data.pop("result")
-            StudentResult.objects.create(**student_result_data)
+        try:
+            StudentResult.objects.bulk_create(
+                [
+                    StudentResult(result=result, **student_result_data)
+                    for student_result_data in student_results_data
+                ]
+            )
+        except IntegrityError:
+            result.delete()
+            raise serializers.ValidationError("One or more student results are invalid")
 
         return result
 
     def update(self, instance, validated_data):
-        # Remove nested data from validated_data
-        student_results_data = validated_data.pop("studentresult_set", [])
+        # Extract nested student results data
+        student_results_data = validated_data.pop("student_results", [])
 
-        # Update fields of the Result instance
+        # Update attributes of the `Result` instance
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
         instance.save()
 
-        # Handle StudentResult updates
-        existing_student_results = {
-            sr.id: sr for sr in instance.studentresult_set.all()
-        }
+        # Delete all existing StudentResult entries for this Result
+        instance.studentresult_set.all().delete()
 
-        for student_result_data in student_results_data:
-            sr_id = student_result_data.get("id")
-            if sr_id and sr_id in existing_student_results:
-                # Update existing StudentResult
-                student_result_instance = existing_student_results.pop(sr_id)
-                for attr, value in student_result_data.items():
-                    setattr(student_result_instance, attr, value)
-                student_result_instance.save()
-            else:
-                # Create a new StudentResult
-                StudentResult.objects.create(**student_result_data)
-
-        # Delete any remaining StudentResult objects not included in input
-        for remaining_sr in existing_student_results.values():
-            remaining_sr.delete()
+        # Create new StudentResult entries
+        try:
+            StudentResult.objects.bulk_create(
+                [
+                    StudentResult(result=instance, **student_result_data)
+                    for student_result_data in student_results_data
+                ]
+            )
+        except IntegrityError:
+            raise serializers.ValidationError(
+                "A unique constraint violation occurred while updating student results."
+            )
 
         return instance
 

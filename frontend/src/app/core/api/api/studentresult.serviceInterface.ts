@@ -11,9 +11,9 @@ import { HttpHeaders }                                       from '@angular/comm
 
 import { Observable }                                        from 'rxjs';
 
-import { PaginatedStudentResultList } from '../model/models';
-import { PatchedStudentResult } from '../model/models';
-import { StudentResult } from '../model/models';
+import { PaginatedStandaloneStudentResultList } from '../model/models';
+import { PatchedStandaloneStudentResult } from '../model/models';
+import { StandaloneStudentResult } from '../model/models';
 
 
 import { Configuration }                                     from '../configuration';
@@ -27,9 +27,9 @@ export interface StudentresultServiceInterface {
     /**
      * 
      * 
-     * @param studentResult 
+     * @param standaloneStudentResult 
      */
-    studentresultCreate(studentResult: StudentResult, extraHttpRequestParams?: any): Observable<StudentResult>;
+    studentresultCreate(standaloneStudentResult: StandaloneStudentResult, extraHttpRequestParams?: any): Observable<StandaloneStudentResult>;
 
     /**
      * 
@@ -45,29 +45,29 @@ export interface StudentresultServiceInterface {
      * @param offset The initial index from which to return the results.
      * @param ordering Which field to use when ordering the results.
      */
-    studentresultList(limit?: number, offset?: number, ordering?: string, extraHttpRequestParams?: any): Observable<PaginatedStudentResultList>;
+    studentresultList(limit?: number, offset?: number, ordering?: string, extraHttpRequestParams?: any): Observable<PaginatedStandaloneStudentResultList>;
 
     /**
      * 
      * 
      * @param id A unique integer value identifying this student result.
-     * @param patchedStudentResult 
+     * @param patchedStandaloneStudentResult 
      */
-    studentresultPartialUpdate(id: number, patchedStudentResult?: PatchedStudentResult, extraHttpRequestParams?: any): Observable<StudentResult>;
+    studentresultPartialUpdate(id: number, patchedStandaloneStudentResult?: PatchedStandaloneStudentResult, extraHttpRequestParams?: any): Observable<StandaloneStudentResult>;
 
     /**
      * 
      * 
      * @param id A unique integer value identifying this student result.
      */
-    studentresultRetrieve(id: number, extraHttpRequestParams?: any): Observable<StudentResult>;
+    studentresultRetrieve(id: number, extraHttpRequestParams?: any): Observable<StandaloneStudentResult>;
 
     /**
      * 
      * 
      * @param id A unique integer value identifying this student result.
-     * @param studentResult 
+     * @param standaloneStudentResult 
      */
-    studentresultUpdate(id: number, studentResult: StudentResult, extraHttpRequestParams?: any): Observable<StudentResult>;
+    studentresultUpdate(id: number, standaloneStudentResult: StandaloneStudentResult, extraHttpRequestParams?: any): Observable<StandaloneStudentResult>;
 
 }
