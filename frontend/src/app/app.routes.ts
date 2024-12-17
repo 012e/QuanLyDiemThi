@@ -11,6 +11,9 @@ import { TestListComponent } from './test/test-list/test-list.component';
 import { UserInfoComponent } from './user-info/user-info.component';
 import { UserListComponent } from './user/user-list/user-list.component';
 import { SummaryComponent } from './summary/summary.component';
+import { StudentComponent } from './student/student.component';
+import { CreateStudentComponent } from './student/create-student/create-student.component';
+import { EditStudentComponent } from './student/edit-student/edit-student.component';
 
 export const routes: Routes = [
   {
@@ -50,6 +53,18 @@ export const routes: Routes = [
       {
         path: 'test/:id',
         component: TestDetailComponent,
+      },
+      {
+        path: 'student',
+        component: StudentComponent,
+      },
+      {
+        path: 'student/new',
+        component: CreateStudentComponent,
+      },
+      {
+        path: 'student/:id',
+        component: EditStudentComponent,
       },
     ],
   },
