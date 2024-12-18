@@ -116,8 +116,9 @@ def seed_users():
 
 def seed_classes():
     classes = []
+    total_teacher = User.objects.count()
     for _ in range(TOTAL_CLASSES):
-        classes.append(Class(name=fake.name(), teacher_id=fake.random_int(1, 10)))
+        classes.append(Class(name=fake.license_plate(), teacher_id=fake.random_int(1, total_teacher)))
     Class.objects.bulk_create(classes)
 
 
@@ -201,7 +202,7 @@ def seed_results():
 
     for result in Result.objects.all():
         # Create student results
-        class_student_count = fake.random_int(10, 20)
+        class_student_count = fake.random_int(30, 60)
         students_in_classes = Student.objects.order_by("?")[:class_student_count]
         for student in students_in_classes:
             score = fake.random_int(0, 10)
