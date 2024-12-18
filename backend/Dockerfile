@@ -10,7 +10,6 @@ RUN pip install -r requirements.txt
 COPY . .
 EXPOSE 8000
 
-RUN python manage.py makemigrations score_manager
 RUN python manage.py migrate
 RUN python manage.py initsuperuser
 RUN python manage.py seed
