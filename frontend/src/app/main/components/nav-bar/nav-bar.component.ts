@@ -16,7 +16,10 @@ import { UserRole } from '../../../core/enums/user-role';
 export class NavBarComponent implements OnInit {
   public items: MenuItem[] | undefined;
 
-  public constructor(private readonly router: Router, private readonly authService: AuthService) {}
+  public constructor(
+    private readonly router: Router,
+    private readonly authService: AuthService,
+  ) {}
 
   public navigateToUser() {
     this.router.navigate(['me']);
@@ -48,6 +51,20 @@ export class NavBarComponent implements OnInit {
         },
       },
       {
+        label: 'Student',
+        icon: 'pi pi-cog',
+        command: () => {
+          this.router.navigate(['student']);
+        },
+      },
+      {
+        label: 'Classroom',
+        icon: 'pi pi-cog',
+        command: () => {
+          this.router.navigate(['classroom']);
+        },
+      },
+      {
         label: 'Summary',
         icon: 'pi pi-percentage',
         command: () => {
@@ -60,22 +77,6 @@ export class NavBarComponent implements OnInit {
         icon: 'pi pi-cog',
         command: () => {
           this.router.navigate(['admin']);
-        },
-        disabled: !isAdmin,
-      },
-      {
-        label: 'Student',
-        icon: 'pi pi-cog',
-        command: () => {
-          this.router.navigate(['student']);
-        },
-        disabled: !isAdmin,
-      },
-      {
-        label: 'Classroom',
-        icon: 'pi pi-cog',
-        command: () => {
-          this.router.navigate(['classroom']);
         },
         disabled: !isAdmin,
       },
