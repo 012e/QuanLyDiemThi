@@ -18,7 +18,7 @@ humanize==4.11.0
 inflection==0.5.1
 jsonschema==4.23.0
 jsonschema-specifications==2023.12.1
-psycopg2==2.9.10
+psycopg2-binary==2.9.10
 PyJWT==2.9.0
 python-dateutil==2.9.0.post0
 PyYAML==6.0.2
