@@ -48,7 +48,6 @@ class Difficulty(models.Model):
     class Meta:
         ordering = ["name"]
 
-
 class Question(models.Model):
     detail = models.TextField(blank=False, null=True)
     difficulty = models.ForeignKey(Difficulty, null=False, on_delete=models.CASCADE)
@@ -70,7 +69,7 @@ class Test(models.Model):
     semester = models.PositiveSmallIntegerField(null=False, blank=False)
     datetime = models.DateTimeField()
     duration = models.DurationField()
-    questions = models.ManyToManyField(Question, blank=True)
+    questions = models.ManyToManyField(Question, blank=True, through="QuestionInTestModel")
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     updated_at = models.DateTimeField(auto_now=True, db_index=True)
 
@@ -79,6 +78,14 @@ class Test(models.Model):
 
     class Meta:
         ordering = ["updated_at"]
+
+class QuestionInTestModel(models.Model):
+    test = models.ForeignKey(Test, on_delete=models.CASCADE, db_index=True, blank=False)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, db_index=True, blank=False)
+    order = models.PositiveSmallIntegerField(null=False)
+    class Meta:
+        ordering = ["order", "question"]
+
 
 
 class Result(models.Model):

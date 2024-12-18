@@ -102,7 +102,7 @@ if DEBUG:
     DATABASES = {
         "default": env.db_url(
             "SQLITE_URL",
-            default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
+            default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",  # type: ignore
         ),
     }
 else:

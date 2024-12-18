@@ -1,6 +1,8 @@
+from environ import logging
 import rest_framework.serializers as serializers
 from django.contrib.auth.models import User
 from django.db import IntegrityError
+from drf_spectacular.utils import extend_schema_field
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from score_manager.utils import get_role
@@ -9,6 +11,7 @@ from .models import (
     Class,
     Difficulty,
     Question,
+    QuestionInTestModel,
     Result,
     Student,
     StudentResult,
@@ -106,10 +109,82 @@ class DifficultySerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class QuestionInTestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = QuestionInTestModel
+        fields = "__all__"
+
+
 class TestSerializer(serializers.ModelSerializer):
-    questions = serializers.PrimaryKeyRelatedField(
-        queryset=Question.objects.all(), many=True
-    )
+    questions = serializers.SerializerMethodField("get_questions")
+
+    @extend_schema_field(serializers.ListField(child=serializers.IntegerField()))
+    def get_questions(self, obj):
+        # Query related questions from QuestionInTestModel and order them by "order"
+        question_ids = (
+            QuestionInTestModel.objects.filter(test=obj)
+            .order_by("order")
+            .values_list("question_id", flat=True)
+        )
+        return list(question_ids)
+
+    def to_internal_value(self, data):
+        # Ensure `questions` is handled during deserialization
+        questions = data.pop("questions", None)
+        validated_data = super().to_internal_value(data)
+
+        if questions is not None:
+            # Validate question IDs are a list of integers
+            if not isinstance(questions, list):
+                raise serializers.ValidationError({"questions": "Must be a list of question IDs."})
+            if not all(isinstance(q, int) for q in questions):
+                raise serializers.ValidationError({"questions": "All question IDs must be integers."})
+
+            # Validate that all question IDs exist in the database
+            existing_questions = set(Question.objects.filter(id__in=questions).values_list("id", flat=True))
+            invalid_questions = set(questions) - existing_questions
+            if invalid_questions:
+                raise serializers.ValidationError(
+                    {"questions": f"The following question IDs do not exist: {list(invalid_questions)}"}
+                )
+
+        validated_data["questions"] = questions
+        return validated_data
+
+    def create(self, validated_data):
+        # Extract questions from validated_data
+        question_ids = validated_data.pop("questions", [])
+        test = Test.objects.create(**validated_data)
+
+        question_in_test_objects = [
+            QuestionInTestModel(test=test, question_id=question_id, order=order)
+            for order, question_id in enumerate(question_ids, start=1)
+        ]
+        QuestionInTestModel.objects.bulk_create(question_in_test_objects)
+
+        return test
+
+    def update(self, instance, validated_data):
+        logging.info("updating test")
+        # Extract questions from validated_data
+        question_ids = validated_data.pop("questions", None)
+
+        # Update the test instance
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+
+        # Update questions if provided
+        if question_ids is not None:
+            QuestionInTestModel.objects.filter(test=instance).delete()
+
+            question_in_test_objects = [
+                QuestionInTestModel(test=instance, question_id=question_id, order=order)
+                for order, question_id in enumerate(question_ids, start=1)
+            ]
+            QuestionInTestModel.objects.bulk_create(question_in_test_objects)
+
+        return instance
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
@@ -118,7 +193,7 @@ class TestSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Test
-        exclude = ["created_at", "updated_at"]
+        fields = "__all__"
 
 
 class StandaloneStudentResultSerializer(serializers.ModelSerializer):

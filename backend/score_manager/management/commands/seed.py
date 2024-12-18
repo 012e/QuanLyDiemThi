@@ -16,6 +16,7 @@ from score_manager.models import (
     StudentResult,
     Subject,
     Test,
+    QuestionInTestModel,
 )
 
 fake = Faker()
@@ -170,10 +171,15 @@ def seed_test():
         )
     Test.objects.bulk_create(tests)
 
-    for test in Test.objects.all():
+    for i, test in enumerate(Test.objects.all()):
         total_question = fake.random_int(MIN_QUESTION_PER_TEST, MAX_QUESTION_PER_TEST)
         question_ids = fake.random_sample(range(1, total_questions), total_question)
-        test.questions.add(*question_ids)
+        QuestionInTestModel.objects.bulk_create(
+            [
+                QuestionInTestModel(test=test, question_id=question_id, order=order)
+                for order, question_id in enumerate(question_ids,start=1)
+            ]
+        )
 
 
 def seed_results():
