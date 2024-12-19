@@ -140,7 +140,7 @@ export class EditClassroomComponent implements OnInit, OnDestroy {
 
   public selectTeacher(): void {
     this.teacherPickerRef = this.dialogService.open(TeacherPickerComponent, {
-      header: 'Select Teacher',
+      header: 'Select a Teacher',
       width: '70%',
       contentStyle: { overflow: 'auto' },
       data: {
