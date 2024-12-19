@@ -8,16 +8,20 @@
           <div class="flex flex-col gap-1">
             <label for="name" class="px-1 text-sm font-bold">Class Name</label>
             @if (form.get('name')?.touched && form.get('name')?.invalid) {
-            <div class="px-1 text-sm text-red-500">Please input valid class name</div>
+            <div class="px-1 text-sm text-red-500">
+              Please input valid class name
+            </div>
             }
-            <input type="text" placeholder="Enter class name" pInputText formControlName="name" />
+            <input
+              type="text"
+              placeholder="Enter class name"
+              pInputText
+              formControlName="name"
+            />
           </div>
           <div class="flex flex-col gap-1">
-            <label for="Teacher" class="px-1 text-sm font-bold"
-              >Teacher</label
-            >
-            @if (form.get('teacher')?.touched &&
-            !form.get('teacher')?.value) {
+            <label for="Teacher" class="px-1 text-sm font-bold">Teacher</label>
+            @if (form.get('teacher')?.touched && !form.get('teacher')?.value) {
             <div class="px-1 text-sm text-red-500">Teacher is required</div>
             }
             <div class="grid grid-cols-10">
@@ -25,14 +29,19 @@
                 <input
                   pInputText
                   [disabled]="true"
-                  [value]="teacher?.username ?? 'Select teacher'"
+                  [value]="
+                    teacher
+                      ? teacher.first_name + ' ' + teacher.last_name
+                      : null
+                  "
+                  placeholder="Select teacher"
                   [style]="{ width: '100%' }"
                 />
               </div>
               <div class="col-span-3 flex justify-end">
                 <p-button
                   [outlined]="true"
-                  (onClick)="selectClass()"
+                  (onClick)="selectTeacher()"
                   severity="success"
                   icon="pi pi-plus"
                   label="Select Teacher"

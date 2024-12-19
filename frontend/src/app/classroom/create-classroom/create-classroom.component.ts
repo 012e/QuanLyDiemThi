@@ -107,7 +107,7 @@ export class CreateClassroomComponent implements OnInit, OnDestroy {
     });
   }
 
-  public selectClass(): void {
+  public selectTeacher(): void {
     this.teacherPickerRef = this.dialogService.open(TeacherPickerComponent, {
       header: 'Select Teacher',
       width: '70%',
@@ -141,12 +141,12 @@ export class CreateClassroomComponent implements OnInit, OnDestroy {
     this.classService.classCreate(formValue).subscribe({
       next: (response) => {
         console.log(response);
-        this.showSuccess('Teacher updated successfully');
+        this.showSuccess('Class created successfully');
         this.router.navigate(['/classroom']);
       },
       error: (error) => {
         console.error(error);
-        this.showError('Failed to update teacher');
+        this.showError('Failed to create class');
       },
     });
   }
