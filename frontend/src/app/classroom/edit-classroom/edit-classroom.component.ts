@@ -29,7 +29,7 @@ import { MessageService } from 'primeng/api';
 import { CommonModule } from '@angular/common';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TeacherPickerComponent } from '../teacher-picker/teacher-picker.component';
+import { TeacherPickerComponent } from '../../core/components/teacher-picker/teacher-picker.component';
 import { Divider, DividerModule } from 'primeng/divider';
 @Component({
   selector: 'app-edit-classroom',
@@ -120,12 +120,6 @@ export class EditClassroomComponent implements OnInit, OnDestroy {
       this.router.navigate(['/']);
     }
     return id;
-  }
-
-  private toSentenceCase(input: string): string {
-    if (!input) return ''; // Handle empty string or null
-    input = input.trim(); // Remove leading and trailing whitespace
-    return input.charAt(0).toUpperCase() + input.slice(1).toLowerCase();
   }
 
   private showSuccess(message: string): void {

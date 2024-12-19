@@ -27,7 +27,7 @@ import {
 import { Class, ClassService, User } from '../../core/api';
 import { noWhitespaceValidator } from '../../core/validators/no-whitespace.validator';
 import { MessageService } from 'primeng/api';
-import { TeacherPickerComponent } from '../teacher-picker/teacher-picker.component';
+import { TeacherPickerComponent } from '../../core/components/teacher-picker/teacher-picker.component';
 import { Router } from '@angular/router';
 import { Divider, DividerModule } from 'primeng/divider';
 @Component({
