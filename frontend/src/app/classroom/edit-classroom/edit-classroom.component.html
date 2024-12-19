@@ -34,7 +34,7 @@
                   [value]="
                     teacher
                       ? teacher.first_name + ' ' + teacher.last_name
-                      : null
+                      : 'Please select a teacher'
                   "
                   placeholder="Select teacher"
                   [style]="{ width: '100%' }"
@@ -46,7 +46,7 @@
                   outlined
                   severity="success"
                   icon="pi pi-plus"
-                  class="justify-center items-center w-full font-bold flex gap-2"
+                  class="flex gap-2 justify-center items-center w-full font-bold"
                   (click)="selectTeacher()"
                 >
                   Select Teacher

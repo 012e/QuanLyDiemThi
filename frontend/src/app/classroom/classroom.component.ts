@@ -89,11 +89,6 @@ export class ClassroomComponent implements OnInit {
   }
 
   public ngOnInit() {
-    let permissions = this.permissionService.permissions$.subscribe(
-      (permissions) => {
-        console.log(permissions);
-      }
-    );
     this.loadInitialData();
   }
 
