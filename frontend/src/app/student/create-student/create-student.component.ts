@@ -147,12 +147,12 @@ export class CreateStudentComponent implements OnInit, OnDestroy {
     this.studentService.studentCreate(formValue).subscribe({
       next: (response) => {
         console.log(response);
-        this.showSuccess('Student updated successfully');
+        this.showSuccess('Student created successfully');
         this.router.navigate(['/student']);
       },
       error: (error) => {
         console.error(error);
-        this.showError('Failed to update student');
+        this.showError('Failed to create student');
         const response = error.error;
         for (const key in response) {
           const keyErrors = response[key];
