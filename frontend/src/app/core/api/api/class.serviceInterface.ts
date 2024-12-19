@@ -13,7 +13,10 @@ import { Observable }                                        from 'rxjs';
 
 import { Class } from '../model/models';
 import { PaginatedClassList } from '../model/models';
+import { PaginatedStudentList } from '../model/models';
 import { PatchedClass } from '../model/models';
+import { PatchedStudent } from '../model/models';
+import { Student } from '../model/models';
 
 
 import { Configuration }                                     from '../configuration';
@@ -62,6 +65,59 @@ export interface ClassServiceInterface {
      * @param id A unique integer value identifying this class.
      */
     classRetrieve(id: number, extraHttpRequestParams?: any): Observable<Class>;
+
+    /**
+     * 
+     * 
+     * @param classPk 
+     * @param student 
+     */
+    classStudentCreate(classPk: string, student: Student, extraHttpRequestParams?: any): Observable<Student>;
+
+    /**
+     * 
+     * 
+     * @param classPk 
+     * @param id A unique integer value identifying this student.
+     */
+    classStudentDestroy(classPk: string, id: number, extraHttpRequestParams?: any): Observable<{}>;
+
+    /**
+     * 
+     * 
+     * @param classPk 
+     * @param limit Number of results to return per page.
+     * @param offset The initial index from which to return the results.
+     * @param ordering Which field to use when ordering the results.
+     * @param search A search term.
+     */
+    classStudentList(classPk: string, limit?: number, offset?: number, ordering?: string, search?: string, extraHttpRequestParams?: any): Observable<PaginatedStudentList>;
+
+    /**
+     * 
+     * 
+     * @param classPk 
+     * @param id A unique integer value identifying this student.
+     * @param patchedStudent 
+     */
+    classStudentPartialUpdate(classPk: string, id: number, patchedStudent?: PatchedStudent, extraHttpRequestParams?: any): Observable<Student>;
+
+    /**
+     * 
+     * 
+     * @param classPk 
+     * @param id A unique integer value identifying this student.
+     */
+    classStudentRetrieve(classPk: string, id: number, extraHttpRequestParams?: any): Observable<Student>;
+
+    /**
+     * 
+     * 
+     * @param classPk 
+     * @param id A unique integer value identifying this student.
+     * @param student 
+     */
+    classStudentUpdate(classPk: string, id: number, student: Student, extraHttpRequestParams?: any): Observable<Student>;
 
     /**
      * 

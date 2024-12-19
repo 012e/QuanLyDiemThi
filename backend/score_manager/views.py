@@ -45,7 +45,7 @@ class StudentViewSet(viewsets.ModelViewSet):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
     filter_backends = [OrderingFilter, SearchFilter]
-    ordering = ["name"]
+    ordering = ["-updated_at"]
     search_fields = ["name", "student_code", "classroom__name"]
 
 
@@ -56,6 +56,16 @@ class ClassViewSet(viewsets.ModelViewSet):
     filter_backends = [OrderingFilter, SearchFilter]
     search_fields = ["name", "teacher__first_name", "teacher__last_name"]
     ordering = ["name"]
+
+class ClassStudentsViewSet(viewsets.ModelViewSet):
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+    filter_backends = [OrderingFilter, SearchFilter]
+    ordering = ["-updated_at"]
+    search_fields = ["name", "student_code", "classroom__name"]
+
+    def get_queryset(self):
+        return Student.objects.filter(classroom_id=self.kwargs.get("class_pk"))
 
 
 class QuestionViewSet(viewsets.ModelViewSet):
