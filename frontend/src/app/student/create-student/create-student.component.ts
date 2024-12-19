@@ -21,15 +21,14 @@ import { ToastModule } from 'primeng/toast';
 
 import {
   DialogService,
-  DynamicDialogComponent,
   DynamicDialogRef,
 } from 'primeng/dynamicdialog';
 import { Class, ClassService, Student, StudentService } from '../../core/api';
 import { noWhitespaceValidator } from '../../core/validators/no-whitespace.validator';
 import { MessageService } from 'primeng/api';
-import { ClassPickerComponent } from '../class-picker/class-picker.component';
+import { ClassPickerComponent } from '../../core/components/class-picker/class-picker.component';
 import { Router } from '@angular/router';
-import { Divider, DividerModule } from 'primeng/divider';
+import { DividerModule } from 'primeng/divider';
 
 @Component({
   selector: 'app-create-student',

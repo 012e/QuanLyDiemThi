@@ -20,7 +20,6 @@ import { ToastModule } from 'primeng/toast';
 
 import {
   DialogService,
-  DynamicDialogComponent,
   DynamicDialogRef,
 } from 'primeng/dynamicdialog';
 import { Class, ClassService, Student, StudentService } from '../../core/api';
@@ -29,8 +28,8 @@ import { MessageService } from 'primeng/api';
 import { CommonModule } from '@angular/common';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ClassPickerComponent } from '../class-picker/class-picker.component';
-import { Divider, DividerModule } from 'primeng/divider';
+import { ClassPickerComponent } from '../../core/components/class-picker/class-picker.component';
+import { DividerModule } from 'primeng/divider';
 @Component({
   selector: 'app-edit-student',
   standalone: true,

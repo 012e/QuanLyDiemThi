@@ -8,31 +8,33 @@ import {
 } from 'primeng/dynamicdialog';
 import { TableModule, TablePageEvent } from 'primeng/table';
 import { Subject as RxSubject, debounceTime, distinctUntilChanged } from 'rxjs';
-import { User, UserService } from '../../core/api';
+import { Class, ClassService } from '../../api';
 import { InputTextModule } from 'primeng/inputtext';
+
 @Component({
-  selector: 'app-teacher-picker',
+  selector: 'app-class-picker',
   standalone: true,
-  imports: [ButtonModule, TableModule, InputTextModule],
-  templateUrl: './teacher-picker.component.html',
-  styleUrl: './teacher-picker.component.css',
+  imports: [TableModule, ButtonModule, InputTextModule],
+  providers: [MessageService],
+  templateUrl: './class-picker.component.html',
+  styleUrl: './class-picker.component.css',
 })
-export class TeacherPickerComponent implements OnInit {
+export class ClassPickerComponent implements OnInit {
   public instance: DynamicDialogComponent | undefined;
-  public exceptTeacher!: User;
+  public exceptClass: Class | undefined;
 
   constructor(
     public dialogRef: DynamicDialogRef,
     private readonly dialogService: DialogService,
-    private readonly teacherService: UserService,
-    private readonly messageService: MessageService
+    private readonly classService: ClassService,
+    private readonly messageService: MessageService,
   ) {
     this.instance = this.dialogService.getInstance(this.dialogRef);
   }
 
   private readonly DEFAULT_PAGE_SIZE = 10;
 
-  teachers!: User[];
+  classes!: Class[];
 
   submitted: boolean = false;
   searchValue: string | undefined;
@@ -57,7 +59,8 @@ export class TeacherPickerComponent implements OnInit {
     if (!data) {
       throw new Error('Data is not defined');
     }
-    this.exceptTeacher = data.exceptTeacher;
+    this.exceptClass = data.exceptClass ?? undefined;
+    this.description = data.description ?? '';
   }
 
   public resetPage() {
@@ -83,10 +86,10 @@ export class TeacherPickerComponent implements OnInit {
   }
 
   public updatePage(): void {
-    this.teacherService
-      .userList(this.rows, this.first, undefined, this.searchText)
+    this.classService
+      .classList(this.rows, this.first, undefined, this.searchText)
       .subscribe((data) => {
-        this.teachers = data.results;
+        this.classes = data.results;
         this.count = data.count;
       });
   }
@@ -117,8 +120,8 @@ export class TeacherPickerComponent implements OnInit {
     this.searchText$.next(query);
   }
 
-  public select(teacher: User): void {
-    console.log(`Selected teacher ${teacher.id}`);
-    this.dialogRef.close(teacher);
+  public select(classroom: Class): void {
+    console.log(`Selected classroom ${classroom.id}`);
+    this.dialogRef.close(classroom);
   }
 }
