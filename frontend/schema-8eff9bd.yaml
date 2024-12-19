@@ -2865,7 +2865,9 @@ components:
           type: integer
           readOnly: true
         test:
-          type: integer
+          allOf:
+          - $ref: '#/components/schemas/Test'
+          readOnly: true
         test_id:
           type: integer
           writeOnly: true
@@ -3076,7 +3078,9 @@ components:
           type: integer
           readOnly: true
         test:
-          type: integer
+          allOf:
+          - $ref: '#/components/schemas/Test'
+          readOnly: true
         test_id:
           type: integer
           writeOnly: true

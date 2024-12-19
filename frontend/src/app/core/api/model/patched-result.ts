@@ -7,13 +7,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Test } from './test';
 import { Class } from './class';
 import { SafeUser } from './safe-user';
 
 
 export interface PatchedResult { 
     readonly id?: number;
-    test?: number;
+    readonly test?: Test;
     test_id?: number;
     readonly teacher?: SafeUser;
     teacher_id?: number;

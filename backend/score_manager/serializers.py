@@ -324,6 +324,8 @@ class ResultSerializer(serializers.ModelSerializer):
     test_id = serializers.PrimaryKeyRelatedField(
         write_only=True, queryset=Test.objects.all(), allow_null=False, required=True
     )
+    test = TestSerializer(read_only=True)
+
     total_results = serializers.IntegerField(
         source="studentresult_set.count",
         read_only=True,

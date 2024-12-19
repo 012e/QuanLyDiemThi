@@ -87,9 +87,6 @@ export class UserListComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit() {
-    let permissions = this.permissionService.permissions$.subscribe((permissions) => {
-      console.log(permissions);
-    });
     this.loadInitialData();
   }
 
