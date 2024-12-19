@@ -9,6 +9,7 @@ from rest_framework_nested import routers as nested_routers
 
 from score_manager.views import (
     AnnualReportView,
+    ClassStudentsViewSet,
     ClassViewSet,
     ConfigView,
     DifficultyViewSet,
@@ -33,8 +34,11 @@ router.register(r"student", StudentViewSet, basename="student")
 router.register(r"class", ClassViewSet, basename="class")
 router.register(r"studentresult", StudentResultViewSet, basename="studentresult")
 
-nested_router = nested_routers.NestedSimpleRouter(router, r"result", lookup="result")
-nested_router.register(r"detail", ResultDetailViewSet, basename="detail-results")
+result_detail = nested_routers.NestedSimpleRouter(router, r"result", lookup="result")
+result_detail.register(r"detail", ResultDetailViewSet, basename="detail-results")
+
+class_students = nested_routers.NestedSimpleRouter(router, r"class", lookup="class")
+class_students.register(r"student", ClassStudentsViewSet, basename="class-students")
 
 urlpatterns = [
     path("", include(router.urls)),
@@ -53,5 +57,6 @@ urlpatterns = [
     path("auth/", include("dj_rest_auth.urls")),
     path("config/", ConfigView.as_view(), name="config-view"),
     path(r"summary", AnnualReportView.as_view(), name="summary"),
-    path("", include(nested_router.urls)),
+    path("", include(result_detail.urls)),
+    path("", include(class_students.urls)),
 ]

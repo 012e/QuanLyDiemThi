@@ -243,6 +243,8 @@ export class TestDetailComponent implements OnInit, OnDestroy {
       // duration is in minutes but the API expects seconds
       duration: (data.duration * 60).toString(),
       questions: data.questions,
+      created_at: '',
+      updated_at: '',
     };
     return test;
   }
