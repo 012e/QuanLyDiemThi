@@ -74,7 +74,7 @@
             {{ classroom.name }}
           </td>
           <td>
-            {{ classroom.teacher.username }}
+            {{ classroom.teacher.first_name + ' ' + classroom.teacher.last_name }}
           </td>
           <td class="flex flex-row" *ngxPermissionsOnly="'staff'">
             <p-button

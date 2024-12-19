@@ -147,7 +147,7 @@ export class EditStudentComponent implements OnInit, OnDestroy {
 
   public selectClass(): void {
     this.classPickerRef = this.dialogService.open(ClassPickerComponent, {
-      header: 'Select Questions',
+      header: 'Select Classroom',
       width: '70%',
       contentStyle: { overflow: 'auto' },
       data: {
