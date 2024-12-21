@@ -17,6 +17,9 @@ import { EditStudentComponent } from './student/edit-student/edit-student.compon
 import { ClassroomComponent } from './classroom/classroom.component';
 import { CreateClassroomComponent } from './classroom/create-classroom/create-classroom.component';
 import { EditClassroomComponent } from './classroom/edit-classroom/edit-classroom.component';
+import { ResultListComponent } from './result/result-list/result-list.component';
+import { ResultCreateComponent } from './result/result-create/result-create.component';
+import { ResultEditComponent } from './result/result-edit/result-edit.component';
 
 export const routes: Routes = [
   {
@@ -80,6 +83,18 @@ export const routes: Routes = [
       {
         path: 'classroom/:id',
         component: EditClassroomComponent,
+      },
+      {
+        path: 'result',
+        component: ResultListComponent,
+      },
+      {
+        path: 'result/new',
+        component: ResultCreateComponent,
+      },
+      {
+        path: 'result/:id',
+        component: ResultEditComponent,
       },
     ],
   },

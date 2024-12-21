@@ -37,6 +37,7 @@ export class ClassPickerComponent implements OnInit {
   classes!: Class[];
 
   submitted: boolean = false;
+  description: string = '';
   searchValue: string | undefined;
 
   public count!: number;

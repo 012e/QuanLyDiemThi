@@ -44,7 +44,7 @@ export class NavBarComponent implements OnInit {
         },
       },
       {
-        label: 'Teachers',
+        label: 'Teacher',
         icon: 'pi pi-users',
         command: () => {
           this.router.navigate(['user']);
@@ -62,6 +62,13 @@ export class NavBarComponent implements OnInit {
         icon: 'pi pi-cog',
         command: () => {
           this.router.navigate(['classroom']);
+        },
+      },
+      {
+        label: 'Result',
+        icon: 'pi pi-cog',
+        command: () => {
+          this.router.navigate(['result']);
         },
       },
       {
