@@ -89,7 +89,7 @@ export class EditStudentComponent implements OnInit, OnDestroy {
     this.studentService.studentRetrieve(this.studentId).subscribe((data) => {
       this.form.patchValue({
         ...data,
-        classroom_id: data.classroom.id,
+        classroom_id: data.classroom?.id,
       });
 
       console.log(this.form.value);
