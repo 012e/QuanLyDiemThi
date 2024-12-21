@@ -1,0 +1,160 @@
+<div class="flex justify-center py-10 w-screen">
+  <div>
+    <div class="flex justify-between">
+      <h1 class="p-0 m-0 text-4xl capitalize">Result Detail</h1>
+
+      @if (editing) {
+        <p-button
+          label="Save"
+          (onClick)="submit()"
+          severity="success"
+          icon="pi pi-check"
+        />
+      } @else {
+        <p-button
+          label="Edit"
+          (onClick)="enableEditing()"
+          icon="pi pi-pencil"
+          severity="secondary"
+        />
+      }
+    </div>
+    <p-divider></p-divider>
+
+    <div class="flex gap-5 justify-end"></div>
+    <form [formGroup]="form" class="flex flex-col gap-5">
+      <div class="flex flex-col gap-1">
+        <label for="Class Name" class="px-1 text-sm font-bold">Test</label>
+        @if (form.get('test_id')?.touched && form.get('test_id')?.invalid) {
+          <div class="px-1 text-sm text-red-500">Test is required</div>
+        }
+        <div class="grid grid-cols-10 gap-5">
+          <div class="flex flex-row col-span-7 gap-2">
+            <div class="flex flex-col gap-1">
+              <label for="" class="ml-1 text-sm">Test Id</label>
+              <input
+                pInputText
+                [disabled]="true"
+                [value]="test?.id"
+                placeholder="Please select a test"
+                [style]="{ width: '100%' }"
+              />
+            </div>
+            <div class="flex flex-col gap-1">
+              <label for="" class="ml-1 text-sm">Subject</label>
+              <input
+                pInputText
+                [disabled]="true"
+                [value]="test ? getSubjectName(test.subject) : ''"
+                placeholder=""
+                [style]="{ width: '100%' }"
+              />
+            </div>
+            <div class="flex flex-col gap-1">
+              <label for="" class="ml-1 text-sm">Date and Time</label>
+              <input
+                pInputText
+                [disabled]="true"
+                [value]="
+                  (test ? test.datetime : '') | date: 'hh:mm dd/MM/yyyy '
+                "
+                [style]="{ width: '100%' }"
+              />
+            </div>
+          </div>
+          <div class="flex col-span-3 justify-end">
+            <button
+              pButton
+              outlined
+              severity="success"
+              icon="pi pi-plus"
+              class="flex gap-2 justify-center items-center w-full font-bold"
+              (click)="selectTest()"
+              [disabled]="!editing"
+            >
+              Select Test
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="flex flex-col gap-1">
+        <label for="Class Name" class="px-1 text-sm font-bold">Teacher</label>
+        @if (
+          form.get('teacher_id')?.touched && form.get('teacher_id')?.invalid
+        ) {
+          <div class="px-1 text-sm text-red-500">Teacher is required</div>
+        }
+        <div class="grid grid-cols-10 gap-5">
+          <div class="col-span-7">
+            <input
+              pInputText
+              [disabled]="true"
+              [value]="
+                teacher
+                  ? teacher.first_name + ' ' + teacher.last_name
+                  : 'Please select a teacher'
+              "
+              placeholder="Select teacher"
+              [style]="{ width: '100%' }"
+            />
+          </div>
+          <div class="flex col-span-3 justify-end">
+            <button
+              pButton
+              outlined
+              severity="success"
+              icon="pi pi-plus"
+              class="flex gap-2 justify-center items-center w-full font-bold"
+              [disabled]="!editing"
+              (click)="selectTeacher()"
+            >
+              Select Teacher
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="flex flex-col gap-1">
+        <label for="Class Name" class="px-1 text-sm font-bold">Class</label>
+        @if (
+          form.get('classroom_id')?.touched && form.get('classroom_id')?.invalid
+        ) {
+          <div class="px-1 text-sm text-red-500">Class is required</div>
+        }
+        <div class="grid grid-cols-10 gap-5">
+          <div class="col-span-7">
+            <input
+              pInputText
+              [disabled]="true"
+              [value]="classroom ? classroom.name : 'Please select a class'"
+              placeholder="Select teacher"
+              [style]="{ width: '100%' }"
+            />
+          </div>
+          <div class="flex col-span-3">
+            <button
+              pButton
+              outlined
+              severity="success"
+              icon="pi pi-plus"
+              class="flex gap-2 justify-center items-center w-full font-bold"
+              (click)="selectClassroom()"
+              [disabled]="!editing"
+            >
+              Select Class
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+    <p-divider></p-divider>
+    <div class="flex flex-col gap-5">
+      <h2>Student Results</h2>
+      <app-result-student-list [resultId]="resultId!" />
+    </div>
+  </div>
+</div>
+
+<p-confirmDialog
+  header="Confirmation"
+  icon="pi pi-exclamation-triangle"
+></p-confirmDialog>

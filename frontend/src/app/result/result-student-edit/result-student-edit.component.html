@@ -1,0 +1,41 @@
+<div class="flex gap-5 justify-end"></div>
+<form [formGroup]="form" class="flex flex-col gap-5">
+  <div class="flex flex-col gap-1">
+    <label for="Student Code" class="px-1 text-sm font-bold"
+      >Student Code</label
+    >
+    <input
+      pInputText
+      [value]="result.student.student_code"
+      placeholder="Student Code"
+      [disabled]="true"
+    />
+  </div>
+  <div class="flex flex-col gap-1">
+    <label for="Name" class="px-1 text-sm font-bold">Name</label>
+    <input
+      pInputText
+      [value]="result.student.name"
+      placeholder="Student Name"
+      [disabled]="true"
+    />
+  </div>
+  <div class="flex flex-col gap-1">
+    <label for="Score" class="px-1 text-sm font-bold">Score</label>
+    @if (form.get('score')!.dirty && !form.get('score')?.value) {
+      <div class="px-1 text-sm text-red-500">Score is required</div>
+    } @else if (
+      form.get('score')?.touched && form.get('score')?.hasError('invalidFloat')
+    ) {
+      <div class="px-1 text-sm text-red-500">Score is not a valid number</div>
+    }
+    <input pInputText formControlName="score" placeholder="Score" />
+  </div>
+  <div class="flex flex-col gap-1">
+    <label for="Note" class="px-1 text-sm font-bold">Note</label>
+    <input pInputText formControlName="note" placeholder="Add a note" />
+  </div>
+  <div class="flex justify-end">
+    <p-button severity="success" (onClick)="submit()">Save</p-button>
+  </div>
+</form>
