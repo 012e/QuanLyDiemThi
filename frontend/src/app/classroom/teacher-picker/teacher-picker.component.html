@@ -40,8 +40,8 @@
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-teacher>
-        
-        <tr [class]="{ 'bg-gray-50': teacher.id === exceptTeacher.id }">
+
+        <tr [class]="{ 'bg-gray-50': exceptTeacher && teacher.id === exceptTeacher.id }">
           <td>
             <span>{{ teacher.id }}</span>
           </td>
@@ -61,7 +61,7 @@
               severity="success"
               [text]="true"
               [rounded]="true"
-              [disabled]="teacher.id === exceptTeacher.id"
+              [disabled]="exceptTeacher && teacher.id === exceptTeacher.id"
             />
           </td>
         </tr>

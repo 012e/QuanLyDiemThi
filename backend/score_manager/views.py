@@ -124,7 +124,7 @@ class TestViewSet(viewsets.ModelViewSet):
 
 
 class ResultViewSet(viewsets.ModelViewSet):
-    queryset = Result.objects.prefetch_related("studentresult_set__student")
+    queryset = Result.objects.all()
     filter_backends = [OrderingFilter, SearchFilter]
     ordering = ["-updated_at"]
     search_fields = [

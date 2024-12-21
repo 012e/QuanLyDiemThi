@@ -21,13 +21,13 @@ import { InputTextModule } from 'primeng/inputtext';
 })
 export class ClassPickerComponent implements OnInit {
   public instance: DynamicDialogComponent | undefined;
-  public exceptClass!: Class;
+  public exceptClass: Class | undefined;
 
   constructor(
     public dialogRef: DynamicDialogRef,
     private readonly dialogService: DialogService,
     private readonly classService: ClassService,
-    private readonly messageService: MessageService
+    private readonly messageService: MessageService,
   ) {
     this.instance = this.dialogService.getInstance(this.dialogRef);
   }
@@ -59,7 +59,8 @@ export class ClassPickerComponent implements OnInit {
     if (!data) {
       throw new Error('Data is not defined');
     }
-    this.exceptClass = data.exceptClass;
+    this.exceptClass = data.exceptClass ?? undefined;
+    this.description = data.description ?? '';
   }
 
   public resetPage() {

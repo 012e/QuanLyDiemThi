@@ -1,8 +1,7 @@
-from environ import logging
 import rest_framework.serializers as serializers
 from django.contrib.auth.models import User
-from django.db import IntegrityError
 from drf_spectacular.utils import extend_schema_field
+from environ import logging
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from score_manager.utils import get_role
@@ -136,16 +135,24 @@ class TestSerializer(serializers.ModelSerializer):
         if questions is not None:
             # Validate question IDs are a list of integers
             if not isinstance(questions, list):
-                raise serializers.ValidationError({"questions": "Must be a list of question IDs."})
+                raise serializers.ValidationError(
+                    {"questions": "Must be a list of question IDs."}
+                )
             if not all(isinstance(q, int) for q in questions):
-                raise serializers.ValidationError({"questions": "All question IDs must be integers."})
+                raise serializers.ValidationError(
+                    {"questions": "All question IDs must be integers."}
+                )
 
             # Validate that all question IDs exist in the database
-            existing_questions = set(Question.objects.filter(id__in=questions).values_list("id", flat=True))
+            existing_questions = set(
+                Question.objects.filter(id__in=questions).values_list("id", flat=True)
+            )
             invalid_questions = set(questions) - existing_questions
             if invalid_questions:
                 raise serializers.ValidationError(
-                    {"questions": f"The following question IDs do not exist: {list(invalid_questions)}"}
+                    {
+                        "questions": f"The following question IDs do not exist: {list(invalid_questions)}"
+                    }
                 )
 
         validated_data["questions"] = questions
@@ -318,7 +325,8 @@ class ResultSerializer(serializers.ModelSerializer):
         write_only=True, queryset=Test.objects.all(), allow_null=False, required=True
     )
     total_results = serializers.IntegerField(
-        source="studentresult_set.count", read_only=True
+        source="studentresult_set.count",
+        read_only=True,
     )
 
     class Meta:
@@ -337,47 +345,24 @@ class ResultSerializer(serializers.ModelSerializer):
         ]
 
     def create(self, validated_data):
-        student_results_data = validated_data.pop("student_results", [])
-        result = Result.objects.create(**validated_data)
-        try:
-            StudentResult.objects.bulk_create(
-                [
-                    StudentResult(result=result, **student_result_data)
-                    for student_result_data in student_results_data
-                ]
-            )
-        except IntegrityError:
-            result.delete()
-            raise serializers.ValidationError("One or more student results are invalid")
+        teacher_id = validated_data.pop("teacher_id")
+        classroom_id = validated_data.pop("classroom_id")
+        test_id = validated_data.pop("test_id")
 
+        result = Result.objects.create(
+            teacher=teacher_id, classroom=classroom_id, test=test_id
+        )
         return result
 
     def update(self, instance, validated_data):
-        # Extract nested student results data
-        student_results_data = validated_data.pop("student_results", [])
-
-        # Update attributes of the `Result` instance
-        for attr, value in validated_data.items():
-            setattr(instance, attr, value)
-        instance.save()
-
-        # Delete all existing StudentResult entries for this Result
-        instance.studentresult_set.all().delete()
-
-        # Create new StudentResult entries
-        try:
-            StudentResult.objects.bulk_create(
-                [
-                    StudentResult(result=instance, **student_result_data)
-                    for student_result_data in student_results_data
-                ]
-            )
-        except IntegrityError:
-            raise serializers.ValidationError(
-                "A unique constraint violation occurred while updating student results."
-            )
-
-        return instance
+        data = {}
+        if "teacher_id" in validated_data:
+            data["teacher"] = validated_data.pop("teacher_id")
+        if "classroom_id" in validated_data:
+            data["classroom"] = validated_data.pop("classroom_id")
+        if "test_id" in validated_data:
+            data["test"] = validated_data.pop("test_id")
+        return Result.objects.filter(pk=instance.pk).update(**data)
 
 
 class ConfigUpdateSerializer(serializers.Serializer):
