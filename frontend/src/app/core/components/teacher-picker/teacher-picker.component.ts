@@ -10,6 +10,7 @@ import { TableModule, TablePageEvent } from 'primeng/table';
 import { Subject as RxSubject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { User, UserService } from '../../api';
 import { InputTextModule } from 'primeng/inputtext';
+
 @Component({
   selector: 'app-teacher-picker',
   standalone: true,
@@ -20,6 +21,7 @@ import { InputTextModule } from 'primeng/inputtext';
 export class TeacherPickerComponent implements OnInit {
   public instance: DynamicDialogComponent | undefined;
   public exceptTeacher!: User;
+  description: string = '';
 
   constructor(
     public dialogRef: DynamicDialogRef,
@@ -58,6 +60,7 @@ export class TeacherPickerComponent implements OnInit {
       throw new Error('Data is not defined');
     }
     this.exceptTeacher = data.exceptTeacher;
+    this.description = data.description;
   }
 
   public resetPage() {

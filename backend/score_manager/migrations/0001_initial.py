@@ -125,7 +125,7 @@ class Migration(migrations.Migration):
             name='StudentResult',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('score', models.DecimalField(decimal_places=2, max_digits=4)),
+                ('score', models.DecimalField(decimal_places=2, max_digits=20)),
                 ('note', models.TextField(null=True)),
                 ('created_at', models.DateTimeField(auto_now_add=True, db_index=True)),
                 ('updated_at', models.DateTimeField(auto_now=True, db_index=True)),
