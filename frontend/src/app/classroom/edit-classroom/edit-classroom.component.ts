@@ -17,7 +17,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { RippleModule } from 'primeng/ripple';
 import { TableModule, TablePageEvent } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
-import { Subject as RxSubject, debounceTime, distinctUntilChanged } from 'rxjs';
+import { Subject as RxSubject, debounceTime, distinctUntilChanged, finalize } from 'rxjs';
 import {
   DialogService,
   DynamicDialogComponent,
@@ -234,7 +234,6 @@ export class EditClassroomComponent implements OnInit, OnDestroy {
       width: '70%',
       contentStyle: { overflow: 'auto' },
       data: {
-        exceptStudents: this.students,
       },
       baseZIndex: 10000,
     });
@@ -244,10 +243,15 @@ export class EditClassroomComponent implements OnInit, OnDestroy {
         return;
       }
       console.log(`Dialog returned ${newStudents}`);
+      newStudents.forEach((student) => {
+        const newStudent = {
+          ...student,
+          classroom_id: this.classId,
+        } as Student;
+        console.log(newStudent);
+        this.updateStudent(newStudent);
+      });
 
-      this.students.push(...newStudents);
-
-      this.showSuccess('Students added successfully');
       console.log(this.students);
     });
   }
@@ -298,7 +302,6 @@ export class EditClassroomComponent implements OnInit, OnDestroy {
     this.students.forEach((student) => {
       const newStudent = {
         ...student,
-        classroom: formValue,
         classroom_id: this.classId,
       };
 
@@ -322,7 +325,7 @@ export class EditClassroomComponent implements OnInit, OnDestroy {
           classroom_id: null,
         };
         console.log(newStudent);
-        // this.updateStudent(newStudent);
+        this.updateStudent(newStudent);
       },
     });
   }
@@ -352,7 +355,7 @@ export class EditClassroomComponent implements OnInit, OnDestroy {
             classroom_id: null,
           };
           console.log(newStudent);
-          // this.updateStudent(newStudent);
+          this.updateStudent(newStudent);
         });
         this.selectedStudents = [];
         this.showSuccess('Students Deleted');
@@ -365,10 +368,14 @@ export class EditClassroomComponent implements OnInit, OnDestroy {
   }
 
   public updateStudent(student: Student): void {
-    this.studentService.studentUpdate(student.id!, student).subscribe({
+    this.studentService.studentUpdate(student.id!, student)
+    .pipe(finalize(() => {
+      this.showSuccess('Student updated successfully');
+      this.updatePage();
+    }))
+    .subscribe({
       next: (response) => {
         console.log(response);
-        this.updatePage();
       },
 
       error: (error) => {
@@ -402,7 +409,7 @@ export class EditClassroomComponent implements OnInit, OnDestroy {
             classroom_id: null,
           };
           console.log(newStudent);
-          // this.updateStudent(newStudent);
+          this.updateStudent(newStudent);
         });
       },
     });
