@@ -1,0 +1,104 @@
+<div>
+  <p-table
+    #dt
+    [value]="results"
+    [rows]="rows"
+    [paginator]="true"
+    [(selection)]="selectedResults"
+    [rowHover]="true"
+    dataKey="id"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [showCurrentPageReport]="true"
+    [paginator]="true"
+    [lazy]="true"
+    [rows]="rows"
+    [first]="first"
+    [totalRecords]="count"
+    (onPage)="onPage($event)"
+    [loading]="loading"
+    [resizableColumns]="true"
+    [autoLayout]="true"
+  >
+    <ng-template pTemplate="caption">
+      <div class="flex flex-row justify-between w-full">
+        <div class="flex gap-2">
+          <p-button
+            severity="success"
+            label="New"
+            icon="pi pi-plus"
+            (onClick)="openCreateDialog()"
+          />
+          <p-button
+            severity="danger"
+            label="Delete"
+            icon="pi pi-trash"
+            (onClick)="deleteSelectedResults()"
+            [disabled]="!selectedResults || !selectedResults.length"
+          />
+          <p-button
+            label="Clear"
+            icon="pi pi-times"
+            (onClick)="clearSelectedUsers()"
+          />
+        </div>
+        <span class="p-input-icon-left">
+          <i class="pi pi-search"></i>
+          <input
+            pInputText
+            type="text"
+            (keyup)="handleSearch(getValue($event))"
+            placeholder="Search..."
+          />
+        </span>
+      </div>
+    </ng-template>
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th></th>
+        <th>Student Code</th>
+        <th>Name</th>
+        <th>Score</th>
+        <th>Note</th>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-result>
+      <tr>
+        <td>
+          <p-tableCheckbox [value]="result" />
+        </td>
+        <td>
+          {{ result.student.student_code }}
+        </td>
+        <td>
+          {{ result.student.name }}
+        </td>
+        <td>
+          {{ result.score }}
+        </td>
+        <td class="truncate max-w-80" title="{{ result.note }}">
+          {{ result.note }}
+        </td>
+        <td class="flex flex-row">
+          <p-button
+            icon="pi pi-pencil"
+            class="mr-2"
+            [rounded]="true"
+            [outlined]="true"
+            severity="success"
+            (onClick)="openEditDialog(result)"
+          />
+
+          <p-button
+            icon="pi pi-trash"
+            severity="danger"
+            [rounded]="true"
+            [outlined]="true"
+            (onClick)="deleteResult(result)"
+          />
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
