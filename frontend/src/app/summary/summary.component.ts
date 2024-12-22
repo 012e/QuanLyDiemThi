@@ -33,6 +33,11 @@ export class SummaryComponent implements OnInit {
       next: (data) => {
         console.log(data);
         this.data = data;
+        this.messageService.add({
+          severity: 'info',
+          summary: 'Info',
+          detail: `Updated summary for year ${this.year}.`,
+        });
       },
       error: (error) => {
         this.messageService.add({
@@ -40,6 +45,7 @@ export class SummaryComponent implements OnInit {
           summary: 'Error',
           detail: `Failed to retrieve summary for year ${this.year}.`,
         });
+        this.router.navigate(['summary', new Date().getFullYear()])
       },
     });
   }
@@ -52,12 +58,7 @@ export class SummaryComponent implements OnInit {
       } else {
         this.year = new Date().getFullYear();
       }
-      this.messageService.add({
-        severity: 'info',
-        summary: 'Info',
-        detail: `Updated summary for year ${this.year}.`,
-
-      });
+      
       this.updateYearData(this.year);
     });
 
