@@ -28,7 +28,7 @@ class Class(models.Model):
 class Student(models.Model):
     name = models.CharField(max_length=100)
     student_code = models.CharField(max_length=10, blank=False, unique=True)
-    classroom = models.ForeignKey(Class, on_delete=models.CASCADE, db_index=True)
+    classroom = models.ForeignKey(Class, null=True, on_delete=models.SET_NULL, db_index=True)
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     updated_at = models.DateTimeField(auto_now=True, db_index=True)
 
