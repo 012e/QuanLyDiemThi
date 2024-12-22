@@ -87,9 +87,6 @@ export class StudentComponent implements OnInit {
   }
 
   public ngOnInit() {
-    let permissions = this.permissionService.permissions$.subscribe((permissions) => {
-      console.log(permissions);
-    });
     this.loadInitialData();
   }
 
@@ -113,7 +110,7 @@ export class StudentComponent implements OnInit {
 
   public updatePage(): void {
     this.loading = true;
-    this.studentService.studentList(this.rows, this.first, undefined, this.searchText).subscribe({ 
+    this.studentService.studentList(this.rows, this.first, undefined, this.searchText).subscribe({
       next: (data) => {
         this.loading = false;
         this.students = data.results;

@@ -17,7 +17,18 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { RippleModule } from 'primeng/ripple';
 import { TableModule, TablePageEvent } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
-import { Subject as RxSubject, debounceTime, distinctUntilChanged, finalize } from 'rxjs';
+import {
+  Subject as RxSubject,
+  catchError,
+  debounceTime,
+  distinctUntilChanged,
+  finalize,
+  forkJoin,
+  from,
+  map,
+  of,
+  throwError,
+} from 'rxjs';
 import {
   DialogService,
   DynamicDialogComponent,
@@ -95,10 +106,12 @@ export class EditClassroomComponent implements OnInit, OnDestroy {
     private readonly classService: ClassService,
     private readonly messageService: MessageService,
     private readonly dialogService: DialogService,
-    private readonly confirmationService: ConfirmationService
+    private readonly confirmationService: ConfirmationService,
   ) {}
 
   ngOnInit(): void {
+    this.classId = this.getClassId();
+
     this.form = this.fb.group({
       id: [undefined],
       name: [
@@ -107,8 +120,8 @@ export class EditClassroomComponent implements OnInit, OnDestroy {
       ],
       teacher: [undefined, [Validators.required]],
       teacher_id: [undefined, [Validators.required]],
+      classroom_id: [this.classId], // does not changes
     });
-    this.classId = this.getClassId();
 
     this.classService.classRetrieve(this.classId).subscribe((data) => {
       this.form.patchValue({
@@ -205,7 +218,7 @@ export class EditClassroomComponent implements OnInit, OnDestroy {
         this.rows,
         this.first,
         undefined,
-        this.searchText
+        this.searchText,
       )
       .subscribe({
         next: (data) => {
@@ -228,13 +241,19 @@ export class EditClassroomComponent implements OnInit, OnDestroy {
     this.searchText$.next(query);
   }
 
+  public assignStudentToClass(student: any, classroom: number | null): Student {
+    return {
+      ...student,
+      classroom_id: classroom,
+    } as Student;
+  }
+
   public addStudents(): void {
     this.studentPickerRef = this.dialogService.open(StudentPickerComponent, {
       header: 'Select Students',
       width: '70%',
       contentStyle: { overflow: 'auto' },
-      data: {
-      },
+      data: {},
       baseZIndex: 10000,
     });
 
@@ -243,16 +262,7 @@ export class EditClassroomComponent implements OnInit, OnDestroy {
         return;
       }
       console.log(`Dialog returned ${newStudents}`);
-      newStudents.forEach((student) => {
-        const newStudent = {
-          ...student,
-          classroom_id: this.classId,
-        } as Student;
-        console.log(newStudent);
-        this.updateStudent(newStudent);
-      });
-
-      console.log(this.students);
+      this.updateStudents(newStudents);
     });
   }
 
@@ -279,6 +289,31 @@ export class EditClassroomComponent implements OnInit, OnDestroy {
     });
   }
 
+  public updateStudents(students: Student[]) {
+    console.log(students);
+    let studentUpdates$ = forkJoin(
+      students
+        .map((student) => this.assignStudentToClass(student, this.classId))
+        .map((student) =>
+          this.studentService.studentUpdate(student.id!, student),
+        ),
+    );
+
+    studentUpdates$.subscribe({
+      next: (response) => {
+        console.log(response);
+      },
+      error: (error) => {
+        console.error(error);
+        this.showError('Failed to update students');
+      },
+      complete: () => {
+        this.showSuccess('Students updated successfully');
+        this.updatePage();
+      },
+    });
+  }
+
   public submit() {
     this.form.markAllAsTouched();
     if (this.form.invalid) {
@@ -292,24 +327,13 @@ export class EditClassroomComponent implements OnInit, OnDestroy {
       next: (response) => {
         console.log(response);
         this.showSuccess('Class updated successfully');
+        this.disableEditing();
       },
       error: (error) => {
         console.error(error);
         this.showError('Failed to update classroom');
       },
     });
-
-    this.students.forEach((student) => {
-      const newStudent = {
-        ...student,
-        classroom_id: this.classId,
-      };
-
-      this.updateStudent(newStudent);
-    });
-
-    this.disableEditing();
-    this.router.navigate(['/classroom']);
   }
 
   public deleteStudent(index: number): void {
@@ -319,13 +343,20 @@ export class EditClassroomComponent implements OnInit, OnDestroy {
       icon: 'pi pi-exclamation-triangle',
       acceptButtonStyleClass: 'p-button-danger',
       accept: () => {
-        const newStudent = {
-          ...this.students[index],
-          classroom: null,
-          classroom_id: null,
-        };
-        console.log(newStudent);
-        this.updateStudent(newStudent);
+        const student = this.assignStudentToClass(this.students[index], null);
+        this.studentService.studentUpdate(student.id!, student).subscribe({
+          next: (response) => {
+            console.log(response);
+          },
+          error: (error) => {
+            console.error(error);
+            this.showError('Failed to delete student');
+          },
+          complete: () => {
+            this.showSuccess('Student deleted successfully');
+            this.updatePage();
+          },
+        });
       },
     });
   }
@@ -345,44 +376,36 @@ export class EditClassroomComponent implements OnInit, OnDestroy {
         }
 
         this.students = this.students.filter(
-          (val) => !this.selectedStudents.includes(val)
+          (val) => !this.selectedStudents.includes(val),
         );
 
-        this.selectedStudents.forEach((student) => {
-          const newStudent = {
-            ...student,
-            classroom: null,
-            classroom_id: null,
-          };
-          console.log(newStudent);
-          this.updateStudent(newStudent);
+        forkJoin(
+          this.selectedStudents
+            .map((student) => this.assignStudentToClass(student, null))
+            .map((student) =>
+              this.studentService.studentUpdate(student.id!, student),
+            ),
+        ).subscribe({
+          next: (response) => {
+            console.log(response);
+          },
+          error: (error) => {
+            console.error(error);
+            this.showError('Failed to delete students');
+          },
+          complete: () => {
+            this.showSuccess('Students deleted successfully');
+            this.updatePage();
+          },
         });
+
         this.selectedStudents = [];
-        this.showSuccess('Students Deleted');
       },
     });
   }
 
   public clearSelectedStudents() {
     this.selectedStudents = [];
-  }
-
-  public updateStudent(student: Student): void {
-    this.studentService.studentUpdate(student.id!, student)
-    .pipe(finalize(() => {
-      this.showSuccess('Student updated successfully');
-      this.updatePage();
-    }))
-    .subscribe({
-      next: (response) => {
-        console.log(response);
-      },
-
-      error: (error) => {
-        console.error(`Error updating student: ${error.message}`);
-        this.showError(`Error deleting student: ${error.message}`);
-      },
-    });
   }
 
   public deleteClass(): void {
@@ -400,16 +423,6 @@ export class EditClassroomComponent implements OnInit, OnDestroy {
           error: (error) => {
             this.showError(`Failed to delete classroom: ${error.message}`);
           },
-        });
-
-        this.students.forEach((student) => {
-          const newStudent = {
-            ...student,
-            classroom: null,
-            classroom_id: null,
-          };
-          console.log(newStudent);
-          this.updateStudent(newStudent);
         });
       },
     });
