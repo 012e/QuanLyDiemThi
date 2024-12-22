@@ -66,6 +66,7 @@
                   icon="pi pi-plus"
                   class="flex gap-2 justify-center items-center w-full font-bold"
                   (click)="selectTeacher()"
+                  [disabled]="!editing"
                 >
                   Select Teacher
                 </button>
@@ -73,8 +74,9 @@
             </div>
           </div>
         </div>
+        <p-divider />
         <div class="flex flex-col gap-3">
-          <p class="text-lg font-semibold">Students List</p>
+          <h2 class="m-0 text-2xl font-semibold">Students List</h2>
           <p-table
             #dt
             dataKey="id"
@@ -105,22 +107,18 @@
                     severity="success"
                     label="Add students"
                     [outlined]="true"
-                    [disabled]="!editing"
                   />
                   <p-button
                     severity="danger"
                     label="Delete"
                     icon="pi pi-trash"
                     (onClick)="deleteSelectedStudents()"
-                    [disabled]="
-                      !selectedStudents || !selectedStudents.length || !editing
-                    "
+                    [disabled]="!selectedStudents || !selectedStudents.length"
                   />
                   <p-button
                     label="Clear"
                     icon="pi pi-times"
                     (onClick)="clearSelectedStudents()"
-                    [disabled]="!editing"
                   />
                 </div>
                 <span class="p-input-icon-left">
@@ -145,69 +143,34 @@
               </tr>
             </ng-template>
             <ng-template pTemplate="body" let-student let-index="rowIndex">
-              @if (editing) {
-                <tr [pReorderableRow]="index">
-                  <td pReorderableRowHandle *ngxPermissionsOnly="'staff'">
-                    <p-tableCheckbox [value]="student" />
-                  </td>
-
-                  <td pReorderableRowHandle>
-                    {{ index + 1 }}
-                  </td>
-                  <td pReorderableRowHandle>
-                    {{ student.id }}
-                  </td>
-                  <td pReorderableRowHandle>
-                    {{ student.student_code }}
-                  </td>
-                  <td
-                    pReorderableRowHandle
-                    class="overflow-hidden whitespace-nowrap text-ellipsis max-w-60"
-                  >
-                    {{ student.name }}
-                  </td>
-                  <td pReorderableRowHandle *ngxPermissionsOnly="'staff'">
-                    <p-button
-                      [rounded]="true"
-                      icon="pi pi-trash"
-                      severity="danger"
-                      [outlined]="true"
-                      (onClick)="deleteStudent(index)"
-                      [disabled]="!editing"
-                    />
-                  </td>
-                </tr>
-              } @else {
-                <tr>
-                  <td>
-                    <p-tableCheckbox [value]="student" />
-                  </td>
-                  <td>
-                    {{ index + 1 }}
-                  </td>
-                  <td>
-                    {{ student.id }}
-                  </td>
-                  <td>
-                    {{ student.student_code }}
-                  </td>
-                  <td
-                    class="overflow-hidden whitespace-nowrap text-ellipsis max-w-60"
-                  >
-                    {{ student.name }}
-                  </td>
-                  <td>
-                    <p-button
-                      [rounded]="true"
-                      icon="pi pi-trash"
-                      severity="danger"
-                      [outlined]="true"
-                      (onClick)="deleteStudent(index)"
-                      [disabled]="!editing"
-                    />
-                  </td>
-                </tr>
-              }
+              <tr>
+                <td>
+                  <p-tableCheckbox [value]="student" />
+                </td>
+                <td>
+                  {{ index + 1 }}
+                </td>
+                <td>
+                  {{ student.id }}
+                </td>
+                <td>
+                  {{ student.student_code }}
+                </td>
+                <td
+                  class="overflow-hidden whitespace-nowrap text-ellipsis max-w-60"
+                >
+                  {{ student.name }}
+                </td>
+                <td>
+                  <p-button
+                    [rounded]="true"
+                    icon="pi pi-trash"
+                    severity="danger"
+                    [outlined]="true"
+                    (onClick)="deleteStudent(index)"
+                  />
+                </td>
+              </tr>
             </ng-template>
             <ng-template pTemplate="emptymessage">
               <tr>

@@ -78,7 +78,12 @@
           {{ student.name }}
         </td>
         <td>
-          {{ student.classroom.name }}
+          @if (student.classroom) {
+            {{ student.classroom.name }}
+          } @else {
+            <span class="font-bold">No class</span>
+          }
+
         </td>
         <td class="flex flex-row" *ngxPermissionsOnly="'staff'">
           <p-button
