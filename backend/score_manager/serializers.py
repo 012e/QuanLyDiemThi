@@ -56,7 +56,7 @@ class ClassSerializer(serializers.ModelSerializer):
 
 class StudentSerializer(serializers.ModelSerializer):
     classroom_id = serializers.PrimaryKeyRelatedField(
-        write_only=True, queryset=Class.objects.all(), allow_null=False, required=True
+        write_only=True, queryset=Class.objects.all(), allow_null=True, required=True
     )
     classroom = ClassSerializer(read_only=True)
 
@@ -68,8 +68,7 @@ class StudentSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         # Update fields on the instance
         classroom_id = validated_data.pop("classroom_id", None)
-        if classroom_id:
-            instance.classroom = classroom_id  # Update classroom
+        instance.classroom = classroom_id  # Update classroom
 
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
