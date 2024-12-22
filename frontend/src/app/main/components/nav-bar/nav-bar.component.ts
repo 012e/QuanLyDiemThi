@@ -52,7 +52,7 @@ export class NavBarComponent implements OnInit {
       },
       {
         label: 'Student',
-        icon: 'pi pi-cog',
+        icon: 'pi pi-circle-fill',
         command: () => {
           this.router.navigate(['student']);
         },
@@ -66,7 +66,7 @@ export class NavBarComponent implements OnInit {
       },
       {
         label: 'Result',
-        icon: 'pi pi-cog',
+        icon: 'pi pi-trophy',
         command: () => {
           this.router.navigate(['result']);
         },
@@ -77,7 +77,7 @@ export class NavBarComponent implements OnInit {
         command: () => {
           this.router.navigate(['summary', new Date().getFullYear()]);
         },
-        disabled: !isStaff,
+        visible: isStaff,
       },
       {
         label: 'Admin',
@@ -85,7 +85,7 @@ export class NavBarComponent implements OnInit {
         command: () => {
           this.router.navigate(['admin']);
         },
-        disabled: !isAdmin,
+        visible: isAdmin,
       },
     ];
   }
