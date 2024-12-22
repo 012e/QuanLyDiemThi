@@ -166,7 +166,7 @@ export class ClassroomComponent implements OnInit {
           });
         });
         this.selectedClasses = [];
-        this.showSuccess('Classes Deleted');
+        this.showSuccess('Classes deleted');
       },
     });
   }
@@ -189,10 +189,12 @@ export class ClassroomComponent implements OnInit {
                 (val) => val.id !== classroom.id
               );
             }
+            this.showSuccess('Class deleted');
             this.updatePage();
           },
           error: (error) => {
             console.error(error);
+            this.showError('Failed to delete class');
           },
         });
         this.classroom = {} as Class;
