@@ -12,7 +12,9 @@
         >
           <ng-template pTemplate="header">
             <tr>
-              <th pSortableColumn="key" class="w-40">Key<p-sortIcon field="id" /></th>
+              <th pSortableColumn="key" class="w-40">
+                Key<p-sortIcon field="id" />
+              </th>
               <th class="w-40">Value</th>
               <th class="w-4"></th>
             </tr>
@@ -61,12 +63,10 @@
 
               <div class="flex flex-col gap-2 mb-4 field">
                 <label for="value" class="font-bold">Value</label>
-                <input
-                  id="value"
-                  pInputText
-                  type="number"
+                <p-inputNumber
+                  [useGrouping]="false"
                   formControlName="value"
-                />
+                ></p-inputNumber>
               </div>
             </ng-template>
 

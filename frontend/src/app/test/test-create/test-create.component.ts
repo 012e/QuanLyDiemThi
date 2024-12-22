@@ -29,6 +29,7 @@ import {
 } from '../../core/api';
 import { isNumberValidator } from '../../core/validators/is-number.validator';
 import { QuestionPickerComponent } from '../question-picker/question-picker.component';
+import { InputNumberModule } from 'primeng/inputnumber';
 
 @Component({
   selector: 'app-test-create',
@@ -44,6 +45,7 @@ import { QuestionPickerComponent } from '../question-picker/question-picker.comp
     CalendarModule,
     TableModule,
     ConfirmDialogModule,
+    InputNumberModule,
   ],
   providers: [DialogService, ConfirmationService],
   templateUrl: './test-create.component.html',
@@ -216,7 +218,7 @@ export class TestCreateComponent implements OnInit, OnDestroy {
     this.testService.testCreate(this.getFormValue()).subscribe({
       next: (response) => {
         this.showSuccess('Test created successfully');
-        this.router.navigate(['/test']);
+        this.router.navigate([`/test/${response.id}`]);
       },
       error: (error) => {
         this.showError(`Failed to create test: ${error.message}`);
