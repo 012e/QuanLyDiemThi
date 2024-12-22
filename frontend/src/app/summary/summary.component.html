@@ -3,10 +3,6 @@
     <h1 class="p-0 m-0 font-sans text-6xl">Yearly Summary</h1>
   </div>
   <div class="flex justify-around items-center">
-    <div class="flex flex-col gap-1 ml-1">
-      <label for="" class="font-bold text-lg">Year</label>
-      <p-inputNumber [useGrouping]="false" [(ngModel)]="year" (onInput)="updateYear($event)" [showButtons]="true"/>
-    </div>
     <div class="flex gap-5">
       @if (data) {
         <p class="font-bold">
@@ -16,6 +12,16 @@
           Total Results: <span class="text-2xl">{{ data.total_results }}</span>
         </p>
       }
+    </div>
+    <div class="flex gap-5 items-center">
+      <label for="" class="text-lg font-bold">Year</label>
+      <p-inputNumber
+        [useGrouping]="false"
+        [(ngModel)]="year"
+        (onInput)="updateYear($event)"
+        [showButtons]="true"
+        [inputStyle]="{ width: '4rem' }"
+      />
     </div>
   </div>
   <div>

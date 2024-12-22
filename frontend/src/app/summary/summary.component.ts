@@ -62,7 +62,7 @@ export class SummaryComponent implements OnInit {
     });
 
     this.year$
-      .pipe(debounceTime(500), distinctUntilChanged())
+      .pipe(debounceTime(1000), distinctUntilChanged())
       .subscribe((year) => {
         this.router.navigate(['/summary', year]);
       });
