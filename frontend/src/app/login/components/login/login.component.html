@@ -1,20 +1,24 @@
-<div class="flex flex-col justify-center items-center h-screen bg-slate-100">
+<div
+  class="flex items-center h-screen bg-cover bg-[url('https://tailwindcss-glassmorphism.vercel.app/sunset.jpg')]"
+>
+  <div>
+
   <form
     action=""
-    class="flex flex-col gap-3 items-center p-10 bg-white rounded-lg card drop-shadow-lg"
+    class="flex flex-col gap-3 items-center p-10 card bg-gray-600 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-50 border border-gray-100 h-screen justify-center"
   >
     <div class="flex flex-col items-center font-bold">
       <h1 class="m-2">Hello</h1>
       <h3 class="m-2">Sign in to your account</h3>
     </div>
-    <div class="flex flex-col gap-1 w-full text-slate-600">
+    <div class="flex flex-col gap-1 w-full text-white">
       <label for="username">Username</label>
       <span class="p-input-icon-right">
         <i class="pi pi-user"></i>
         <input pInputText name="username" [(ngModel)]="username" />
       </span>
     </div>
-    <div class="flex flex-col gap-1 w-full text-slate-600">
+    <div class="flex flex-col gap-1 w-full text-white">
       <label for="password">Password</label>
       <p-password
         name="password"
@@ -34,12 +38,12 @@
       <button
         pButton
         pRipple
-        class="w-full items-center justify-center rounded-full"
+        class="justify-center items-center w-full rounded-full bg-blue-800 border-0 bg-opacity-80"
         (click)="handleLogin()"
       >
         Login
       </button>
-      <p-button label="Forgot password?" [link]="true" />
     </div>
   </form>
+
 </div>
