@@ -147,7 +147,7 @@ export class CreateStudentComponent implements OnInit, OnDestroy {
       next: (response) => {
         console.log(response);
         this.showSuccess('Student created successfully');
-        this.router.navigate(['/student']);
+        this.router.navigate([`/student`]);
       },
       error: (error) => {
         console.error(error);

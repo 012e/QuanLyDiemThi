@@ -142,7 +142,7 @@ export class CreateClassroomComponent implements OnInit, OnDestroy {
       next: (response) => {
         console.log(response);
         this.showSuccess('Class created successfully');
-        this.router.navigate(['/classroom']);
+        this.router.navigate([`/classroom/${response.id}`]);
       },
       error: (error) => {
         console.error(error);

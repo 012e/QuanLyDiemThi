@@ -95,6 +95,7 @@ export class AdminComponent implements OnInit {
             detail: response.message,
             life: 3000,
           });
+          this.loadConfig()
         },
 
         error: (error) => {

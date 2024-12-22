@@ -129,7 +129,7 @@ export class CreateUserFormComponent implements OnInit {
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
-          detail: 'Failed to update user',
+          detail: 'Failed to create user',
         });
         const response = error.error;
         for (const key in response) {

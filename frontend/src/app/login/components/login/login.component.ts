@@ -57,7 +57,7 @@ export class LoginComponent implements OnInit {
           detail: 'Login successful',
         });
         this.appAuthService.updateRole();
-        this.router.navigate(['/']);
+        this.router.navigate(['/me']);
       },
       error: (error) => {
         switch (error.status) {
