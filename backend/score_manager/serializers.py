@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from drf_spectacular.utils import extend_schema_field
 from environ import logging
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from constance import config
+import datetime
 
 from score_manager.utils import get_role
 
@@ -116,14 +118,31 @@ class QuestionInTestSerializer(serializers.ModelSerializer):
 class TestSerializer(serializers.ModelSerializer):
     questions = serializers.SerializerMethodField("get_questions")
 
-    @extend_schema_field(serializers.ListField(child=serializers.IntegerField()))
+    @extend_schema_field(serializers.ListField(child=serializers.IntegerField()))      
+    
+    def validate_duration(self, value):
+        if isinstance(value, datetime.timedelta):  
+            duration_in_seconds = value.total_seconds()
+            print(duration_in_seconds, "datetime")
+        else:  
+            duration_in_seconds = value  
+            print(duration_in_seconds, "time")
+
+
+        return duration_in_seconds  
+    
     def get_questions(self, obj):
-        # Query related questions from QuestionInTestModel and order them by "order"
         question_ids = (
             QuestionInTestModel.objects.filter(test=obj)
             .order_by("order")
             .values_list("question_id", flat=True)
         )
+        
+        max_questions = config.MAX_QUESTIONS_PER_TEST
+        if len(list(question_ids)) > max_questions:
+            raise serializers.ValidationError(
+                f"Test cannot have more than {max_questions} questions."
+            )
         return list(question_ids)
 
     def to_internal_value(self, data):
@@ -210,7 +229,16 @@ class StandaloneStudentResultSerializer(serializers.ModelSerializer):
         required=True,
         write_only=True,
     )
-
+    
+    def validate_score(self, value):
+        max_score = config.MAX_TEST_SCORE
+        min_score = config.MIN_TEST_SCORE
+        if not (min_score <= value <= max_score):
+            raise serializers.ValidationError(
+                f"Score must be between {min_score} and {max_score}."
+            )
+        return value
+    
     class Meta:
         model = StudentResult
         fields = [
