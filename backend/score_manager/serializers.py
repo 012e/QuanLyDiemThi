@@ -1,4 +1,6 @@
+from django.db.models import Q
 import rest_framework.serializers as serializers
+from constance import config
 from django.contrib.auth.models import User
 from drf_spectacular.utils import extend_schema_field
 from environ import logging
@@ -31,6 +33,14 @@ class ClassSerializer(serializers.ModelSerializer):
     )
 
     teacher = SafeUserSerializer(read_only=True)
+
+    def validate_teacher_id(self, value):
+        # Check if the teacher is already assigned to 50 or more classes
+        if Class.objects.filter(teacher=value).count() >= config.MAX_CLASS_PER_TEACHER:
+            raise serializers.ValidationError(
+                "This teacher is already assigned to the maximum of 50 classes."
+            )
+        return value
 
     def create(self, validated_data):
         teacher_id = validated_data.pop("teacher_id")
@@ -117,14 +127,38 @@ class TestSerializer(serializers.ModelSerializer):
     questions = serializers.SerializerMethodField("get_questions")
 
     @extend_schema_field(serializers.ListField(child=serializers.IntegerField()))
+    def validate_duration(self, value):
+        if value.total_seconds() / 60 < config.MIN_TEST_DURATION:
+            raise serializers.ValidationError(
+                f"Duration must be at least {config.MIN_TEST_DURATION} minutes."
+            )
+        if value.total_seconds() / 60 > config.MAX_TEST_DURATION:
+            raise serializers.ValidationError(
+                f"Duration cannot exceed {config.MAX_TEST_DURATION} minutes."
+            )
+        return value
+
     def get_questions(self, obj):
-        # Query related questions from QuestionInTestModel and order them by "order"
         question_ids = (
             QuestionInTestModel.objects.filter(test=obj)
             .order_by("order")
             .values_list("question_id", flat=True)
         )
         return list(question_ids)
+
+
+    def validate(self, attrs):
+        questions = attrs.get("questions", None)
+
+        # Validate that the number of questions does not exceed the maximum
+        if len(questions) > config.MAX_QUESTIONS_PER_TEST:
+            raise serializers.ValidationError(
+                {
+                    "questions": f"Cannot have more than {config.MAX_QUESTIONS_PER_TEST} questions."
+                }
+            )
+
+        return attrs
 
     def to_internal_value(self, data):
         # Ensure `questions` is handled during deserialization
@@ -210,6 +244,15 @@ class StandaloneStudentResultSerializer(serializers.ModelSerializer):
         required=True,
         write_only=True,
     )
+
+    def validate_score(self, value):
+        max_score = config.MAX_TEST_SCORE
+        min_score = config.MIN_TEST_SCORE
+        if not (min_score <= value <= max_score):
+            raise serializers.ValidationError(
+                f"Score must be between {min_score} and {max_score}."
+            )
+        return value
 
     class Meta:
         model = StudentResult
