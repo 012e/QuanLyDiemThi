@@ -211,6 +211,7 @@ export class TestDetailComponent implements OnInit, OnDestroy {
       contentStyle: { overflow: 'auto' },
       data: {
         exceptQuestions: this.testForm.get('questions')?.value || [],
+        subjectOnly: this.testForm.get('subject')?.value,
       },
       baseZIndex: 10000,
     });

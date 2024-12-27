@@ -58,6 +58,7 @@
           <th></th>
           <th>Index</th>
           <th>Test Id</th>
+          <th>Subject</th>
           <th>Duration</th>
           <th>Time</th>
           <th></th>
@@ -70,6 +71,7 @@
           </td>
           <td>{{ rowIndex + 1 }}</td>
           <td>{{ test.id }}</td>
+          <td>{{ getSubjectLabelById(test.subject) }}</td>
           <td>{{ test.duration | secondsToHhmmss }}</td>
           <td>{{ test.datetime | date: 'hh:mm dd/MM/YYYY' }}</td>
           <td>

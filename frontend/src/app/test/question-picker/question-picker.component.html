@@ -69,9 +69,9 @@
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-question>
-      <tr>
+      <tr [class]="{ 'bg-gray-50': exceptQuestions.includes(+question.id) }">
         <td>
-          <p-tableCheckbox [value]="question" />
+          <p-tableCheckbox [value]="question" [disabled]="exceptQuestions.includes(+question.id)" />
         </td>
         <td>
           <span>{{ question.id }}</span>

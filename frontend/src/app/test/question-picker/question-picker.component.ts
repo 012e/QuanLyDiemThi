@@ -29,6 +29,7 @@ import { InputTextModule } from 'primeng/inputtext';
 export class QuestionPickerComponent implements OnInit {
   public instance: DynamicDialogComponent | undefined;
   public exceptQuestions!: Array<number>;
+  public subjectOnly!: number;
 
   constructor(
     public dialogRef: DynamicDialogRef,
@@ -79,7 +80,8 @@ export class QuestionPickerComponent implements OnInit {
       throw new Error('Data is not defined');
     }
     // TODO: implements exceptions
-    this.exceptQuestions = data.questionExceptions;
+    this.exceptQuestions = data.exceptQuestions;
+    this.subjectOnly = data.subjectOnly;
   }
 
   public resetPage() {

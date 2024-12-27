@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TableModule, TablePageEvent } from 'primeng/table';
-import { Test, TestService } from '../../core/api';
+import { Test, TestService, SubjectService, Subject } from '../../core/api';
 import { DatePipe } from '@angular/common';
 import { DividerModule } from 'primeng/divider';
 import { SkeletonModule } from 'primeng/skeleton';
@@ -15,7 +15,7 @@ import {
   forkJoin,
   map,
   of,
-  Subject,
+  Subject as RxSubject,
 } from 'rxjs';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { Router } from '@angular/router';
@@ -43,11 +43,13 @@ export class TestListComponent implements OnInit, OnDestroy {
   constructor(
     private readonly router: Router,
     private readonly testService: TestService,
+    private readonly subjectService: SubjectService,
     private readonly messageService: MessageService,
     private readonly confirmationService: ConfirmationService,
   ) {}
 
   public tests!: Test[];
+  public subjects!: Subject[];
   public count!: number;
   public selectedTests: Test[] = [];
 
@@ -56,7 +58,7 @@ export class TestListComponent implements OnInit, OnDestroy {
   public isLoading: boolean = false;
 
   public searchText: string = '';
-  private searchText$ = new Subject<string>();
+  private searchText$ = new RxSubject<string>();
 
   public onPage(event: TablePageEvent): void {
     this.first = event.first;
@@ -86,6 +88,10 @@ export class TestListComponent implements OnInit, OnDestroy {
         this.updatePage();
       });
     this.updatePage();
+
+    this.subjectService.subjectList().subscribe((data) => {
+      this.subjects = data;
+    });
   }
 
   public clearSelectedTests(): void {
@@ -190,5 +196,9 @@ export class TestListComponent implements OnInit, OnDestroy {
   }
   public createNew(): void {
     this.router.navigate(['/test/new']);
+  }
+
+  public getSubjectLabelById(index: number): string {
+    return this.subjects.find((subject) => subject.id === index)?.name || '';
   }
 }
