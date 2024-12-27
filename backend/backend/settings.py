@@ -44,10 +44,6 @@ INSTALLED_APPS = [
 
 CONSTANCE_BACKEND = "constance.backends.database.DatabaseBackend"
 
-SPECTACULAR_SETTINGS = {
-    'SORT_OPERATIONS': False
-}
-
 CONSTANCE_CONFIG = {
     "MAX_TEST_SCORE": (10, "Maximum score for a test", float),
     "MIN_TEST_SCORE": (0, "Minimum score for a test", float),

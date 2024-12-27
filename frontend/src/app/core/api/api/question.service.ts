@@ -263,13 +263,14 @@ export class QuestionService implements QuestionServiceInterface {
      * @param offset The initial index from which to return the results.
      * @param ordering Which field to use when ordering the results.
      * @param search A search term.
+     * @param subjectId 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public questionList(limit?: number, offset?: number, ordering?: string, search?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<PaginatedQuestionList>;
-    public questionList(limit?: number, offset?: number, ordering?: string, search?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<PaginatedQuestionList>>;
-    public questionList(limit?: number, offset?: number, ordering?: string, search?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<PaginatedQuestionList>>;
-    public questionList(limit?: number, offset?: number, ordering?: string, search?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public questionList(limit?: number, offset?: number, ordering?: string, search?: string, subjectId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<PaginatedQuestionList>;
+    public questionList(limit?: number, offset?: number, ordering?: string, search?: string, subjectId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<PaginatedQuestionList>>;
+    public questionList(limit?: number, offset?: number, ordering?: string, search?: string, subjectId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<PaginatedQuestionList>>;
+    public questionList(limit?: number, offset?: number, ordering?: string, search?: string, subjectId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (limit !== undefined && limit !== null) {
@@ -287,6 +288,10 @@ export class QuestionService implements QuestionServiceInterface {
         if (search !== undefined && search !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>search, 'search');
+        }
+        if (subjectId !== undefined && subjectId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>subjectId, 'subject__id');
         }
 
         let localVarHeaders = this.defaultHeaders;

@@ -50,6 +50,7 @@ class StudentViewSet(viewsets.ModelViewSet):
     search_fields = ["name", "student_code", "classroom__name"]
     filterset_fields = ["classroom__id"]
 
+
 class ClassViewSet(viewsets.ModelViewSet):
     queryset = Class.objects.all()
     serializer_class = ClassSerializer
@@ -74,8 +75,9 @@ class QuestionViewSet(viewsets.ModelViewSet):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
 
-    filter_backends = [OrderingFilter, SearchFilter]
+    filter_backends = [filters.DjangoFilterBackend, OrderingFilter, SearchFilter]
     search_fields = ["detail", "subject__name", "difficulty__name"]
+    filterset_fields = ["subject__id"]
     ordering = ["-updated_at"]
 
 

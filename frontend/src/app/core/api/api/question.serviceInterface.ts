@@ -45,8 +45,9 @@ export interface QuestionServiceInterface {
      * @param offset The initial index from which to return the results.
      * @param ordering Which field to use when ordering the results.
      * @param search A search term.
+     * @param subjectId 
      */
-    questionList(limit?: number, offset?: number, ordering?: string, search?: string, extraHttpRequestParams?: any): Observable<PaginatedQuestionList>;
+    questionList(limit?: number, offset?: number, ordering?: string, search?: string, subjectId?: number, extraHttpRequestParams?: any): Observable<PaginatedQuestionList>;
 
     /**
      * 
