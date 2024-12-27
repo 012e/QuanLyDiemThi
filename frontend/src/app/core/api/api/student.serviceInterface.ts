@@ -45,8 +45,9 @@ export interface StudentServiceInterface {
      * @param offset The initial index from which to return the results.
      * @param ordering Which field to use when ordering the results.
      * @param search A search term.
+     * @param classroomId 
      */
-    studentList(limit?: number, offset?: number, ordering?: string, search?: string, extraHttpRequestParams?: any): Observable<PaginatedStudentList>;
+    studentList(limit?: number, offset?: number, ordering?: string, search?: string, classroomId?: number, extraHttpRequestParams?: any): Observable<PaginatedStudentList>;
 
     /**
      * 

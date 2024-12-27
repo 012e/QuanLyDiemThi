@@ -14,7 +14,7 @@ export interface Student {
     readonly id: number;
     name: string;
     student_code: string;
-    readonly classroom: Class | null;
+    readonly classroom: Class;
     classroom_id: number | null;
     readonly created_at: string;
     readonly updated_at: string;

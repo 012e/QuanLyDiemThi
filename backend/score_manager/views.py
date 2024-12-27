@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.db.models import Count
 from django.utils import timezone
+from django_filters import rest_framework as filters
 from drf_spectacular.utils import (
     OpenApiExample,
     OpenApiParameter,
@@ -44,10 +45,10 @@ from .serializers import (
 class StudentViewSet(viewsets.ModelViewSet):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
-    filter_backends = [OrderingFilter, SearchFilter]
+    filter_backends = [filters.DjangoFilterBackend, OrderingFilter, SearchFilter]
     ordering = ["-updated_at"]
     search_fields = ["name", "student_code", "classroom__name"]
-
+    filterset_fields = ["classroom__id"]
 
 class ClassViewSet(viewsets.ModelViewSet):
     queryset = Class.objects.all()
@@ -56,6 +57,7 @@ class ClassViewSet(viewsets.ModelViewSet):
     filter_backends = [OrderingFilter, SearchFilter]
     search_fields = ["name", "teacher__first_name", "teacher__last_name"]
     ordering = ["name"]
+
 
 class ClassStudentsViewSet(viewsets.ModelViewSet):
     queryset = Student.objects.all()
@@ -106,8 +108,9 @@ class TestViewSet(viewsets.ModelViewSet):
     queryset = Test.objects.all()
     serializer_class = TestSerializer
 
-    filter_backends = [OrderingFilter, SearchFilter]
-    search_fields = ["subject__name", "questions__detail"]
+    filter_backends = [filters.DjangoFilterBackend, OrderingFilter, SearchFilter]
+    search_fields = ["subject__name", "questions__detail", "id"]
+    filterset_fields = ["subject__id"]
     ordering = ["-updated_at"]
 
     def perform_create(self, serializer):

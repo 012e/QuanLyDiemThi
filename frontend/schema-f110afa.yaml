@@ -1657,6 +1657,10 @@ paths:
         description: A search term.
         schema:
           type: string
+      - in: query
+        name: classroom__id
+        schema:
+          type: integer
       tags:
       - student
       security:
@@ -2246,6 +2250,10 @@ paths:
         description: A search term.
         schema:
           type: string
+      - in: query
+        name: subject__id
+        schema:
+          type: integer
       tags:
       - test
       security:
@@ -2912,7 +2920,7 @@ components:
         score:
           type: string
           format: decimal
-          pattern: ^-?\d{0,2}(?:\.\d{0,2})?$
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
         note:
           type: string
           nullable: true
@@ -2943,6 +2951,7 @@ components:
         classroom_id:
           type: integer
           writeOnly: true
+          nullable: true
         created_at:
           type: string
           format: date-time
@@ -3157,7 +3166,7 @@ components:
         score:
           type: string
           format: decimal
-          pattern: ^-?\d{0,2}(?:\.\d{0,2})?$
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
         note:
           type: string
           nullable: true
@@ -3195,6 +3204,7 @@ components:
         classroom_id:
           type: integer
           writeOnly: true
+          nullable: true
         created_at:
           type: string
           format: date-time
