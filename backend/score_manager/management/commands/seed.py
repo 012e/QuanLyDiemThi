@@ -11,12 +11,12 @@ from score_manager.models import (
     Class,
     Difficulty,
     Question,
+    QuestionInTestModel,
     Result,
     Student,
     StudentResult,
     Subject,
     Test,
-    QuestionInTestModel,
 )
 
 fake = Faker()
@@ -29,7 +29,7 @@ log = logging.getLogger("main")
 TOTAL_QUESTIONS = 100
 TOTAL_USERS = 50
 TOTAL_STAFF = 10
-TOTAL_TESTS = 100
+TOTAL_TESTS = 300
 TOTAL_STUDENTS = 800
 TOTAL_CLASSES = 20
 
@@ -118,7 +118,11 @@ def seed_classes():
     classes = []
     total_teacher = User.objects.count()
     for _ in range(TOTAL_CLASSES):
-        classes.append(Class(name=fake.license_plate(), teacher_id=fake.random_int(1, total_teacher)))
+        classes.append(
+            Class(
+                name=fake.license_plate(), teacher_id=fake.random_int(1, total_teacher)
+            )
+        )
     Class.objects.bulk_create(classes)
 
 
@@ -127,7 +131,11 @@ def seed_students():
     total_classes = Class.objects.count()
     for _ in range(TOTAL_STUDENTS):
         students.append(
-            Student(name=fake.name(), student_code=fake.random_int(100000, 999999), classroom_id=fake.random_int(1, total_classes))
+            Student(
+                name=fake.name(),
+                student_code=fake.random_int(100000, 999999),
+                classroom_id=fake.random_int(1, total_classes),
+            )
         )
     Student.objects.bulk_create(students)
 
@@ -166,7 +174,10 @@ def seed_test():
             Test(
                 subject_id=subject_id,
                 semester=semester,
-                datetime=fake.date_time_this_year(),
+                datetime=fake.date_time_between(
+                    start_date=datetime(2022, 1, 1),
+                    end_date=datetime(2024, 12, 23),
+                ),
                 duration=timedelta(minutes=fake.random_int(30, 180)),
             )
         )
@@ -178,7 +189,7 @@ def seed_test():
         QuestionInTestModel.objects.bulk_create(
             [
                 QuestionInTestModel(test=test, question_id=question_id, order=order)
-                for order, question_id in enumerate(question_ids,start=1)
+                for order, question_id in enumerate(question_ids, start=1)
             ]
         )
 
