@@ -66,7 +66,7 @@ class ClassSerializer(serializers.ModelSerializer):
 
 class StudentSerializer(serializers.ModelSerializer):
     classroom_id = serializers.PrimaryKeyRelatedField(
-        write_only=True, queryset=Class.objects.all(), allow_null=True, required=True
+        write_only=True, queryset=Class.objects.all(), allow_null=True, required=False
     )
     classroom = ClassSerializer(read_only=True)
 
