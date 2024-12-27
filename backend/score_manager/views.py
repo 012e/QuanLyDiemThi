@@ -136,7 +136,7 @@ class ResultViewSet(viewsets.ModelViewSet):
         "test__subject__name",
         "teacher__first_name",
         "teacher__last_name",
-        "class__name",
+        "classroom__name",
     ]
     serializer_class = ResultSerializer
 
