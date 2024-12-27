@@ -111,7 +111,7 @@ class TestViewSet(viewsets.ModelViewSet):
     serializer_class = TestSerializer
 
     filter_backends = [filters.DjangoFilterBackend, OrderingFilter, SearchFilter]
-    search_fields = ["subject__name", "questions__detail", "id"]
+    search_fields = ["subject__name", "id", "datetime__year"]
     filterset_fields = ["subject__id"]
     ordering = ["-updated_at"]
 
