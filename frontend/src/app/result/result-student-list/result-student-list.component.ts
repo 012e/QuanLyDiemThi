@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Input, input, OnDestroy } from '@angular/core';
+import { Input, OnDestroy } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
@@ -29,7 +29,6 @@ import {
   SubjectService,
 } from '../../core/api';
 import { Result } from '../../core/api';
-import { Router } from '@angular/router';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ResultStudentEditComponent } from '../result-student-edit/result-student-edit.component';
 import { ResultStudentCreateComponent } from '../result-student-create/result-student-create.component';

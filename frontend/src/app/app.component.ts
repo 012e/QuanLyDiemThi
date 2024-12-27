@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NgxPermissionsService } from 'ngx-permissions';
-import { ToastModule, ToastPositionType } from 'primeng/toast';
+import { ToastModule } from 'primeng/toast';
 import { AuthService } from './core/services/auth.service';
 import { UserRole } from './core/enums/user-role';
 
