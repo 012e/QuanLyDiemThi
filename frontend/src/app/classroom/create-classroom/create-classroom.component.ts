@@ -21,7 +21,6 @@ import { ToastModule } from 'primeng/toast';
 
 import {
   DialogService,
-  DynamicDialogComponent,
   DynamicDialogRef,
 } from 'primeng/dynamicdialog';
 import { Class, ClassService, User } from '../../core/api';
@@ -29,7 +28,7 @@ import { noWhitespaceValidator } from '../../core/validators/no-whitespace.valid
 import { MessageService } from 'primeng/api';
 import { TeacherPickerComponent } from '../../core/components/teacher-picker/teacher-picker.component';
 import { Router } from '@angular/router';
-import { Divider, DividerModule } from 'primeng/divider';
+import { DividerModule } from 'primeng/divider';
 @Component({
   selector: 'app-create-classroom',
   standalone: true,

@@ -42,7 +42,7 @@ import { Router } from '@angular/router';
     RippleModule,
     NgxPermissionsModule,
   ],
-  providers: [ClassService, ConfirmationService, MessageService, DialogService],
+  providers: [ClassService, ConfirmationService, DialogService],
   templateUrl: './classroom.component.html',
   styleUrl: './classroom.component.css',
 })
@@ -189,7 +189,6 @@ export class ClassroomComponent implements OnInit {
                 (val) => val.id !== classroom.id
               );
             }
-            this.showSuccess('Class deleted');
             this.updatePage();
           },
           error: (error) => {

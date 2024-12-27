@@ -44,7 +44,7 @@ export class NavBarComponent implements OnInit {
         },
       },
       {
-        label: 'Teacher',
+        label: 'User',
         icon: 'pi pi-users',
         command: () => {
           this.router.navigate(['user']);
@@ -80,7 +80,7 @@ export class NavBarComponent implements OnInit {
         visible: isStaff,
       },
       {
-        label: 'Admin',
+        label: 'Config',
         icon: 'pi pi-cog',
         command: () => {
           this.router.navigate(['admin']);
