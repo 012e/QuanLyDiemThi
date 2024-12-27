@@ -79,8 +79,8 @@ export class CreateStudentComponent implements OnInit, OnDestroy {
         [Validators.required, Validators.minLength(1), noWhitespaceValidator()],
       ],
       student_code: [undefined, [Validators.required]],
-      classroom: [undefined, [Validators.required]],
-      classroom_id: [undefined, [Validators.required]],
+      classroom: [undefined],
+      classroom_id: [undefined],
     });
   }
 
@@ -136,11 +136,11 @@ export class CreateStudentComponent implements OnInit, OnDestroy {
 
   public submit() {
     this.form.markAllAsTouched();
-
     if (this.form.invalid) {
       this.showError('Please fill in all required fields');
       return;
     }
+    
     const formValue: Student = this.form.value;
     console.log(formValue.classroom_id);
     this.studentService.studentCreate(formValue).subscribe({

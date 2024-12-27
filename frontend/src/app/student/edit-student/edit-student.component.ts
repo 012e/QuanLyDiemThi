@@ -30,6 +30,7 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ClassPickerComponent } from '../../core/components/class-picker/class-picker.component';
 import { DividerModule } from 'primeng/divider';
+import { Utils } from '../../core/utils/utils';
 @Component({
   selector: 'app-edit-student',
   standalone: true,
@@ -81,8 +82,8 @@ export class EditStudentComponent implements OnInit, OnDestroy {
         [Validators.required, Validators.minLength(1), noWhitespaceValidator()],
       ],
       student_code: [undefined, [Validators.required]],
-      classroom: [undefined, [Validators.required]],
-      classroom_id: [undefined, [Validators.required]],
+      classroom: [undefined],
+      classroom_id: [undefined],
     });
     this.studentId = this.getStudentId();
 
@@ -169,6 +170,7 @@ export class EditStudentComponent implements OnInit, OnDestroy {
 
   public submit() {
     this.form.markAllAsTouched();
+
     if (this.form.invalid) {
       this.showError('Please fill in all required fields');
       return;
@@ -184,7 +186,7 @@ export class EditStudentComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         console.error(error);
-        this.showError('Failed to update student');
+        this.showError(`Failed to update student: ${Utils.prettyError(error.error)}`);
       },
     });
   }

@@ -29,10 +29,6 @@
             <label for="Class Name" class="px-1 text-sm font-bold"
               >Class Name</label
             >
-            @if (form.get('classroom')?.touched &&
-            !form.get('classroom')?.value) {
-            <div class="px-1 text-sm text-red-500">Class Name is required</div>
-            }
             <div class="grid grid-cols-10">
               <div class="col-span-7">
                 <input

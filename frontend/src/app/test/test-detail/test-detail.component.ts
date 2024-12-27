@@ -29,6 +29,7 @@ import {
 import { isNumberValidator } from '../../core/validators/is-number.validator';
 import { QuestionPickerComponent } from '../question-picker/question-picker.component';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Utils } from '../../core/utils/utils';
 
 @Component({
   selector: 'app-test-create',
@@ -263,7 +264,7 @@ export class TestDetailComponent implements OnInit, OnDestroy {
         this.disableEditing();
       },
       error: (error) => {
-        this.showError(`Failed to create test: ${error.message}`);
+        this.showError(`Failed to create test: ${Utils.prettyError(error.error)}`);
       },
     });
   }

@@ -50,6 +50,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TeacherPickerComponent } from '../../core/components/teacher-picker/teacher-picker.component';
 import { Divider, DividerModule } from 'primeng/divider';
 import { StudentPickerComponent } from '../student-picker/student-picker.component';
+import { Utils } from '../../core/utils/utils';
 @Component({
   selector: 'app-edit-classroom',
   standalone: true,
@@ -106,7 +107,7 @@ export class EditClassroomComponent implements OnInit, OnDestroy {
     private readonly classService: ClassService,
     private readonly messageService: MessageService,
     private readonly dialogService: DialogService,
-    private readonly confirmationService: ConfirmationService,
+    private readonly confirmationService: ConfirmationService
   ) {}
 
   ngOnInit(): void {
@@ -218,7 +219,7 @@ export class EditClassroomComponent implements OnInit, OnDestroy {
         this.rows,
         this.first,
         undefined,
-        this.searchText,
+        this.searchText
       )
       .subscribe({
         next: (data) => {
@@ -295,8 +296,8 @@ export class EditClassroomComponent implements OnInit, OnDestroy {
       students
         .map((student) => this.assignStudentToClass(student, this.classId))
         .map((student) =>
-          this.studentService.studentUpdate(student.id!, student),
-        ),
+          this.studentService.studentUpdate(student.id!, student)
+        )
     );
 
     studentUpdates$.subscribe({
@@ -331,7 +332,9 @@ export class EditClassroomComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         console.error(error);
-        this.showError('Failed to update classroom');
+        this.showError(
+          `Failed to create class: ${Utils.prettyError(error.error)}`
+        );
       },
     });
   }
@@ -376,15 +379,15 @@ export class EditClassroomComponent implements OnInit, OnDestroy {
         }
 
         this.students = this.students.filter(
-          (val) => !this.selectedStudents.includes(val),
+          (val) => !this.selectedStudents.includes(val)
         );
 
         forkJoin(
           this.selectedStudents
             .map((student) => this.assignStudentToClass(student, null))
             .map((student) =>
-              this.studentService.studentUpdate(student.id!, student),
-            ),
+              this.studentService.studentUpdate(student.id!, student)
+            )
         ).subscribe({
           next: (response) => {
             console.log(response);
