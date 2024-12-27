@@ -145,6 +145,7 @@ class ResultDetailViewSet(viewsets.ModelViewSet):
     filter_backends = [OrderingFilter, SearchFilter]
     ordering = ["-updated_at"]
     search_fields = [
+        "student__student_code",
         "student__name",
         "score",
         "note",
