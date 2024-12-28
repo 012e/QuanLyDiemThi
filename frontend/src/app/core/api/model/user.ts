@@ -22,6 +22,7 @@ export interface User {
     user_type: UserTypeEnum;
     roles: Array<string>;
     password?: string;
+    readonly permissions: string;
 }
 export namespace User {
 }

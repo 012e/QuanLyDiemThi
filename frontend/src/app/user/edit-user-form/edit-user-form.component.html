@@ -35,16 +35,6 @@
         </div>
       </div>
       <div class="flex flex-col gap-1">
-        <label for="User Type" class="px-1 text-sm font-bold">User Type</label>
-        <p-dropdown
-          formControlName="user_type"
-          [options]="userTypes"
-          optionLabel="name"
-          optionValue="type"
-          placeholder="Select User Type"
-        />
-      </div>
-      <div class="flex flex-col gap-1">
         <label for="email" class="px-1 text-sm font-bold">Email</label>
         @if (form.get('email')?.touched && !form.get('email')?.value) {
           <div class="px-1 text-sm text-red-500">Please input valid email</div>
@@ -53,17 +43,24 @@
         }
         <input type="text" pInputText formControlName="email" />
       </div>
+      <div class="flex flex-col gap-1">
+        <label for="roles" class="px-1 text-sm font-bold">Roles</label>
+        <p-pickList
+          [source]="roles"
+          [target]="selectedRoles"
+          sourceHeader="Available Roles"
+          targetHeader="Current Roles"
+          [showSourceControls]="false"
+          [showTargetControls]="false"
+          [responsive]="true"
+          [keepSelection]="false"
+        >
+          <ng-template let-role pTemplate="item">
+            <div>{{ role.name }}</div>
+          </ng-template>
+        </p-pickList>
+      </div>
     </div>
-    <p-picklist
-      [source]="roles"
-      [target]="selectedRoles"
-      sourceHeader="Available"
-      targetHeader="Selected"
-      [sourceStyle]="{ height: '30rem' }"
-      [targetStyle]="{ height: '30rem' }"
-      breakpoint="1400px"
-    >
-    </p-picklist>
   </form>
 
   <div class="flex justify-end">
