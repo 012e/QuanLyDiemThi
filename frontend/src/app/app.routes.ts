@@ -32,6 +32,7 @@ export const routes: Routes = [
       {
         path: 'summary/:year',
         component: SummaryComponent,
+        canActivate: [ngxPermissionsGuard],
         data: {
           permissions: {
             only: ['summary:view'],
@@ -42,6 +43,7 @@ export const routes: Routes = [
       {
         path: 'question',
         component: QuestionComponent,
+        canActivate: [ngxPermissionsGuard],
         data: {
           permissions: {
             only: ['question:view'],
@@ -67,6 +69,7 @@ export const routes: Routes = [
       {
         path: 'admin',
         component: AdminComponent,
+        canActivate: [ngxPermissionsGuard],
         data: {
           permissions: {
             only: ['admin'],
@@ -77,6 +80,7 @@ export const routes: Routes = [
       {
         path: 'test',
         component: TestListComponent,
+        canActivate: [ngxPermissionsGuard],
         data: {
           permissions: {
             only: ['test:view'],
@@ -95,6 +99,7 @@ export const routes: Routes = [
       {
         path: 'student',
         component: StudentComponent,
+        canActivate: [ngxPermissionsGuard],
         data: {
           permissions: {
             only: ['student:view'],
@@ -113,6 +118,7 @@ export const routes: Routes = [
       {
         path: 'classroom',
         component: ClassroomComponent,
+        canActivate: [ngxPermissionsGuard],
         data: {
           permissions: {
             only: ['classroom:view'],
@@ -131,6 +137,13 @@ export const routes: Routes = [
       {
         path: 'result',
         component: ResultListComponent,
+        canActivate: [ngxPermissionsGuard],
+        data: {
+          permissions: {
+            only: ['result:view'],
+            redirectTo: '/me',
+          },
+        }
       },
       {
         path: 'result/new',

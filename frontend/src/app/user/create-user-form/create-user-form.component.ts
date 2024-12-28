@@ -24,7 +24,7 @@ import {
   DynamicDialogComponent,
   DynamicDialogRef,
 } from 'primeng/dynamicdialog';
-import { Role, User, UserService } from '../../core/api';
+import { Role, RoleService, User, UserService } from '../../core/api';
 import { noWhitespaceValidator } from '../../core/validators/no-whitespace.validator';
 import { MessageService } from 'primeng/api';
 import { PasswordModule } from 'primeng/password';
@@ -51,7 +51,7 @@ import { PickListModule } from 'primeng/picklist';
     ReactiveFormsModule,
     DropdownModule,
     PasswordModule,
-    PickListModule
+    PickListModule,
   ],
   templateUrl: './create-user-form.component.html',
   styleUrl: './create-user-form.component.css',
@@ -82,6 +82,7 @@ export class CreateUserFormComponent implements OnInit {
     private readonly fb: FormBuilder,
     private readonly userService: UserService,
     private readonly messageService: MessageService,
+    private readonly roleService: RoleService,
     dialogService: DialogService,
     public selfRef: DynamicDialogRef,
   ) {
@@ -97,8 +98,25 @@ export class CreateUserFormComponent implements OnInit {
       email: [undefined, [Validators.required, Validators.email]],
       first_name: [undefined, [Validators.required]],
       last_name: [undefined, [Validators.required]],
-      user_type: [undefined, Validators.required],
+      user_type: ["admin", Validators.required],
       password: [undefined, [Validators.required, Validators.minLength(8)]],
+      roles: [[]],
+    });
+
+    this.roleService.roleList().subscribe({
+      next: (response) => {
+        this.roles = response;
+      },
+      error: (error) => {
+        if (this.form.invalid) {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: "Coudn't load roles",
+          });
+          return;
+        }
+      },
     });
   }
 
