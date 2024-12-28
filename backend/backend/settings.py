@@ -50,6 +50,7 @@ CONSTANCE_CONFIG = {
     "MIN_TEST_DURATION": (30, "Minimum duration (in minutes) for a test", int),
     "MAX_TEST_DURATION": (180, "Maximum duration (in minutes) for a test", int),
     "MAX_QUESTIONS_PER_TEST": (5, "Maximum number of questions per test", int),
+    "MIN_QUESTIONS_PER_TEST": (1, "Minimum number of questions per test", int),
     "MAX_CLASS_PER_TEACHER": (
         50,
         "Maximum number of classes a teacher can teach each year",

@@ -158,6 +158,13 @@ class TestSerializer(serializers.ModelSerializer):
                 }
             )
 
+        if len(questions) < config.MIN_QUESTIONS_PER_TEST:
+            raise serializers.ValidationError(
+                {
+                    "questions": f"Must have at least {config.MIN_QUESTIONS_PER_TEST} questions."
+                }
+            )
+
         return attrs
 
     def to_internal_value(self, data):
