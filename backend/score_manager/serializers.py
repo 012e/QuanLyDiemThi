@@ -38,7 +38,7 @@ class ClassSerializer(serializers.ModelSerializer):
         # Check if the teacher is already assigned to 50 or more classes
         if Class.objects.filter(teacher=value).count() >= config.MAX_CLASS_PER_TEACHER:
             raise serializers.ValidationError(
-                f"This teacher is already assigned to the maximum of {config.MAX_CLASS_PER_TEACHER} classes."
+                "This teacher is already assigned to the maximum of 50 classes."
             )
         return value
 

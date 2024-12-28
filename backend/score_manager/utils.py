@@ -1,51 +1,9 @@
-from decimal import Decimal
 from typing import Dict
 
-import pandas as pd
-import rest_framework.serializers as serializers
 from constance import config
 from django.conf import settings
 from django.contrib.auth.hashers import BasePasswordHasher
 from django.contrib.auth.models import User
-from .models import Result, Student, StudentResult
-
-
-def import_student_results(file_path, result_id):
-    df = pd.read_excel(file_path)
-
-    if df["student_code"].duplicated().any():
-        raise serializers.ValidationError(
-            {"student code": "Student code is duplicated"}
-        )
-
-    try:
-        result_instance = Result.objects.get(id=result_id)
-    except Result.DoesNotExist:
-        raise serializers.ValidationError({"result": "Result doesn not exists"})
-
-    student_results = []
-
-    for index, row in df.iterrows():
-        try:
-            student = Student.objects.get(student_code=row["student_code"])
-
-            student_result = StudentResult(
-                student=student,
-                result=result_instance,
-                score=Decimal(row["score"]),
-                note=row["note"],
-            )
-
-            student_results.append(student_result)
-
-        except Student.DoesNotExist:
-            raise serializers.ValidationError({"student code": "Student code does not exists"})
-        except Exception:
-            print({"Unknown error": "Can not parse student result"})
-
-    if student_results:
-        StudentResult.objects.filter(result=result_instance).delete()
-        StudentResult.objects.bulk_create(student_results)
 
 
 def set_settings_as_dict() -> list[Dict[str, object]]:

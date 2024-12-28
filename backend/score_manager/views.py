@@ -7,7 +7,6 @@ from django.db import IntegrityError
 from django.db.models import Count
 from django.utils import timezone
 from django_filters import rest_framework as filters
-from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import (
     OpenApiExample,
     OpenApiParameter,
@@ -15,15 +14,12 @@ from drf_spectacular.utils import (
     extend_schema,
 )
 from rest_framework import status, viewsets
-from rest_framework.exceptions import ValidationError
 from rest_framework.filters import OrderingFilter, SearchFilter
-from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.response import Response
 from rest_framework.schemas.coreapi import serializers
 from rest_framework.views import APIView
-from .utils import import_student_results
 
-from .models import (  # Adjust to your app structure
+from .models import (
     Class,
     Difficulty,
     Question,
@@ -37,7 +33,7 @@ from .serializers import (
     ClassSerializer,
     DifficultySerializer,
     QuestionSerializer,
-    ResultSerializer,  # Adjust if needed
+    ResultSerializer,
     StandaloneStudentResultSerializer,
     StudentSerializer,
     SubjectSerializer,
@@ -558,49 +554,3 @@ class AnnualReportView(APIView):
         }
 
         return Response(data, status=status.HTTP_200_OK)
-
-
-class UploadStudentResultsView(APIView):
-    parser_classes = [MultiPartParser, FormParser]
-
-    @extend_schema(
-        summary="Upload Student Results",
-        description="Uploads an Excel file containing student results and associates them with a specific result ID.",
-        parameters=[
-            OpenApiParameter(
-                name="result_id",
-                description="ID of the result to associate the student results with.",
-                required=True,
-                type=OpenApiTypes.INT,
-            )
-        ],
-        responses={
-            200: OpenApiTypes.OBJECT,
-            400: OpenApiTypes.OBJECT,
-        },
-    )
-    def post(self, request, *args, **kwargs):
-        result_id = request.query_params.get("result_id")
-        if not result_id:
-            return Response(
-                {"error": "result_id is required"}, status=status.HTTP_400_BAD_REQUEST
-            )
-
-        file = request.FILES.get("file")
-        if not file:
-            return Response(
-                {"error": "File is required"}, status=status.HTTP_400_BAD_REQUEST
-            )
-
-        try:
-            import_student_results(file, result_id)
-            return Response(
-                {"message": "Student results imported successfully"},
-                status=status.HTTP_200_OK,
-            )
-        except ValidationError as e:
-            return Response(e.detail, status=status.HTTP_400_BAD_REQUEST)
-        except Exception as e:
-            return Response(
-                {"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
