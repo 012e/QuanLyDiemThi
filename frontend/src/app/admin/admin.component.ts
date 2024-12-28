@@ -188,8 +188,7 @@ export class AdminComponent implements OnInit {
         }
         return true;
       default:
-        console.log('bruh');
-        // handle the default case
+        console.log('why this we get here?');
         return true;
     }
   }
