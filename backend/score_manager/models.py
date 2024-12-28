@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.core.validators import MinValueValidator
 
 User._meta.get_field("email")._unique = True  # pyright: ignore
 
@@ -78,7 +79,7 @@ class Question(models.Model):
 
 class Test(models.Model):
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE, db_index=True)
-    semester = models.PositiveSmallIntegerField(null=False, blank=False)
+    semester = models.PositiveSmallIntegerField(null=False, blank=False,validators=[MinValueValidator(0)])
     datetime = models.DateTimeField()
     duration = models.DurationField()
     questions = models.ManyToManyField(Question, blank=True, through="QuestionInTestModel")
