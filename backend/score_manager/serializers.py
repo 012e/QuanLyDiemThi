@@ -39,8 +39,6 @@ class RoleSerializer(serializers.ModelSerializer):
 
 
 class SafeUserSerializer(serializers.ModelSerializer):
-    roles = RoleSerializer(many=True)
-
     class Meta:
         model = User
         fields = [
@@ -48,7 +46,6 @@ class SafeUserSerializer(serializers.ModelSerializer):
             "username",
             "first_name",
             "last_name",
-            "roles",
         ]
 
 

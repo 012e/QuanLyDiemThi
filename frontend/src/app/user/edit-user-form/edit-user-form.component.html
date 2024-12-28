@@ -15,7 +15,9 @@
           <label for="first_name" class="px-1 text-sm font-bold"
             >First name</label
           >
-          @if (form.get('first_name')?.touched && !form.get('first_name')?.value) {
+          @if (
+            form.get('first_name')?.touched && !form.get('first_name')?.value
+          ) {
             <div class="px-1 text-sm text-red-500">First name is required</div>
           }
           <input pInputText formControlName="first_name" />
@@ -24,7 +26,9 @@
           <label for="last_name" class="px-1 text-sm font-bold"
             >Last name</label
           >
-          @if (form.get('last_name')?.touched && !form.get('last_name')?.value) {
+          @if (
+            form.get('last_name')?.touched && !form.get('last_name')?.value
+          ) {
             <div class="px-1 text-sm text-red-500">Last name is required</div>
           }
           <input pInputText formControlName="last_name" />
@@ -50,6 +54,16 @@
         <input type="text" pInputText formControlName="email" />
       </div>
     </div>
+    <p-picklist
+      [source]="roles"
+      [target]="selectedRoles"
+      sourceHeader="Available"
+      targetHeader="Selected"
+      [sourceStyle]="{ height: '30rem' }"
+      [targetStyle]="{ height: '30rem' }"
+      breakpoint="1400px"
+    >
+    </p-picklist>
   </form>
 
   <div class="flex justify-end">

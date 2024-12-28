@@ -23,11 +23,12 @@ import {
   DynamicDialogComponent,
   DynamicDialogRef,
 } from 'primeng/dynamicdialog';
-import { User, UserService } from '../../core/api';
+import { Role, RoleService, User, UserService } from '../../core/api';
 import { noWhitespaceValidator } from '../../core/validators/no-whitespace.validator';
 import { MessageService } from 'primeng/api';
 import { CommonModule } from '@angular/common';
 import { NgxPermissionsModule } from 'ngx-permissions';
+import { PickListModule } from 'primeng/picklist';
 
 @Component({
   selector: 'app-edit-user-form',
@@ -49,6 +50,7 @@ import { NgxPermissionsModule } from 'ngx-permissions';
     InputNumberModule,
     ReactiveFormsModule,
     DropdownModule,
+    PickListModule,
     NgxPermissionsModule,
   ],
   templateUrl: './edit-user-form.component.html',
@@ -58,6 +60,8 @@ export class EditUserFormComponent implements OnInit {
   user!: User;
   form!: FormGroup;
   self: DynamicDialogComponent | undefined;
+  roles: Role[] = [];
+  selectedRoles: Role[] = [];
 
   readonly userTypes = [
     {
@@ -78,6 +82,7 @@ export class EditUserFormComponent implements OnInit {
     private readonly fb: FormBuilder,
     private readonly userService: UserService,
     private readonly messageService: MessageService,
+    private readonly roleService: RoleService,
     dialogService: DialogService,
     public selfRef: DynamicDialogRef,
   ) {
@@ -99,6 +104,14 @@ export class EditUserFormComponent implements OnInit {
     if (!this.self || !this.self.data.user) {
       throw new Error('User is required');
     }
+    this.roleService.roleList().subscribe({
+      next: (response) => {
+        this.roles = response;
+      },
+      error: (error) => {
+        this.closeWithError('Failed to load roles');
+      }
+    });
 
     this.user = this.self.data.user;
     this.form.patchValue(this.user);

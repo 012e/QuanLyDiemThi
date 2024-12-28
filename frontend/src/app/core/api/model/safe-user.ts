@@ -7,7 +7,6 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Role } from './role';
 
 
 export interface SafeUser { 
@@ -18,6 +17,5 @@ export interface SafeUser {
     username: string;
     first_name?: string;
     last_name?: string;
-    roles: Array<Role>;
 }
 
