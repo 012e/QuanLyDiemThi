@@ -142,7 +142,7 @@ export class CreateStudentComponent implements OnInit, OnDestroy {
     }
     
     const formValue: Student = this.form.value;
-    console.log(formValue.classroom_id);
+    console.log(formValue);
     this.studentService.studentCreate(formValue).subscribe({
       next: (response) => {
         console.log(response);
