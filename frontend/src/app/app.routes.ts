@@ -20,7 +20,7 @@ import { EditClassroomComponent } from './classroom/edit-classroom/edit-classroo
 import { ResultListComponent } from './result/result-list/result-list.component';
 import { ResultCreateComponent } from './result/result-create/result-create.component';
 import { ResultEditComponent } from './result/result-edit/result-edit.component';
-import { ngxPermissionsGuard, NgxPermissionsGuard } from 'ngx-permissions';
+import { ngxPermissionsGuard } from 'ngx-permissions';
 
 export const routes: Routes = [
   {
@@ -32,10 +32,24 @@ export const routes: Routes = [
       {
         path: 'summary/:year',
         component: SummaryComponent,
+        canActivate: [ngxPermissionsGuard],
+        data: {
+          permissions: {
+            only: ['summary:view'],
+            redirectTo: '/me',
+          },
+        }
       },
       {
         path: 'question',
         component: QuestionComponent,
+        canActivate: [ngxPermissionsGuard],
+        data: {
+          permissions: {
+            only: ['question:view'],
+            redirectTo: '/me',
+          },
+        }
       },
       {
         path: 'me',
@@ -55,10 +69,24 @@ export const routes: Routes = [
       {
         path: 'admin',
         component: AdminComponent,
+        canActivate: [ngxPermissionsGuard],
+        data: {
+          permissions: {
+            only: ['config'],
+            redirectTo: '/me',
+          },
+        }
       },
       {
         path: 'test',
         component: TestListComponent,
+        canActivate: [ngxPermissionsGuard],
+        data: {
+          permissions: {
+            only: ['test:view'],
+            redirectTo: '/me',
+          },
+        }
       },
       {
         path: 'test/new',
@@ -71,6 +99,13 @@ export const routes: Routes = [
       {
         path: 'student',
         component: StudentComponent,
+        canActivate: [ngxPermissionsGuard],
+        data: {
+          permissions: {
+            only: ['student:view'],
+            redirectTo: '/me',
+          },
+        }
       },
       {
         path: 'student/new',
@@ -83,6 +118,13 @@ export const routes: Routes = [
       {
         path: 'classroom',
         component: ClassroomComponent,
+        canActivate: [ngxPermissionsGuard],
+        data: {
+          permissions: {
+            only: ['classroom:view'],
+            redirectTo: '/me',
+          },
+        }
       },
       {
         path: 'classroom/new',
@@ -95,6 +137,13 @@ export const routes: Routes = [
       {
         path: 'result',
         component: ResultListComponent,
+        canActivate: [ngxPermissionsGuard],
+        data: {
+          permissions: {
+            only: ['result:view'],
+            redirectTo: '/me',
+          },
+        }
       },
       {
         path: 'result/new',
