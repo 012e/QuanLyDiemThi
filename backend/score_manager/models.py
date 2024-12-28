@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.core.validators import MinValueValidator
 
 User._meta.get_field("email")._unique = True  # pyright: ignore
 
@@ -23,6 +24,12 @@ class Class(models.Model):
 
     class Meta:
         ordering = ["name"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["name", "teacher"],
+                name="unique_class_name_teacher"
+            )
+        ]
 
 
 class Student(models.Model):
@@ -62,11 +69,17 @@ class Question(models.Model):
         verbose_name = "Question"
         verbose_name_plural = "Questions"
         ordering = ["updated_at"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["detail", "subject"],
+                name="unique_question_detail_subject"
+            )
+        ]
 
 
 class Test(models.Model):
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE, db_index=True)
-    semester = models.PositiveSmallIntegerField(null=False, blank=False)
+    semester = models.PositiveSmallIntegerField(null=False, blank=False,validators=[MinValueValidator(0)])
     datetime = models.DateTimeField()
     duration = models.DurationField()
     questions = models.ManyToManyField(Question, blank=True, through="QuestionInTestModel")
@@ -94,6 +107,13 @@ class Result(models.Model):
     classroom = models.ForeignKey(Class, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     updated_at = models.DateTimeField(auto_now=True, db_index=True)
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["test", "teacher", "classroom"],
+                name="unique_test_teacher_classroom"
+            )
+        ]
 
     class Meta:
         ordering = ["updated_at"]
