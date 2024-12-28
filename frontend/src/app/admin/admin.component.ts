@@ -187,6 +187,17 @@ export class AdminComponent implements OnInit {
           return false;
         }
         return true;
+      case 'MAX_SEMESTERS':
+        if (Number(config.value) < 1) {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'MAX_SEMESTERS must be greater than 1',
+            life: 3000,
+          });
+          return false;
+        }
+        return true;
       default:
         console.log('why this we get here?');
         return true;
