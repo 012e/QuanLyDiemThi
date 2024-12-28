@@ -47,11 +47,7 @@ class StudentFilterSet(filters.FilterSet):
     classroom_id_is_null = filters.BooleanFilter(
         field_name="classroom__id",
         lookup_expr="isnull",
-        method="filter_classroom_isnull",
     )
-
-    def filter_classroom_isnull(self, queryset, name, value):
-        return queryset.filter(**{f"{name}": value})
 
     class Meta:
         model = Student
