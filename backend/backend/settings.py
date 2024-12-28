@@ -31,7 +31,7 @@ INSTALLED_APPS = [
     "rest_framework.authtoken",
     "django.contrib.admin",
     "django.contrib.auth",
-    "django.contrib.contenttypes",
+    "django.contrib.contenttypes"
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
@@ -51,6 +51,7 @@ CONSTANCE_CONFIG = {
     "MAX_TEST_DURATION": (180, "Maximum duration (in minutes) for a test", int),
     "MAX_QUESTIONS_PER_TEST": (5, "Maximum number of questions per test", int),
     "MIN_QUESTIONS_PER_TEST": (1, "Minimum number of questions per test", int),
+    "MAX_SEMESTERS": (3, "Maximum number of semesters", int),
     "MAX_CLASS_PER_TEACHER": (
         50,
         "Maximum number of classes a teacher can teach each year",

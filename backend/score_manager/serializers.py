@@ -146,6 +146,13 @@ class TestSerializer(serializers.ModelSerializer):
         )
         return list(question_ids)
 
+    def validate_semester(self, value):
+        if value < 1 or value > config.MAX_SEMESTER:
+            raise serializers.ValidationError(
+                f"Semester must be between 1 and {config.MAX_SEMESTER}."
+            )
+        return value
+
 
     def validate(self, attrs):
         questions = attrs.get("questions", None)
