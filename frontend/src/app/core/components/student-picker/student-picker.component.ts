@@ -42,6 +42,7 @@ export class StudentPickerComponent implements OnInit {
 
   students!: Student[];
   subjects!: Subject[];
+  classId!: number
 
   submitted: boolean = false;
   description: string = '';
@@ -55,8 +56,8 @@ export class StudentPickerComponent implements OnInit {
   private searchText$ = new RxSubject<string>();
 
   public ngOnInit(): void {
-    this.loadInitialData();
     this.initParams();
+    this.loadInitialData();
   }
 
   public initParams(): void {
@@ -68,6 +69,7 @@ export class StudentPickerComponent implements OnInit {
       throw new Error('Data is not defined');
     }
     this.description = data.description;
+    this.classId = data.classId
   }
 
   public resetPage() {
@@ -105,7 +107,7 @@ export class StudentPickerComponent implements OnInit {
 
   public updatePage(): void {
     this.studentService
-      .studentList(this.rows, this.first, undefined, this.searchText)
+      .studentList(this.rows, this.first, undefined, this.searchText, this.classId)
       .subscribe((data) => {
         this.students = data.results;
         this.count = data.count;

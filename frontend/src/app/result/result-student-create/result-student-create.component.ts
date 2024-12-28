@@ -32,6 +32,7 @@ import { StudentPickerComponent } from '../../core/components/student-picker/stu
 })
 export class ResultStudentCreateComponent implements OnInit, OnDestroy {
   resultId!: number;
+  classId!: number;
 
   studentPicker: DynamicDialogRef | undefined;
 
@@ -46,7 +47,7 @@ export class ResultStudentCreateComponent implements OnInit, OnDestroy {
     private readonly formBuilder: FormBuilder,
     private readonly dialogService: DialogService,
     private readonly messageService: MessageService,
-    private readonly resultService: ResultService,
+    private readonly resultService: ResultService
   ) {
     this.instance = this.dialogService.getInstance(this.dialogRef);
   }
@@ -82,15 +83,28 @@ export class ResultStudentCreateComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initParams();
     this.initForm();
+    this.getClassId()
+  }
+
+  getClassId(): void {
+    this.resultService.resultRetrieve(this.resultId).subscribe({
+      next: (data) => {
+        this.classId = data.classroom.id;
+      },
+      error: (error) => {
+        console.error(error);
+      },
+    });
   }
 
   pickStudent(): void {
     this.studentPicker = this.dialogService.open(StudentPickerComponent, {
-      header: 'Select a teacher',
+      header: 'Select a student',
       width: '70%',
       contentStyle: { overflow: 'auto' },
       data: {
         description: 'Select a student to add a result',
+        classId: this.classId
       },
       baseZIndex: 10000,
     });

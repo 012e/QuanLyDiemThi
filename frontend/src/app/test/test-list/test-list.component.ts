@@ -7,6 +7,7 @@ import { SkeletonModule } from 'primeng/skeleton';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
+import { FileUploadModule, UploadEvent } from 'primeng/fileupload';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import {
   catchError,
@@ -20,6 +21,7 @@ import {
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { Router } from '@angular/router';
 import { SecondsToHhmmssPipe } from '../../core/pipes/seconds-to-hhmmss.pipe';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-test',
@@ -33,7 +35,9 @@ import { SecondsToHhmmssPipe } from '../../core/pipes/seconds-to-hhmmss.pipe';
     ButtonModule,
     InputTextModule,
     ConfirmDialogModule,
-    SecondsToHhmmssPipe
+    SecondsToHhmmssPipe,
+    FileUploadModule,
+    ToastModule,
   ],
   providers: [ConfirmationService],
   templateUrl: './test-list.component.html',
@@ -45,7 +49,7 @@ export class TestListComponent implements OnInit, OnDestroy {
     private readonly testService: TestService,
     private readonly subjectService: SubjectService,
     private readonly messageService: MessageService,
-    private readonly confirmationService: ConfirmationService,
+    private readonly confirmationService: ConfirmationService
   ) {}
 
   public tests!: Test[];
@@ -68,11 +72,13 @@ export class TestListComponent implements OnInit, OnDestroy {
 
   public updatePage(): void {
     this.isLoading = true;
-    this.testService.testList(this.rows, this.first, undefined, this.searchText).subscribe((data) => {
-      this.tests = data.results;
-      this.count = data.count;
-      this.isLoading = false;
-    });
+    this.testService
+      .testList(this.rows, this.first, undefined, this.searchText)
+      .subscribe((data) => {
+        this.tests = data.results;
+        this.count = data.count;
+        this.isLoading = false;
+      });
   }
 
   public ngOnDestroy(): void {
@@ -118,8 +124,8 @@ export class TestListComponent implements OnInit, OnDestroy {
             catchError(() => {
               this.showError(`Failed to delete test with id ${test.id}`);
               return of({ id: test.id, success: false });
-            }),
-          ),
+            })
+          )
         );
 
         forkJoin(delete$).subscribe({
@@ -128,7 +134,9 @@ export class TestListComponent implements OnInit, OnDestroy {
             this.updatePage();
             this.clearSelectedTests();
             this.showSuccess(
-              `Successfully deleted ${results.length} ${results.length === 1 ? 'test' : 'tests'}.`,
+              `Successfully deleted ${results.length} ${
+                results.length === 1 ? 'test' : 'tests'
+              }.`
             );
           },
           error: (error) => {
@@ -177,14 +185,14 @@ export class TestListComponent implements OnInit, OnDestroy {
             this.updatePage();
             if (this.selectedTests.includes(test)) {
               this.selectedTests = this.selectedTests.filter(
-                (selected) => selected !== test,
+                (selected) => selected !== test
               );
             }
             this.showSuccess(`Successfully deleted test with id ${test.id}`);
           },
           error: (error) => {
             this.showError(
-              `Failed to delete test with id ${test.id}: ${error.message}`,
+              `Failed to delete test with id ${test.id}: ${error.message}`
             );
           },
         });
@@ -200,5 +208,15 @@ export class TestListComponent implements OnInit, OnDestroy {
 
   public getSubjectLabelById(index: number): string {
     return this.subjects.find((subject) => subject.id === index)?.name || '';
+  }
+
+  public onBasicUploadAuto(event: UploadEvent) {
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Success',
+      detail: 'File Uploaded with Auto Mode',
+    });
+
+    console.log('test: ',event)
   }
 }

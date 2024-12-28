@@ -42,14 +42,27 @@
               (onClick)="clearSelectedTests()"
             />
           </div>
-          <span class="p-input-icon-left">
-            <i class="pi pi-search"></i>
-            <input
-              pInputText
-              type="text"
-              (keyup)="handleSearch(getValue($event))"
-              placeholder="Search..."
-            />
+          <span class="flex flex-row space-x-3">
+            <p-toast />
+            <!-- <p-fileUpload
+              mode="basic"
+              name="demo[]"
+              chooseIcon="pi pi-upload"
+              accept="image/*"
+              maxFileSize="1000000"
+              (onUpload)="onBasicUploadAuto($event)"
+              [auto]="true"
+              chooseLabel="Browse"
+            /> -->
+            <div class="p-input-icon-left">
+              <i class="pi pi-search"></i>
+              <input
+                pInputText
+                type="text"
+                (keyup)="handleSearch(getValue($event))"
+                placeholder="Search..."
+              />
+            </div>
           </span>
         </div>
       </ng-template>
@@ -73,7 +86,7 @@
           <td>{{ test.id }}</td>
           <td>{{ getSubjectLabelById(test.subject) }}</td>
           <td>{{ test.duration | secondsToHhmmss }}</td>
-          <td>{{ test.datetime | date: 'hh:mm dd/MM/YYYY' }}</td>
+          <td>{{ test.datetime | date : 'hh:mm dd/MM/YYYY' }}</td>
           <td>
             <p-button
               icon="pi pi-pencil"
