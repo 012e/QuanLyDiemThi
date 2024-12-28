@@ -78,6 +78,7 @@ export class TestDetailComponent implements OnInit, OnDestroy {
   public selectedQuestions: Question[] = [];
 
   public difficulties: Difficulty[] = [];
+  public maxDate!: Date;
 
   public enableEditing(): void {
     this.editing = true;
@@ -90,6 +91,7 @@ export class TestDetailComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
+    this.maxDate = new Date()
     this.initForm();
     this.loadData();
   }

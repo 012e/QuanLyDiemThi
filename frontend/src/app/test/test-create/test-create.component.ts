@@ -75,10 +75,12 @@ export class TestCreateComponent implements OnInit, OnDestroy {
   public selectedQuestions: Question[] = [];
 
   public difficulties: Difficulty[] = [];
+  public maxDate!: Date;
 
   public ngOnInit(): void {
     this.initForm();
     this.loadData();
+    this.maxDate = new Date();
   }
 
   public ngOnDestroy(): void {

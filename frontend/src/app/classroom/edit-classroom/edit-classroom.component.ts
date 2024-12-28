@@ -255,7 +255,7 @@ export class EditClassroomComponent implements OnInit, OnDestroy {
       width: '70%',
       contentStyle: { overflow: 'auto' },
       data: {
-        classId: null
+        classId: true
       },
       baseZIndex: 10000,
     });

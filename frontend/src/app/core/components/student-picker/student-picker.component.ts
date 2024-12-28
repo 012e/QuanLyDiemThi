@@ -107,7 +107,7 @@ export class StudentPickerComponent implements OnInit {
 
   public updatePage(): void {
     this.studentService
-      .studentList(this.rows, this.first, undefined, this.searchText, this.classId)
+      .studentList(this.rows, this.first, undefined, this.searchText, this.classId.toString())
       .subscribe((data) => {
         this.students = data.results;
         this.count = data.count;

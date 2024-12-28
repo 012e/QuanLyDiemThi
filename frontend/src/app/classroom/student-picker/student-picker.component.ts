@@ -36,7 +36,7 @@ export class StudentPickerComponent implements OnInit {
   students!: Student[];
   student!: Student;
   selectedStudents!: Student[];
-  classId!: number;
+  classId!: boolean;
 
   submitted: boolean = false;
   searchValue: string | undefined;
@@ -90,7 +90,7 @@ export class StudentPickerComponent implements OnInit {
   public updatePage(): void {
     console.log(this.classId)
     this.studentService
-      .studentList(this.rows, this.first, undefined, this.searchText, this.classId)
+      .studentList(this.rows, this.first, undefined, this.searchText,undefined ,this.classId)
       .subscribe((data) => {
         this.students = data.results;
         this.count = data.count;
