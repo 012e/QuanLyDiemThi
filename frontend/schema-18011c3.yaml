@@ -3382,6 +3382,9 @@ components:
         password:
           type: string
           writeOnly: true
+        permissions:
+          type: string
+          readOnly: true
     PatchedUserDetails:
       type: object
       description: User model w/o password
@@ -3704,8 +3707,12 @@ components:
         password:
           type: string
           writeOnly: true
+        permissions:
+          type: string
+          readOnly: true
       required:
       - id
+      - permissions
       - roles
       - user_type
       - username

@@ -120,7 +120,7 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     filter_backends = [OrderingFilter, SearchFilter]
-    search_fields = ["username", "email", "first_name", "last_name", "role__name"]
+    search_fields = ["username", "email", "first_name", "last_name"]
     ordering = ["-date_joined"]
 
 

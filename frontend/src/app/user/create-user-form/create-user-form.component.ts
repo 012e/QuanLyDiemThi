@@ -24,10 +24,11 @@ import {
   DynamicDialogComponent,
   DynamicDialogRef,
 } from 'primeng/dynamicdialog';
-import { User, UserService } from '../../core/api';
+import { Role, User, UserService } from '../../core/api';
 import { noWhitespaceValidator } from '../../core/validators/no-whitespace.validator';
 import { MessageService } from 'primeng/api';
 import { PasswordModule } from 'primeng/password';
+import { PickListModule } from 'primeng/picklist';
 
 @Component({
   selector: 'app-create-user-form',
@@ -50,6 +51,7 @@ import { PasswordModule } from 'primeng/password';
     ReactiveFormsModule,
     DropdownModule,
     PasswordModule,
+    PickListModule
   ],
   templateUrl: './create-user-form.component.html',
   styleUrl: './create-user-form.component.css',
@@ -58,6 +60,8 @@ export class CreateUserFormComponent implements OnInit {
   user!: User;
   form!: FormGroup;
   self: DynamicDialogComponent | undefined;
+  roles: Role[] = [];
+  selectedRoles: Role[] = [];
 
   readonly userTypes = [
     {

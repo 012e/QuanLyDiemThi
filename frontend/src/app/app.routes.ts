@@ -20,6 +20,7 @@ import { EditClassroomComponent } from './classroom/edit-classroom/edit-classroo
 import { ResultListComponent } from './result/result-list/result-list.component';
 import { ResultCreateComponent } from './result/result-create/result-create.component';
 import { ResultEditComponent } from './result/result-edit/result-edit.component';
+import { ngxPermissionsGuard, NgxPermissionsGuard } from 'ngx-permissions';
 
 export const routes: Routes = [
   {
@@ -43,6 +44,13 @@ export const routes: Routes = [
       {
         path: 'user',
         component: UserListComponent,
+        canActivate: [ngxPermissionsGuard],
+        data: {
+          permissions: {
+            only: ['user:view'],
+            redirectTo: '/me',
+          },
+        }
       },
       {
         path: 'admin',

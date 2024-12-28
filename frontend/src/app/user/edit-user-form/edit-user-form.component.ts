@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -29,6 +29,7 @@ import { MessageService } from 'primeng/api';
 import { CommonModule } from '@angular/common';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { PickListModule } from 'primeng/picklist';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-edit-user-form',
@@ -83,6 +84,7 @@ export class EditUserFormComponent implements OnInit {
     private readonly userService: UserService,
     private readonly messageService: MessageService,
     private readonly roleService: RoleService,
+    private readonly authService: AuthService,
     dialogService: DialogService,
     public selfRef: DynamicDialogRef,
   ) {
@@ -99,21 +101,31 @@ export class EditUserFormComponent implements OnInit {
       email: [undefined, [Validators.required, Validators.email]],
       first_name: [undefined, [Validators.required]],
       last_name: [undefined, [Validators.required]],
-      user_type: [undefined, Validators.required],
+      user_type: ['admin', Validators.required],
+      roles: [[]],
     });
     if (!this.self || !this.self.data.user) {
       throw new Error('User is required');
     }
+
+    this.user = this.self.data.user;
+    this.selectedRoles = this.user.roles.map(
+      (role) => ({ name: role }) as Role,
+    );
     this.roleService.roleList().subscribe({
       next: (response) => {
-        this.roles = response;
+        let unfilteredRoles = response;
+        this.roles = unfilteredRoles.filter(
+          (role: Role) =>
+            !this.selectedRoles.some(
+              (selectedRole) => selectedRole.name === role.name,
+            ),
+        );
       },
       error: (error) => {
         this.closeWithError('Failed to load roles');
-      }
+      },
     });
-
-    this.user = this.self.data.user;
     this.form.patchValue(this.user);
   }
 
@@ -141,11 +153,17 @@ export class EditUserFormComponent implements OnInit {
       });
       return;
     }
-    const formValue: User = this.form.value;
+    const formValue: User = {
+      ...this.form.value,
+      roles: this.selectedRoles.map((role) => role.name),
+    };
+    console.log(formValue);
     this.userService.userUpdate(this.user.id, formValue).subscribe({
       next: (response) => {
         console.log(response);
-        this.closeWithSuccess(response);
+        this.authService.updateRoles(() => {
+          this.closeWithSuccess(response);
+        });
       },
       error: (error) => {
         this.messageService.add({

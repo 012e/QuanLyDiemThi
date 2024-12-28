@@ -308,6 +308,10 @@ class UserSerializer(serializers.ModelSerializer):
     )
     password = serializers.CharField(write_only=True, required=False, allow_blank=False)
     roles = serializers.ListSerializer(child=serializers.CharField())
+    permissions = serializers.SerializerMethodField("get_permissions")
+
+    def get_permissions(self, obj):
+        return list(set([p.name for r in obj.roles.all() for p in r.permissions.all()]))
 
     class Meta:
         model = User
@@ -320,6 +324,7 @@ class UserSerializer(serializers.ModelSerializer):
             "user_type",
             "roles",
             "password",
+            "permissions",
         ]
 
     def create(self, validated_data):
