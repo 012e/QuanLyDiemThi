@@ -31,11 +31,39 @@ class PermissionSerializer(serializers.ModelSerializer):
 
 
 class RoleSerializer(serializers.ModelSerializer):
-    permissions = PermissionSerializer(many=True)
+    permissions = serializers.ListSerializer(child=serializers.CharField())
 
     class Meta:
         model = Role
         fields = ["name", "description", "permissions"]
+
+    def create(self, validated_data):
+        permissions = validated_data.pop("permissions", [])
+        role = None
+        try:
+            role = Role.objects.create(**validated_data)
+            post_permissions = Permission.objects.filter(name__in=permissions).distinct()
+            if len(post_permissions) != len(permissions):
+                raise serializers.ValidationError({"permissions": "One or more permissions are invalid"})
+
+            role.permissions.set(post_permissions)
+        except Exception as e:
+            if role is not None:
+                role.delete()
+            raise e
+        return role
+
+    def update(self, instance, validated_data):
+        permissions = validated_data.pop("permissions", None)
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        if permissions is not None:
+            post_permissions = Permission.objects.filter(name__in=permissions).distinct()
+            if len(permissions) != len(post_permissions):
+                raise serializers.ValidationError({"permissions": "One or more permissions are invalid"})
+            instance.permissions.set(permissions)
+        instance.save()
+        return instance
 
 
 class SafeUserSerializer(serializers.ModelSerializer):

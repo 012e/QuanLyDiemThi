@@ -20,7 +20,7 @@ import { EditClassroomComponent } from './classroom/edit-classroom/edit-classroo
 import { ResultListComponent } from './result/result-list/result-list.component';
 import { ResultCreateComponent } from './result/result-create/result-create.component';
 import { ResultEditComponent } from './result/result-edit/result-edit.component';
-import { ngxPermissionsGuard, NgxPermissionsGuard } from 'ngx-permissions';
+import { ngxPermissionsGuard } from 'ngx-permissions';
 
 export const routes: Routes = [
   {
@@ -72,7 +72,7 @@ export const routes: Routes = [
         canActivate: [ngxPermissionsGuard],
         data: {
           permissions: {
-            only: ['admin'],
+            only: ['config'],
             redirectTo: '/me',
           },
         }
