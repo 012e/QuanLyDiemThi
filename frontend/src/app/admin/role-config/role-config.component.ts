@@ -18,6 +18,11 @@ import { RippleModule } from 'primeng/ripple';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { SubjectService, Subject, Role, RoleService } from '../../core/api';
+import { Utils } from '../../core/utils/utils';
+import { Router } from '@angular/router';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { RoleEditComponent } from '../role-edit/role-edit.component';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-role-config',
@@ -39,15 +44,16 @@ import { SubjectService, Subject, Role, RoleService } from '../../core/api';
   ],
   templateUrl: './role-config.component.html',
   styleUrl: './role-config.component.css',
-  providers: [ConfirmationService],
+  providers: [ConfirmationService, DialogService],
 })
 export class RoleConfigComponent {
-  SubjectForm!: FormGroup;
-  SubjectDialog: boolean = false;
+  roleForm!: FormGroup;
+  subjectDialog: boolean = false;
   selectedSubjects!: Subject[];
   Subjects!: Subject[];
   Subject!: Subject;
   roles: Role[] = [];
+  editDialog: DynamicDialogRef | undefined;
 
   constructor(
     private readonly fb: FormBuilder,
@@ -55,6 +61,10 @@ export class RoleConfigComponent {
     private readonly confirmationService: ConfirmationService,
     private readonly roleService: RoleService,
     private readonly subjectSerivice: SubjectService,
+    private readonly dialogService: DialogService,
+    private readonly authService: AuthService,
+
+    private readonly router: Router,
   ) {}
 
   public ngOnInit() {
@@ -63,9 +73,9 @@ export class RoleConfigComponent {
   }
 
   private initForm() {
-    this.SubjectForm = this.fb.group({
-      id: [undefined],
+    this.roleForm = this.fb.group({
       name: [undefined, Validators.required],
+      permissions: [[]],
     });
   }
 
@@ -90,57 +100,33 @@ export class RoleConfigComponent {
   }
 
   public openNew() {
-    this.SubjectForm.reset();
-    this.SubjectDialog = true;
+    this.roleForm.reset();
+    this.subjectDialog = true;
   }
 
   public updatePage() {
     this.loadInitialData();
   }
 
-  public editSubject(Subject: Subject) {
-    this.SubjectForm.patchValue(Subject);
-    this.SubjectDialog = true;
-  }
+  public editRole(role: Role) {
+    if (!role) {
+      throw new Error('Role is undefined');
+    }
 
-  public deleteselectedSubjects() {
-    this.confirmationService.confirm({
-      message:
-        'Are you sure you want to delete the selected subjects? (' +
-        this.selectedSubjects?.length +
-        ' selected)',
-      header: 'Confirm',
-      icon: 'pi pi-exclamation-triangle',
-      acceptButtonStyleClass: 'p-button-danger',
-      accept: () => {
-        if (!this.selectedSubjects) {
-          return;
-        }
-
-        this.Subjects = this.Subjects.filter(
-          (val) => !this.selectedSubjects.includes(val),
-        );
-
-        this.selectedSubjects.forEach((Subject: { id: number }) => {
-          this.subjectSerivice.subjectDestroy(Subject.id).subscribe({
-            next: (response) => {
-              console.log(response);
-              this.updatePage();
-            },
-
-            error: (error) => {
-              this.showError(`Error deleting subjects: ${error.message}`);
-            },
-          });
-        });
-        this.selectedSubjects = [];
-        this.showSuccess('Subjects Deleted');
+    this.editDialog = this.dialogService.open(RoleEditComponent, {
+      header: 'Edit Role',
+      data: {
+        role: role,
       },
     });
-  }
 
-  public clearselectedSubjects() {
-    this.selectedSubjects = [];
+    this.editDialog.onClose.subscribe((role: Role) => {
+      if (role) {
+        console.log(role);
+        this.updatePage();
+        this.authService.updateRoles();
+      }
+    });
   }
 
   public deleteRole(role: Role) {
@@ -166,7 +152,7 @@ export class RoleConfigComponent {
   }
 
   public hideDialog() {
-    this.SubjectDialog = false;
+    this.subjectDialog = false;
   }
 
   public showError(error: string) {
@@ -187,50 +173,35 @@ export class RoleConfigComponent {
     });
   }
 
-  private updateSubject(Subject: Subject) {
-    this.subjectSerivice.subjectUpdate(Subject.id, Subject).subscribe({
+  private createRole(role: Role) {
+    this.roleService.roleCreate(role).subscribe({
       next: (response) => {
-        console.log(response);
+        console.log(`Created new role: ${response.name}`);
         this.updatePage();
+        this.showSuccess('Role Created');
+        this.subjectDialog = false;
       },
 
       error: (error) => {
         console.error(error);
-      },
-    });
-    this.showSuccess('Subject Updated');
-  }
-
-  private createSubject(Subject: Subject) {
-    this.subjectSerivice.subjectCreate(Subject).subscribe({
-      next: (response) => {
-        console.log(`Updated Subject: ${response}`);
-        this.updatePage();
-        this.showSuccess('Subject Created');
-      },
-
-      error: (error) => {
-        console.error(error);
+        this.showError(`Eror creating role: ${Utils.prettyError(error.error)}`);
       },
     });
   }
 
-  public saveSubject() {
-    this.SubjectForm.markAllAsTouched();
+  public saveRole() {
+    this.roleForm.markAllAsTouched();
 
-    if (this.SubjectForm.invalid) {
-      this.showError('Name is required');
+    if (this.roleForm.invalid) {
+      this.showError('Please fill in all required fields');
       return;
     }
 
-    const Subject: Subject = this.SubjectForm.value;
+    const roleValue = {
+      ...this.roleForm.value,
+      permissions: [],
+    };
 
-    if (Subject.id) {
-      this.updateSubject(Subject);
-    } else {
-      this.createSubject(Subject);
-    }
-
-    this.SubjectDialog = false;
+    this.createRole(roleValue);
   }
 }

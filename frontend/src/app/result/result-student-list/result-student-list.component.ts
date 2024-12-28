@@ -32,6 +32,7 @@ import { Result } from '../../core/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ResultStudentEditComponent } from '../result-student-edit/result-student-edit.component';
 import { ResultStudentCreateComponent } from '../result-student-create/result-student-create.component';
+import { NgxPermissionsModule } from 'ngx-permissions';
 
 @Component({
   selector: 'app-result-student-list',
@@ -52,6 +53,7 @@ import { ResultStudentCreateComponent } from '../result-student-create/result-st
     FormsModule,
     InputNumberModule,
     ReactiveFormsModule,
+    NgxPermissionsModule
   ],
   templateUrl: './result-student-list.component.html',
   styleUrl: './result-student-list.component.css',

@@ -114,6 +114,7 @@ export class EditUserFormComponent implements OnInit {
     );
     this.roleService.roleList().subscribe({
       next: (response) => {
+        console.log(response);
         let unfilteredRoles = response;
         this.roles = unfilteredRoles.filter(
           (role: Role) =>

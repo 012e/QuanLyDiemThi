@@ -32,13 +32,6 @@ export class AuthService {
     return true;
   }
 
-  // TODO: handle user changing role in the middle of the session
-  public updateRole(): void {
-    //const role = this.getRole();
-    //this.permissionService.flushPermissions();
-    //this.permissionService.addPermission([role]);
-  }
-
   public getRole(): UserRole {
     const token = localStorage.getItem('access_token');
     try {

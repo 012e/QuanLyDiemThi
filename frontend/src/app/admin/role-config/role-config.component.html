@@ -43,16 +43,16 @@
             severity="success"
             [rounded]="true"
             [outlined]="true"
-            (onClick)="editSubject(role)"
+            (onClick)="editRole(role)"
           />
         </td>
       </tr>
     </ng-template>
   </p-table>
 
-  <form [formGroup]="SubjectForm">
+  <form [formGroup]="roleForm">
     <p-dialog
-      [(visible)]="SubjectDialog"
+      [(visible)]="subjectDialog"
       [style]="{ width: '450px' }"
       header="Subject Details"
       [modal]="true"
@@ -76,10 +76,11 @@
           label="Save"
           icon="pi pi-check"
           severity="success"
-          (onClick)="saveSubject()"
+          (onClick)="saveRole()"
         />
       </ng-template>
     </p-dialog>
   </form>
   <p-confirmDialog [style]="{ width: '450px' }" />
+  <p-dialog></p-dialog>
 </div>

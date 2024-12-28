@@ -61,7 +61,7 @@ class RoleSerializer(serializers.ModelSerializer):
             post_permissions = Permission.objects.filter(name__in=permissions).distinct()
             if len(permissions) != len(post_permissions):
                 raise serializers.ValidationError({"permissions": "One or more permissions are invalid"})
-            instance.permissions.set(permissions)
+            instance.permissions.set(post_permissions)
         instance.save()
         return instance
 

@@ -22,6 +22,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { TableModule } from 'primeng/table';
 import { ResultStudentListComponent } from '../result-student-list/result-student-list.component';
 import { DialogModule } from 'primeng/dialog';
+import { NgxPermissionsModule } from 'ngx-permissions';
 
 @Component({
   selector: 'app-result-edit',
@@ -38,6 +39,7 @@ import { DialogModule } from 'primeng/dialog';
     ReactiveFormsModule,
     ResultStudentListComponent,
     DatePipe,
+    NgxPermissionsModule
   ],
   providers: [DialogService, ConfirmationService],
   templateUrl: './result-edit.component.html',

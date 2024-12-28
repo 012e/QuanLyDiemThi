@@ -21,7 +21,7 @@
   >
     <ng-template pTemplate="caption">
       <div class="flex flex-row justify-between w-full">
-        <div class="flex gap-2">
+        <div class="flex gap-2" *ngxPermissionsOnly="'result:add'">
           <p-button
             severity="success"
             label="New"
@@ -66,7 +66,10 @@
     <ng-template pTemplate="body" let-result>
       <tr>
         <td>
-          <p-tableCheckbox [value]="result" />
+          <p-tableCheckbox
+            [value]="result"
+            *ngxPermissionsOnly="'result:add'"
+          />
         </td>
         <td>
           {{ result.student.student_code }}
@@ -88,6 +91,7 @@
             [outlined]="true"
             severity="success"
             (onClick)="openEditDialog(result)"
+            *ngxPermissionsOnly="'result:add'"
           />
 
           <p-button
@@ -96,6 +100,7 @@
             [rounded]="true"
             [outlined]="true"
             (onClick)="deleteResult(result)"
+            *ngxPermissionsOnly="'result:add'"
           />
         </td>
       </tr>
