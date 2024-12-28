@@ -1,0 +1,27 @@
+<div class="flex flex-col gap-5">
+  <div class="flex flex-col gap-1">
+    <label for="roles" class="px-1 text-sm font-bold">Roles</label>
+    <p-pickList
+      [source]="permissions"
+      [target]="selectedPermissions"
+      sourceHeader="Available Permissions"
+      targetHeader="Current Permissions"
+      [showSourceControls]="false"
+      [showTargetControls]="false"
+      [responsive]="true"
+      [keepSelection]="false"
+    >
+      <ng-template let-permission pTemplate="item">
+        <div>{{ permission.name }}</div>
+      </ng-template>
+    </p-pickList>
+  </div>
+  <div class="flex justify-center">
+    <p-button
+      label="Save"
+      class="w-full"
+      (onClick)="submit()"
+      severity="success"
+    />
+  </div>
+</div>

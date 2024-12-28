@@ -1,7 +1,6 @@
-from django.db.models import Q
 import rest_framework.serializers as serializers
 from constance import config
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from drf_spectacular.utils import extend_schema_field
 from environ import logging
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -11,20 +10,71 @@ from score_manager.utils import get_role
 from .models import (
     Class,
     Difficulty,
+    Permission,
     Question,
     QuestionInTestModel,
     Result,
+    Role,
     Student,
     StudentResult,
     Subject,
     Test,
 )
 
+User = get_user_model()
+
+
+class PermissionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Permission
+        fields = ["name", "description"]
+
+
+class RoleSerializer(serializers.ModelSerializer):
+    permissions = serializers.ListSerializer(child=serializers.CharField())
+
+    class Meta:
+        model = Role
+        fields = ["name", "description", "permissions", "id"]
+
+    def create(self, validated_data):
+        permissions = validated_data.pop("permissions", [])
+        role = None
+        try:
+            role = Role.objects.create(**validated_data)
+            post_permissions = Permission.objects.filter(name__in=permissions).distinct()
+            if len(post_permissions) != len(permissions):
+                raise serializers.ValidationError({"permissions": "One or more permissions are invalid"})
+
+            role.permissions.set(post_permissions)
+        except Exception as e:
+            if role is not None:
+                role.delete()
+            raise e
+        return role
+
+    def update(self, instance, validated_data):
+        permissions = validated_data.pop("permissions", None)
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        if permissions is not None:
+            post_permissions = Permission.objects.filter(name__in=permissions).distinct()
+            if len(permissions) != len(post_permissions):
+                raise serializers.ValidationError({"permissions": "One or more permissions are invalid"})
+            instance.permissions.set(post_permissions)
+        instance.save()
+        return instance
+
 
 class SafeUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id", "username", "first_name", "last_name"]
+        fields = [
+            "id",
+            "username",
+            "first_name",
+            "last_name",
+        ]
 
 
 class ClassSerializer(serializers.ModelSerializer):
@@ -152,7 +202,6 @@ class TestSerializer(serializers.ModelSerializer):
                 f"Semester must be between 1 and {config.MAX_SEMESTERS}."
             )
         return value
-
 
     def validate(self, attrs):
         questions = attrs.get("questions", None)
@@ -286,6 +335,11 @@ class UserSerializer(serializers.ModelSerializer):
         choices=["admin", "staff", "user"], write_only=True
     )
     password = serializers.CharField(write_only=True, required=False, allow_blank=False)
+    roles = serializers.ListSerializer(child=serializers.CharField())
+    permissions = serializers.SerializerMethodField("get_permissions")
+
+    def get_permissions(self, obj):
+        return list(set([p.name for r in obj.roles.all() for p in r.permissions.all()]))
 
     class Meta:
         model = User
@@ -296,7 +350,9 @@ class UserSerializer(serializers.ModelSerializer):
             "first_name",
             "last_name",
             "user_type",
+            "roles",
             "password",
+            "permissions",
         ]
 
     def create(self, validated_data):
@@ -304,24 +360,36 @@ class UserSerializer(serializers.ModelSerializer):
             "user_type", "user"
         )  # Default to 'user' if not provided
         password = validated_data.pop("password", None)
+        roles = validated_data.pop("roles", [])
         user = User.objects.create(**validated_data)
+        try:
+            # Set user type (admin, staff, or user)
+            if user_type == "admin":
+                user.is_superuser = True
+                user.is_staff = True
+            elif user_type == "staff":
+                user.is_staff = True
 
-        # Set user type (admin, staff, or user)
-        if user_type == "admin":
-            user.is_superuser = True
-            user.is_staff = True
-        elif user_type == "staff":
-            user.is_staff = True
+            if roles:
+                searched = Role.objects.filter(name__in=roles).distinct()
+                if len(searched) != len(roles):
+                    raise serializers.ValidationError({"role": "Invalid role"})
+                user.roles.set(Role.objects.filter(name__in=roles))
 
-        if password:
-            user.set_password(password)
+            if password:
+                user.set_password(password)
 
-        user.save()
+            user.save()
+        except Exception as e:
+            if user is not None:
+                user.delete()
+            raise e
         return user
 
     def update(self, instance, validated_data):
         user_type = validated_data.pop("user_type", None)
         password = validated_data.pop("password", None)
+        roles = validated_data.pop("roles", None)
 
         # Update the user instance fields
         for attr, value in validated_data.items():
@@ -340,6 +408,18 @@ class UserSerializer(serializers.ModelSerializer):
 
         if password:
             instance.set_password(password)
+        if roles is not None:
+            searched = Role.objects.filter(name__in=roles).distinct()
+            if len(searched) != len(roles):
+                raise serializers.ValidationError({"roles": "One or more roles are invalid"})
+            instance.roles.set(searched)
+
+        # Update the password if provided
+        if password:
+            instance.set_password(password)
+
+        instance.save()
+        return instance
 
         instance.save()
         return instance

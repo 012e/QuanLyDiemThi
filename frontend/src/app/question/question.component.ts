@@ -29,6 +29,7 @@ import {
   SubjectService,
 } from '../core/api';
 import { debounceTime, distinctUntilChanged, Subject as RxSubject } from 'rxjs';
+import { NgxPermissionsModule } from 'ngx-permissions';
 
 @Component({
   selector: 'app-question',
@@ -49,6 +50,7 @@ import { debounceTime, distinctUntilChanged, Subject as RxSubject } from 'rxjs';
     FormsModule,
     InputNumberModule,
     ReactiveFormsModule,
+    NgxPermissionsModule
   ],
   providers: [ConfirmationService],
   templateUrl: './question.component.html',

@@ -26,6 +26,7 @@
             label="New"
             icon="pi pi-plus"
             (onClick)="openNew()"
+            *ngxPermissionsOnly="'question:add'"
           />
           <p-button
             severity="danger"
@@ -33,11 +34,13 @@
             icon="pi pi-trash"
             (onClick)="deleteSelectedQuestions()"
             [disabled]="!selectedQuestions || !selectedQuestions.length"
+            *ngxPermissionsOnly="'question:add'"
           />
           <p-button
             label="Clear"
             icon="pi pi-times"
             (onClick)="clearSelectedQuestions()"
+            *ngxPermissionsOnly="'question:add'"
           />
         </div>
         <span class="p-input-icon-left">
@@ -57,7 +60,7 @@
         <th class="w-4"></th>
         <th class="w-40">Id</th>
         <th class="w-40">Subject</th>
-        <th class="max-w-max pr-20">Detail</th>
+        <th class="pr-20 max-w-max">Detail</th>
         <th class="w-40">Difficulty</th>
         <th class="w-40"></th>
       </tr>
@@ -65,7 +68,10 @@
     <ng-template pTemplate="body" let-question>
       <tr>
         <td>
-          <p-tableCheckbox [value]="question" />
+          <p-tableCheckbox
+            [value]="question"
+            *ngxPermissionsOnly="'question:add'"
+          />
         </td>
         <td>
           {{ question.id }}
@@ -73,7 +79,7 @@
         <td>
           {{ getSubjectLabelById(question.subject) }}
         </td>
-        <td class="max-w-xs truncate pr-20" title="{{ question.detail }}">
+        <td class="pr-20 max-w-xs truncate" title="{{ question.detail }}">
           {{ question.detail }}
         </td>
         <td>
@@ -87,6 +93,7 @@
             [outlined]="true"
             severity="success"
             (onClick)="editQuestion(question)"
+            *ngxPermissionsOnly="'question:add'"
           />
           <p-button
             icon="pi pi-trash"
@@ -94,6 +101,7 @@
             [rounded]="true"
             [outlined]="true"
             (onClick)="deleteQuestion(question)"
+            *ngxPermissionsOnly="'question:add'"
           />
         </td>
       </tr>

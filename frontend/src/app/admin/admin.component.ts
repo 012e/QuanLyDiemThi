@@ -21,6 +21,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { TabViewModule } from 'primeng/tabview';
 import { DifficultyConfigComponent } from './difficulty-config/difficulty-config.component';
 import { SubjectConfigComponent } from './subject-config/subject-config.component';
+import { RoleConfigComponent } from './role-config/role-config.component';
 
 @Component({
   selector: 'app-admin',
@@ -41,6 +42,7 @@ import { SubjectConfigComponent } from './subject-config/subject-config.componen
     TabViewModule,
     DifficultyConfigComponent,
     SubjectConfigComponent,
+    RoleConfigComponent,
   ],
   providers: [ConfirmationService],
   templateUrl: './admin.component.html',

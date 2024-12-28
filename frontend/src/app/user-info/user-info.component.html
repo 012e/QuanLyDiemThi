@@ -22,13 +22,6 @@
       </div>
       <form [formGroup]="userDetailsForm" class="flex flex-col gap-5">
         <div class="flex flex-col gap-1">
-          <label for="role" class="pl-1 font-bold font-sm">User type</label>
-          @if (editing) {
-            <p class="pl-1 m-0 text-sm">User type is not editable</p>
-          }
-          <input pInputText [(value)]="userRole" [disabled]="true" />
-        </div>
-        <div class="flex flex-col gap-1">
           <label for="username" class="pl-1 font-bold font-sm">Email</label>
           @if (editing) {
             <p class="pl-1 m-0 text-sm">Email is not editable</p>

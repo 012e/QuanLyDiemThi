@@ -24,6 +24,8 @@ DEBUG = env("DEBUG")
 
 ALLOWED_HOSTS = ["*"]
 
+AUTH_USER_MODEL = "score_manager.CustomUser"
+
 INSTALLED_APPS = [
     "rest_framework",
     "django_filters",
@@ -175,7 +177,7 @@ REST_AUTH = {
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(hours=1),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=99),
 }
 
 CORS_ALLOW_ALL_ORIGINS = True

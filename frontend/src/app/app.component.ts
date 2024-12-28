@@ -19,21 +19,6 @@ export class AppComponent implements OnInit {
     private readonly authService: AuthService,
   ) {}
   ngOnInit(): void {
-    this.permissionService.addPermission('user', () => {
-      return (
-        this.authService.getRole() === UserRole.User ||
-        this.authService.getRole() === UserRole.Staff ||
-        this.authService.getRole() === UserRole.Admin
-      );
-    });
-    this.permissionService.addPermission('admin', () => {
-      return this.authService.getRole() === UserRole.Admin;
-    });
-    this.permissionService.addPermission('staff', () => {
-      return (
-        this.authService.getRole() === UserRole.Staff ||
-        this.authService.getRole() === UserRole.Admin
-      );
-    });
+    this.authService.updateRoles();
   }
 }

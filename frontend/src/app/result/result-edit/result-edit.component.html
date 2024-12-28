@@ -3,21 +3,23 @@
     <div class="flex justify-between">
       <h1 class="p-0 m-0 text-4xl capitalize">Result Detail</h1>
 
-      @if (editing) {
-        <p-button
-          label="Save"
-          (onClick)="submit()"
-          severity="success"
-          icon="pi pi-check"
-        />
-      } @else {
-        <p-button
-          label="Edit"
-          (onClick)="enableEditing()"
-          icon="pi pi-pencil"
-          severity="secondary"
-        />
-      }
+      <div *ngxPermissionsOnly="'result:add'">
+        @if (editing) {
+          <p-button
+            label="Save"
+            (onClick)="submit()"
+            severity="success"
+            icon="pi pi-check"
+          />
+        } @else {
+          <p-button
+            label="Edit"
+            (onClick)="enableEditing()"
+            icon="pi pi-pencil"
+            severity="secondary"
+          />
+        }
+      </div>
     </div>
     <p-divider></p-divider>
 

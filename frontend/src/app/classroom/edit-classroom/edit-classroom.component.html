@@ -3,7 +3,7 @@
     <h1 class="text-4xl">Edit Classroom</h1>
     <p-divider />
     <div class="flex flex-col gap-5">
-      <div class="flex justify-end">
+      <div class="flex justify-end" *ngxPermissionsOnly="'classroom:add'">
         @if (editing) {
           <p-button
             label="Save"
@@ -100,13 +100,14 @@
           >
             <ng-template pTemplate="caption">
               <div class="flex flex-row justify-between w-full">
-                <div class="flex gap-2" *ngxPermissionsOnly="'staff'">
+                <div class="flex gap-2">
                   <p-button
                     (click)="addStudents()"
                     icon="pi pi-plus"
                     severity="success"
                     label="Add students"
-                    [outlined]="true"gti
+                    [outlined]="true"
+                    *ngxPermissionsOnly="'classroom:add'"
                   />
                   <p-button
                     severity="danger"
@@ -114,11 +115,13 @@
                     icon="pi pi-trash"
                     (onClick)="deleteSelectedStudents()"
                     [disabled]="!selectedStudents || !selectedStudents.length"
+                    *ngxPermissionsOnly="'classroom:add'"
                   />
                   <p-button
                     label="Clear"
                     icon="pi pi-times"
                     (onClick)="clearSelectedStudents()"
+                    *ngxPermissionsOnly="'classroom:add'"
                   />
                 </div>
                 <span class="p-input-icon-left">
@@ -134,18 +137,19 @@
             </ng-template>
             <ng-template pTemplate="header">
               <tr>
-                <th *ngxPermissionsOnly="'staff'"></th>
+                <th></th>
                 <th>Index</th>
                 <th>Id</th>
                 <th>Student Code</th>
                 <th>Name</th>
-                <th *ngxPermissionsOnly="'staff'"></th>
+                <th></th>
               </tr>
             </ng-template>
             <ng-template pTemplate="body" let-student let-index="rowIndex">
               <tr>
                 <td>
-                  <p-tableCheckbox [value]="student" />
+                  <p-tableCheckbox [value]="student"
+                   *ngxPermissionsOnly="'student:add'"/>
                 </td>
                 <td>
                   {{ index + 1 }}
@@ -168,6 +172,7 @@
                     severity="danger"
                     [outlined]="true"
                     (onClick)="deleteStudent(index)"
+                    *ngxPermissionsOnly="'student:add'"
                   />
                 </td>
               </tr>
@@ -184,7 +189,7 @@
         </div>
       </form>
 
-      <div class="flex justify-center">
+      <div class="flex justify-center" *ngxPermissionsOnly="'classroom:add'">
         <p-button (onClick)="deleteClass()" severity="danger"
           >Delete Class</p-button
         >

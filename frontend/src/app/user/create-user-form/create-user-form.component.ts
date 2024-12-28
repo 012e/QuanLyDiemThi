@@ -24,10 +24,11 @@ import {
   DynamicDialogComponent,
   DynamicDialogRef,
 } from 'primeng/dynamicdialog';
-import { User, UserService } from '../../core/api';
+import { Role, RoleService, User, UserService } from '../../core/api';
 import { noWhitespaceValidator } from '../../core/validators/no-whitespace.validator';
 import { MessageService } from 'primeng/api';
 import { PasswordModule } from 'primeng/password';
+import { PickListModule } from 'primeng/picklist';
 
 @Component({
   selector: 'app-create-user-form',
@@ -50,6 +51,7 @@ import { PasswordModule } from 'primeng/password';
     ReactiveFormsModule,
     DropdownModule,
     PasswordModule,
+    PickListModule,
   ],
   templateUrl: './create-user-form.component.html',
   styleUrl: './create-user-form.component.css',
@@ -58,6 +60,8 @@ export class CreateUserFormComponent implements OnInit {
   user!: User;
   form!: FormGroup;
   self: DynamicDialogComponent | undefined;
+  roles: Role[] = [];
+  selectedRoles: Role[] = [];
 
   readonly userTypes = [
     {
@@ -78,6 +82,7 @@ export class CreateUserFormComponent implements OnInit {
     private readonly fb: FormBuilder,
     private readonly userService: UserService,
     private readonly messageService: MessageService,
+    private readonly roleService: RoleService,
     dialogService: DialogService,
     public selfRef: DynamicDialogRef,
   ) {
@@ -93,8 +98,25 @@ export class CreateUserFormComponent implements OnInit {
       email: [undefined, [Validators.required, Validators.email]],
       first_name: [undefined, [Validators.required]],
       last_name: [undefined, [Validators.required]],
-      user_type: [undefined, Validators.required],
+      user_type: ["admin", Validators.required],
       password: [undefined, [Validators.required, Validators.minLength(8)]],
+      roles: [[]],
+    });
+
+    this.roleService.roleList().subscribe({
+      next: (response) => {
+        this.roles = response;
+      },
+      error: (error) => {
+        if (this.form.invalid) {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: "Coudn't load roles",
+          });
+          return;
+        }
+      },
     });
   }
 
@@ -118,7 +140,10 @@ export class CreateUserFormComponent implements OnInit {
       });
       return;
     }
-    const formValue: User = this.form.value;
+    const formValue: User = {
+      ...this.form.value,
+      roles: this.selectedRoles.map((role) => role.name),
+  };
     this.userService.userCreate(formValue).subscribe({
       next: (response) => {
         console.log(response);

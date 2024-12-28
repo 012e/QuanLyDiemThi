@@ -26,8 +26,6 @@ export class NavBarComponent implements OnInit {
   }
 
   public ngOnInit() {
-    const isAdmin = this.authService.getRole() === UserRole.Admin;
-    const isStaff = this.authService.getRole() === UserRole.Staff || isAdmin;
     this.items = [
       {
         label: 'Question',
@@ -77,7 +75,6 @@ export class NavBarComponent implements OnInit {
         command: () => {
           this.router.navigate(['summary', new Date().getFullYear()]);
         },
-        visible: isStaff,
       },
       {
         label: 'Config',
@@ -85,7 +82,6 @@ export class NavBarComponent implements OnInit {
         command: () => {
           this.router.navigate(['admin']);
         },
-        visible: isAdmin,
       },
     ];
   }
