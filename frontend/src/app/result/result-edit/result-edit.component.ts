@@ -23,6 +23,7 @@ import { TableModule } from 'primeng/table';
 import { ResultStudentListComponent } from '../result-student-list/result-student-list.component';
 import { DialogModule } from 'primeng/dialog';
 import { NgxPermissionsModule } from 'ngx-permissions';
+import { Utils } from '../../core/utils/utils';
 
 @Component({
   selector: 'app-result-edit',
@@ -213,7 +214,7 @@ export class ResultEditComponent implements OnInit, OnDestroy {
         this.disableEditing();
       },
       error: (error) => {
-        this.showError('Failed to update result');
+        this.showError(`Failed to update result ${Utils.prettyError(error)}`);
       },
     });
   }

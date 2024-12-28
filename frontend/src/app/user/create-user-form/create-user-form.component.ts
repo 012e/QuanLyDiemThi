@@ -84,7 +84,7 @@ export class CreateUserFormComponent implements OnInit {
     private readonly messageService: MessageService,
     private readonly roleService: RoleService,
     dialogService: DialogService,
-    public selfRef: DynamicDialogRef,
+    public selfRef: DynamicDialogRef
   ) {
     this.self = dialogService.getInstance(selfRef);
   }
@@ -98,7 +98,7 @@ export class CreateUserFormComponent implements OnInit {
       email: [undefined, [Validators.required, Validators.email]],
       first_name: [undefined, [Validators.required]],
       last_name: [undefined, [Validators.required]],
-      user_type: ["admin", Validators.required],
+      user_type: ['admin', Validators.required],
       password: [undefined, [Validators.required, Validators.minLength(8)]],
       roles: [[]],
     });
@@ -131,8 +131,14 @@ export class CreateUserFormComponent implements OnInit {
   }
 
   public submit() {
+    const formValue: User = {
+      ...this.form.value,
+      roles: this.selectedRoles.map((role) => role.name),
+    };
+    console.log(formValue);
     this.form.markAllAsTouched();
-    if (this.form.invalid) {
+
+    if (this.form.invalid || this.selectedRoles.length === 0) {
       this.messageService.add({
         severity: 'error',
         summary: 'Error',
@@ -140,12 +146,10 @@ export class CreateUserFormComponent implements OnInit {
       });
       return;
     }
-    const formValue: User = {
-      ...this.form.value,
-      roles: this.selectedRoles.map((role) => role.name),
-  };
+
     this.userService.userCreate(formValue).subscribe({
       next: (response) => {
+        console.log(formValue);
         console.log(response);
         this.closeWithSuccess(response);
       },
@@ -163,7 +167,9 @@ export class CreateUserFormComponent implements OnInit {
             this.messageService.add({
               severity: 'error',
               summary: 'Error',
-              detail: `${this.toSentenceCase(key)}: ${this.toSentenceCase(keyError)}`,
+              detail: `${this.toSentenceCase(key)}: ${this.toSentenceCase(
+                keyError
+              )}`,
             });
           }
         }

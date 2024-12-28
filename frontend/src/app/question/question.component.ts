@@ -30,6 +30,7 @@ import {
 } from '../core/api';
 import { debounceTime, distinctUntilChanged, Subject as RxSubject } from 'rxjs';
 import { NgxPermissionsModule } from 'ngx-permissions';
+import { Utils } from '../core/utils/utils';
 
 @Component({
   selector: 'app-question',
@@ -252,6 +253,7 @@ export class QuestionComponent implements OnInit {
 
       error: (error) => {
         console.error(error);
+        this.showError(`Error creating question: ${Utils.prettyError(error.error)}`);
       },
     });
     this.showSuccess('Question Updated');
@@ -267,6 +269,7 @@ export class QuestionComponent implements OnInit {
 
       error: (error) => {
         console.error(error);
+        this.showError(`Error creating question: ${Utils.prettyError(error.error)}`);
       },
     });
   }

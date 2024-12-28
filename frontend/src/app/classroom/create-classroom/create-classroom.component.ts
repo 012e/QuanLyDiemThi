@@ -144,7 +144,7 @@ export class CreateClassroomComponent implements OnInit, OnDestroy {
       error: (error) => {
         console.error(error);
         this.showError(
-          `Failed to create class: ${Utils.prettyError(error.error)}`
+          `Failed to create class: ${Utils.prettyError(error)}`
         );
       },
     });
