@@ -11,7 +11,7 @@
 
 export interface PatchedTest { 
     readonly id?: number;
-    readonly questions?: Array<number>;
+    readonly questions?: string;
     semester?: number;
     datetime?: string;
     duration?: string;

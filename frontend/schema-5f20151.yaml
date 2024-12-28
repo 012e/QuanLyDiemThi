@@ -1662,9 +1662,13 @@ paths:
         schema:
           type: string
       - in: query
-        name: classroom__id
+        name: classroom_id
         schema:
-          type: integer
+          type: string
+      - in: query
+        name: classroom_id_is_null
+        schema:
+          type: boolean
       tags:
       - student
       security:
@@ -2980,9 +2984,7 @@ components:
           type: integer
           readOnly: true
         questions:
-          type: array
-          items:
-            type: integer
+          type: string
           readOnly: true
         semester:
           type: integer
@@ -3219,7 +3221,6 @@ components:
           readOnly: true
       required:
       - classroom
-      - classroom_id
       - created_at
       - id
       - name
@@ -3244,9 +3245,7 @@ components:
           type: integer
           readOnly: true
         questions:
-          type: array
-          items:
-            type: integer
+          type: string
           readOnly: true
         semester:
           type: integer

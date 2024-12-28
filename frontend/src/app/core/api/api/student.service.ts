@@ -264,13 +264,14 @@ export class StudentService implements StudentServiceInterface {
      * @param ordering Which field to use when ordering the results.
      * @param search A search term.
      * @param classroomId 
+     * @param classroomIdIsNull 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public studentList(limit?: number, offset?: number, ordering?: string, search?: string, classroomId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<PaginatedStudentList>;
-    public studentList(limit?: number, offset?: number, ordering?: string, search?: string, classroomId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<PaginatedStudentList>>;
-    public studentList(limit?: number, offset?: number, ordering?: string, search?: string, classroomId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<PaginatedStudentList>>;
-    public studentList(limit?: number, offset?: number, ordering?: string, search?: string, classroomId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public studentList(limit?: number, offset?: number, ordering?: string, search?: string, classroomId?: string, classroomIdIsNull?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<PaginatedStudentList>;
+    public studentList(limit?: number, offset?: number, ordering?: string, search?: string, classroomId?: string, classroomIdIsNull?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<PaginatedStudentList>>;
+    public studentList(limit?: number, offset?: number, ordering?: string, search?: string, classroomId?: string, classroomIdIsNull?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<PaginatedStudentList>>;
+    public studentList(limit?: number, offset?: number, ordering?: string, search?: string, classroomId?: string, classroomIdIsNull?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (limit !== undefined && limit !== null) {
@@ -291,7 +292,11 @@ export class StudentService implements StudentServiceInterface {
         }
         if (classroomId !== undefined && classroomId !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>classroomId, 'classroom__id');
+            <any>classroomId, 'classroom_id');
+        }
+        if (classroomIdIsNull !== undefined && classroomIdIsNull !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>classroomIdIsNull, 'classroom_id_is_null');
         }
 
         let localVarHeaders = this.defaultHeaders;

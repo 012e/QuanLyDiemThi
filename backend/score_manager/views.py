@@ -42,13 +42,29 @@ from .serializers import (
 )
 
 
+class StudentFilterSet(filters.FilterSet):
+    classroom_id = filters.CharFilter(field_name="classroom__id", lookup_expr="exact")
+    classroom_id_is_null = filters.BooleanFilter(
+        field_name="classroom__id",
+        lookup_expr="isnull",
+        method="filter_classroom_isnull",
+    )
+
+    def filter_classroom_isnull(self, queryset, name, value):
+        return queryset.filter(**{f"{name}": value})
+
+    class Meta:
+        model = Student
+        fields = ["classroom_id", "classroom_id_is_null"]
+
+
 class StudentViewSet(viewsets.ModelViewSet):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
     filter_backends = [filters.DjangoFilterBackend, OrderingFilter, SearchFilter]
     ordering = ["-updated_at"]
     search_fields = ["name", "student_code", "classroom__name"]
-    filterset_fields = ["classroom__id"]
+    filterset_class = StudentFilterSet
 
 
 class ClassViewSet(viewsets.ModelViewSet):
