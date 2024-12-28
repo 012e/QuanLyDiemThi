@@ -7,12 +7,14 @@ from drf_spectacular.views import (
 from rest_framework.routers import DefaultRouter
 from rest_framework_nested import routers as nested_routers
 
+from score_manager.serializers import PermissionSerializer
 from score_manager.views import (
     AnnualReportView,
     ClassStudentsViewSet,
     ClassViewSet,
     ConfigView,
     DifficultyViewSet,
+    PermissionViewSet,
     QuestionViewSet,
     ResultDetailViewSet,
     ResultViewSet,
@@ -21,6 +23,7 @@ from score_manager.views import (
     SubjectViewSet,
     TestViewSet,
     UserViewSet,
+    RoleViewSet,
 )
 
 router = DefaultRouter()
@@ -33,6 +36,8 @@ router.register(r"result", ResultViewSet, basename="result")
 router.register(r"student", StudentViewSet, basename="student")
 router.register(r"class", ClassViewSet, basename="class")
 router.register(r"studentresult", StudentResultViewSet, basename="studentresult")
+router.register(r"role", RoleViewSet, basename="role")
+router.register(r"permission", PermissionViewSet, basename="permission")
 
 result_detail = nested_routers.NestedSimpleRouter(router, r"result", lookup="result")
 result_detail.register(r"detail", ResultDetailViewSet, basename="detail-results")

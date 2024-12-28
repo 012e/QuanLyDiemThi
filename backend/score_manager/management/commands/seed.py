@@ -1,15 +1,16 @@
 import logging
 import random
 from datetime import datetime, timedelta
+from django.contrib.auth import get_user_model
 
 from django.contrib.auth.hashers import make_password
-from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand
 from faker import Faker
 
 from score_manager.models import (
     Class,
     Difficulty,
+    Permission,
     Question,
     QuestionInTestModel,
     Result,
@@ -17,7 +18,10 @@ from score_manager.models import (
     StudentResult,
     Subject,
     Test,
+    Role
 )
+
+User = get_user_model()
 
 fake = Faker()
 fake.seed_instance(696969)
@@ -230,9 +234,34 @@ def seed_results():
     StudentResult.objects.bulk_create(student_results, ignore_conflicts=True)
 
 
+
+
+def seed_roles():
+    user_view = Permission(name="user:view")
+    user_view.save()
+    user_add = Permission(name="user:add")
+    user_add.save()
+
+    admin = Role(name="admin")
+    admin.save()
+    admin.permissions.add(user_view, user_add)
+    admin.save()
+
+    staff = Role(name="staff")
+    staff.save()
+    staff.permissions.add(user_view)
+    staff.save()
+
+    user = Role(name="user")
+    user.save()
+    user.permissions.add(user_add)
+    user.save()
+    
 class Command(BaseCommand):
     def handle(self, *args, **options):
         try:
+            print("Seed roles")
+            seed_roles()
             print("seeding user")
             seed_users()
             print("seeding staff")
