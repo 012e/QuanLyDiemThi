@@ -3253,7 +3253,10 @@ components:
         permissions:
           type: array
           items:
-            $ref: '#/components/schemas/Permission'
+            type: string
+        id:
+          type: integer
+          readOnly: true
     PatchedStandaloneStudentResult:
       type: object
       properties:
@@ -3508,8 +3511,12 @@ components:
         permissions:
           type: array
           items:
-            $ref: '#/components/schemas/Permission'
+            type: string
+        id:
+          type: integer
+          readOnly: true
       required:
+      - id
       - name
       - permissions
     SafeUser:

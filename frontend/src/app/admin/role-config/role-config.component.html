@@ -1,0 +1,85 @@
+<div class="card">
+  <p-table
+    #dt
+    [value]="roles"
+    [tableStyle]="{ 'min-width': '75rem' }"
+    [rowHover]="true"
+    dataKey="id"
+  >
+    <ng-template pTemplate="caption">
+      <div class="flex flex-row justify-between w-full">
+        <div class="flex gap-2">
+          <p-button
+            severity="success"
+            label="New"
+            icon="pi pi-plus"
+            (onClick)="openNew()"
+          />
+        </div>
+      </div>
+    </ng-template>
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="name">Name<p-sortIcon field="id" /></th>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-role>
+      <tr>
+        <td>
+          {{ role.name }}
+        </td>
+        <td class="flex gap-3">
+          <p-button
+            icon="pi pi-trash"
+            severity="danger"
+            [rounded]="true"
+            [outlined]="true"
+            (onClick)="deleteRole(role)"
+          />
+          <p-button
+            icon="pi pi-pencil"
+            severity="success"
+            [rounded]="true"
+            [outlined]="true"
+            (onClick)="editSubject(role)"
+          />
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <form [formGroup]="SubjectForm">
+    <p-dialog
+      [(visible)]="SubjectDialog"
+      [style]="{ width: '450px' }"
+      header="Subject Details"
+      [modal]="true"
+      styleClass="p-fluid"
+    >
+      <ng-template pTemplate="content">
+        <div class="flex flex-col gap-2 mb-4 field">
+          <label for="detail" class="font-bold">Detail</label>
+          <input pInputText id="name" type="text" formControlName="name" />
+        </div>
+      </ng-template>
+
+      <ng-template pTemplate="footer">
+        <p-button
+          label="Cancel"
+          icon="pi pi-times"
+          [text]="true"
+          (onClick)="hideDialog()"
+        />
+        <p-button
+          label="Save"
+          icon="pi pi-check"
+          severity="success"
+          (onClick)="saveSubject()"
+        />
+      </ng-template>
+    </p-dialog>
+  </form>
+  <p-confirmDialog [style]="{ width: '450px' }" />
+</div>

@@ -140,7 +140,10 @@ export class CreateUserFormComponent implements OnInit {
       });
       return;
     }
-    const formValue: User = this.form.value;
+    const formValue: User = {
+      ...this.form.value,
+      roles: this.selectedRoles.map((role) => role.name),
+  };
     this.userService.userCreate(formValue).subscribe({
       next: (response) => {
         console.log(response);
