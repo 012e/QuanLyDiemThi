@@ -32,10 +32,22 @@ export const routes: Routes = [
       {
         path: 'summary/:year',
         component: SummaryComponent,
+        data: {
+          permissions: {
+            only: ['summary:view'],
+            redirectTo: '/me',
+          },
+        }
       },
       {
         path: 'question',
         component: QuestionComponent,
+        data: {
+          permissions: {
+            only: ['question:view'],
+            redirectTo: '/me',
+          },
+        }
       },
       {
         path: 'me',
@@ -55,10 +67,22 @@ export const routes: Routes = [
       {
         path: 'admin',
         component: AdminComponent,
+        data: {
+          permissions: {
+            only: ['admin'],
+            redirectTo: '/me',
+          },
+        }
       },
       {
         path: 'test',
         component: TestListComponent,
+        data: {
+          permissions: {
+            only: ['test:view'],
+            redirectTo: '/me',
+          },
+        }
       },
       {
         path: 'test/new',
@@ -71,6 +95,12 @@ export const routes: Routes = [
       {
         path: 'student',
         component: StudentComponent,
+        data: {
+          permissions: {
+            only: ['student:view'],
+            redirectTo: '/me',
+          },
+        }
       },
       {
         path: 'student/new',
@@ -83,6 +113,12 @@ export const routes: Routes = [
       {
         path: 'classroom',
         component: ClassroomComponent,
+        data: {
+          permissions: {
+            only: ['classroom:view'],
+            redirectTo: '/me',
+          },
+        }
       },
       {
         path: 'classroom/new',
