@@ -23,6 +23,12 @@ class Class(models.Model):
 
     class Meta:
         ordering = ["name"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["name", "teacher"],
+                name="unique_class_name_teacher"
+            )
+        ]
 
 
 class Student(models.Model):
@@ -62,6 +68,12 @@ class Question(models.Model):
         verbose_name = "Question"
         verbose_name_plural = "Questions"
         ordering = ["updated_at"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["detail", "subject"],
+                name="unique_question_detail_subject"
+            )
+        ]
 
 
 class Test(models.Model):
@@ -94,6 +106,13 @@ class Result(models.Model):
     classroom = models.ForeignKey(Class, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     updated_at = models.DateTimeField(auto_now=True, db_index=True)
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["test", "teacher", "classroom"],
+                name="unique_test_teacher_classroom"
+            )
+        ]
 
     class Meta:
         ordering = ["updated_at"]
