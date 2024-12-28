@@ -30,6 +30,7 @@ import { isNumberValidator } from '../../core/validators/is-number.validator';
 import { QuestionPickerComponent } from '../question-picker/question-picker.component';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Utils } from '../../core/utils/utils';
+import { InputNumberModule } from 'primeng/inputnumber';
 
 @Component({
   selector: 'app-test-create',
@@ -40,6 +41,7 @@ import { Utils } from '../../core/utils/utils';
     CardModule,
     FloatLabelModule,
     InputTextModule,
+    InputNumberModule,
     DividerModule,
     ButtonModule,
     CalendarModule,

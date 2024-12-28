@@ -20,6 +20,7 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { EditUserFormComponent } from '../edit-user-form/edit-user-form.component';
 import { CreateUserFormComponent } from '../create-user-form/create-user-form.component';
 import { NgxPermissionsModule, NgxPermissionsService, NgxRolesService } from 'ngx-permissions';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-user-list',
@@ -54,6 +55,7 @@ export class UserListComponent implements OnInit, OnDestroy {
 
   users!: User[];
   user!: User;
+  userRole!: string;
 
   selectedUsers!: User[];
 
@@ -75,6 +77,7 @@ export class UserListComponent implements OnInit, OnDestroy {
     private readonly userService: UserService,
     private readonly roleService: NgxRolesService,
     private readonly permissionService: NgxPermissionsService,
+    private readonly authService: AuthService,
   ) {}
 
   ngOnDestroy(): void {
@@ -100,6 +103,10 @@ export class UserListComponent implements OnInit, OnDestroy {
       });
 
     this.updatePage();
+  }
+
+  public getPremission(): void {
+    this.userRole = this.authService.getRole()
   }
 
   public onPage(event: TablePageEvent): void {

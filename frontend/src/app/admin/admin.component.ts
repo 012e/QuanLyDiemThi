@@ -74,6 +74,56 @@ export class AdminComponent implements OnInit {
     this.configDialog = false;
   }
 
+  public checkConfig(): boolean {
+    let config: { key: string; value: string };
+    config = this.configForm.value;
+    switch (config.key) {
+      case 'MIN_TEST_SCORE':
+        const maxTestScoreConfig = this.configs.find(
+          (c) => c.key === 'MAX_TEST_SCORE'
+        );
+        if (
+          Number(config.value) < 0 ||
+          (maxTestScoreConfig &&
+            Number(config.value) > Number(maxTestScoreConfig.value))
+        ) {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail:
+              'MIN_TEST_SCORE must be greater than 0 and less than MAX_TEST_SCORE',
+            life: 3000,
+          });
+          return false;
+        }
+        return true;
+      case 'MIN_TEST_DURATION':
+        const maxTestDurationConfig = this.configs.find(
+          (c) => c.key === 'MAX_TEST_SCORE'
+        );
+        if (
+          Number(config.value) < 0 ||
+          (maxTestDurationConfig &&
+            Number(config.value) > Number(maxTestDurationConfig.value))
+        ) {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail:
+              'MIN_TEST_DURATION must be greater than 0 and less than MAX_TEST_DURATION',
+            life: 3000,
+          });
+          return false;
+        }
+        return true;
+        
+      default:
+        // handle the default case
+        return true;
+    }
+    return false;
+  }
+
   public saveConfig(): void {
     this.configForm.markAllAsTouched();
 
@@ -95,7 +145,7 @@ export class AdminComponent implements OnInit {
             detail: response.message,
             life: 3000,
           });
-          this.loadConfig()
+          this.loadConfig();
         },
 
         error: (error) => {
