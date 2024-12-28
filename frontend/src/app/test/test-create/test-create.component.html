@@ -93,6 +93,7 @@
             severity="success"
             label="Add questions"
             [outlined]="true"
+            [disabled]="!testForm.get('subject')?.value"
           />
         </div>
         <p-table

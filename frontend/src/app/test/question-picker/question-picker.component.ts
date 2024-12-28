@@ -29,6 +29,7 @@ import { InputTextModule } from 'primeng/inputtext';
 export class QuestionPickerComponent implements OnInit {
   public instance: DynamicDialogComponent | undefined;
   public exceptQuestions!: Array<number>;
+  public subjectOnly!: number;
 
   constructor(
     public dialogRef: DynamicDialogRef,
@@ -66,8 +67,8 @@ export class QuestionPickerComponent implements OnInit {
   private searchText$ = new RxSubject<string>();
 
   public ngOnInit(): void {
-    this.loadInitialData();
     this.initParams();
+    this.loadInitialData();
   }
 
   public initParams(): void {
@@ -79,7 +80,8 @@ export class QuestionPickerComponent implements OnInit {
       throw new Error('Data is not defined');
     }
     // TODO: implements exceptions
-    this.exceptQuestions = data.questionExceptions;
+    this.exceptQuestions = data.exceptQuestions;
+    this.subjectOnly = data.subjectOnly;
   }
 
   public resetPage() {
@@ -87,6 +89,7 @@ export class QuestionPickerComponent implements OnInit {
   }
 
   private loadInitialData() {
+    this.updatePage();
     this.searchText$
       .pipe(debounceTime(300), distinctUntilChanged())
       .subscribe((query: string) => {
@@ -94,9 +97,6 @@ export class QuestionPickerComponent implements OnInit {
         this.searchText = query;
         this.updatePage();
       });
-
-    this.updatePage();
-
     this.subjectService.subjectList().subscribe((subjects) => {
       this.subjects = subjects;
     });
@@ -114,7 +114,7 @@ export class QuestionPickerComponent implements OnInit {
 
   public updatePage(): void {
     this.questionService
-      .questionList(this.rows, this.first, undefined, this.searchText)
+      .questionList(this.rows, this.first, undefined, this.searchText, this.subjectOnly)
       .subscribe((data) => {
         this.questions = data.results;
         this.count = data.count;

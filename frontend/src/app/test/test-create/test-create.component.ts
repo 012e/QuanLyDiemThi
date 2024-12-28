@@ -30,6 +30,7 @@ import {
 import { isNumberValidator } from '../../core/validators/is-number.validator';
 import { QuestionPickerComponent } from '../question-picker/question-picker.component';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { Utils } from '../../core/utils/utils';
 
 @Component({
   selector: 'app-test-create',
@@ -171,6 +172,7 @@ export class TestCreateComponent implements OnInit, OnDestroy {
       contentStyle: { overflow: 'auto' },
       data: {
         exceptQuestions: this.testForm.get('questions')?.value || [],
+        subjectOnly: this.testForm.get('subject')?.value,
       },
       baseZIndex: 10000,
     });
@@ -221,7 +223,7 @@ export class TestCreateComponent implements OnInit, OnDestroy {
         this.router.navigate([`/test/${response.id}`]);
       },
       error: (error) => {
-        this.showError(`Failed to create test: ${error.message}`);
+        this.showError(`Failed to create test: ${Utils.prettyError(error.error)}`);
       },
     });
   }

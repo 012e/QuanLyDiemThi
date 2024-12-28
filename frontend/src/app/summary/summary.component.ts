@@ -4,8 +4,7 @@ import { SummaryRetrieve200Response, SummaryService } from '../core/api';
 import { MessageService } from 'primeng/api';
 import { TableModule } from 'primeng/table';
 import { DecimalPipe } from '@angular/common';
-import { InputTextModule } from 'primeng/inputtext';
-import { InputNumber, InputNumberInputEvent, InputNumberModule } from 'primeng/inputnumber';
+import { InputNumberInputEvent, InputNumberModule } from 'primeng/inputnumber';
 import { FormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, Observable, Subject } from 'rxjs';
 

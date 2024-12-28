@@ -73,8 +73,8 @@ export class UserInfoComponent implements OnInit {
         this.userDetailsForm.patchValue({
           username: userDetails.username,
           email: userDetails.email,
-          firstName: userDetails.last_name,
-          lastName: userDetails.first_name,
+          firstName: userDetails.first_name,
+          lastName: userDetails.last_name,
         });
       },
       error: (error) => {
@@ -108,8 +108,8 @@ export class UserInfoComponent implements OnInit {
           this.userDetailsForm.patchValue({
             username: userDetails.username,
             email: userDetails.email,
-            firstName: userDetails.last_name,
-            lastName: userDetails.first_name,
+            firstName: userDetails.first_name,
+            lastName: userDetails.last_name,
           });
           this.messageService.add({
             severity: 'success',

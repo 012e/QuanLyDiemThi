@@ -19,17 +19,14 @@ import { RippleModule } from 'primeng/ripple';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 
-import {
-  DialogService,
-  DynamicDialogComponent,
-  DynamicDialogRef,
-} from 'primeng/dynamicdialog';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Class, ClassService, User } from '../../core/api';
 import { noWhitespaceValidator } from '../../core/validators/no-whitespace.validator';
 import { MessageService } from 'primeng/api';
 import { TeacherPickerComponent } from '../../core/components/teacher-picker/teacher-picker.component';
 import { Router } from '@angular/router';
-import { Divider, DividerModule } from 'primeng/divider';
+import { DividerModule } from 'primeng/divider';
+import { Utils } from '../../core/utils/utils';
 @Component({
   selector: 'app-create-classroom',
   standalone: true,
@@ -146,7 +143,9 @@ export class CreateClassroomComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         console.error(error);
-        this.showError('Failed to create class');
+        this.showError(
+          `Failed to create class: ${Utils.prettyError(error.error)}`
+        );
       },
     });
   }

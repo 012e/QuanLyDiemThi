@@ -6,7 +6,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { CalendarModule } from 'primeng/calendar';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -28,7 +28,6 @@ import { TeacherPickerComponent } from '../../core/components/teacher-picker/tea
 import { TestPickerComponent } from '../../core/components/test-picker/test-picker.component';
 import { CheckboxModule } from 'primeng/checkbox';
 import { TableModule } from 'primeng/table';
-import { ResultStudentListComponent } from '../result-student-list/result-student-list.component';
 import { DialogModule } from 'primeng/dialog';
 
 @Component({
@@ -44,7 +43,6 @@ import { DialogModule } from 'primeng/dialog';
     CheckboxModule,
     DialogModule,
     ReactiveFormsModule,
-    ResultStudentListComponent,
     DatePipe,
   ],
   providers: [DialogService, ConfirmationService],

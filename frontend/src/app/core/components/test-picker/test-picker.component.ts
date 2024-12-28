@@ -10,7 +10,6 @@ import { InputTextModule } from 'primeng/inputtext';
 import { TableModule, TablePageEvent } from 'primeng/table';
 import { Subject as RxSubject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { Subject, SubjectService, Test, TestService, User } from '../../api';
-import { SecondsToHhmmssPipe } from '../../pipes/seconds-to-hhmmss.pipe';
 import { DatePipe } from '@angular/common';
 
 @Component({
@@ -20,7 +19,6 @@ import { DatePipe } from '@angular/common';
     ButtonModule,
     TableModule,
     InputTextModule,
-    SecondsToHhmmssPipe,
     DatePipe,
   ],
   templateUrl: './test-picker.component.html',

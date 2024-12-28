@@ -52,8 +52,8 @@ export class UserListComponent implements OnInit, OnDestroy {
   editUserDialogRef: DynamicDialogRef | undefined;
   createUserDialogRef: DynamicDialogRef | undefined;
 
-  teachers!: User[];
-  teacher!: User;
+  users!: User[];
+  user!: User;
 
   selectedUsers!: User[];
 
@@ -113,7 +113,7 @@ export class UserListComponent implements OnInit, OnDestroy {
     this.userService.userList(this.rows, this.first, undefined, this.searchText).subscribe({
       next: (data) => {
         this.loading = false;
-        this.teachers = data.results;
+        this.users = data.results;
         this.count = data.count;
       },
       error: (error) => {
@@ -123,11 +123,11 @@ export class UserListComponent implements OnInit, OnDestroy {
     });
   }
 
-  public openEditDialog(teacher: User) {
+  public openEditDialog(user: User) {
     this.editUserDialogRef = this.dialogService.open(EditUserFormComponent, {
       header: 'Edit Teacher',
       data: {
-        user: teacher,
+        user: user,
       },
     });
     this.editUserDialogRef.onClose.subscribe((user: User) => {
@@ -156,7 +156,7 @@ export class UserListComponent implements OnInit, OnDestroy {
   public deleteSelectedUsers() {
     this.confirmationService.confirm({
       message:
-        'Are you sure you want to delete the selected teacher? (' +
+        'Are you sure you want to delete the selected user? (' +
         this.selectedUsers?.length +
         ' selected)',
       header: 'Confirm',
@@ -167,19 +167,19 @@ export class UserListComponent implements OnInit, OnDestroy {
           return;
         }
 
-        this.teachers = this.teachers.filter(
+        this.users = this.users.filter(
           (val) => !this.selectedUsers.includes(val),
         );
 
-        this.selectedUsers.forEach((question: { id: number }) => {
-          this.userService.userDestroy(question.id).subscribe({
+        this.selectedUsers.forEach((user: { id: number }) => {
+          this.userService.userDestroy(user.id).subscribe({
             next: (response) => {
               console.log(response);
               this.updatePage();
             },
 
             error: (error) => {
-              this.showError(`Error deleting question: ${error.message}`);
+              this.showError(`Error deleting user: ${error.message}`);
             },
           });
         });
@@ -195,7 +195,7 @@ export class UserListComponent implements OnInit, OnDestroy {
 
   public deleteUser(user: User) {
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete question ' + user.id + '?',
+      message: 'Are you sure you want to delete user ' + user.id + '?',
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       acceptButtonStyleClass: 'p-button-danger',
@@ -213,7 +213,7 @@ export class UserListComponent implements OnInit, OnDestroy {
             console.error(error);
           },
         });
-        this.teacher = {} as User;
+        this.user = {} as User;
         this.showSuccess('User deleted');
       },
     });
