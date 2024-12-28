@@ -7,12 +7,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Permission } from './permission';
 
 
 export interface PatchedRole { 
     name?: string;
     description?: string | null;
-    permissions?: Array<Permission>;
+    permissions?: Array<string>;
+    readonly id?: number;
 }
 

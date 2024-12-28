@@ -143,29 +143,24 @@ export class RoleConfigComponent {
     this.selectedSubjects = [];
   }
 
-  public deleteSubject(Subject: Subject) {
+  public deleteRole(role: Role) {
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete subject ' + Subject.id + '?',
+      message: 'Are you sure you want to delete role ' + role.name + '?',
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       acceptButtonStyleClass: 'p-button-danger',
       accept: () => {
-        this.subjectSerivice.subjectDestroy(Subject.id).subscribe({
+        this.roleService.roleDestroy(role.id).subscribe({
           next: (response) => {
-            if (this.selectedSubjects) {
-              this.selectedSubjects = this.selectedSubjects.filter(
-                (val) => val.id !== Subject.id,
-              );
-            }
             console.log(response);
             this.updatePage();
+            this.showSuccess('Role Deleted');
           },
           error: (error) => {
             console.error(error);
           },
         });
         this.Subject = {} as Subject;
-        this.showSuccess('Subject Deleted');
       },
     });
   }
