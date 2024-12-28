@@ -3527,13 +3527,8 @@ components:
         last_name:
           type: string
           maxLength: 150
-        roles:
-          type: array
-          items:
-            $ref: '#/components/schemas/Role'
       required:
       - id
-      - roles
       - username
     StandaloneStudentResult:
       type: object
