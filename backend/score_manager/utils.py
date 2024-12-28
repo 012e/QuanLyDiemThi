@@ -2,8 +2,10 @@ from typing import Dict
 
 from constance import config
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import BasePasswordHasher
-from django.contrib.auth.models import User
+
+User = get_user_model()
 
 
 def set_settings_as_dict() -> list[Dict[str, object]]:

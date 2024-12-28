@@ -21,7 +21,7 @@
   >
     <ng-template pTemplate="caption">
       <div class="flex flex-row justify-between w-full">
-        <div class="flex gap-2" *ngxPermissionsOnly="'staff'">
+        <div class="flex gap-2" *ngxPermissionsOnly="'student:add'">
           <p-button
             severity="success"
             label="New"
@@ -55,17 +55,17 @@
 
     <ng-template pTemplate="header">
       <tr>
-        <th *ngxPermissionsOnly="'staff'"></th>
+        <th *ngxPermissionsOnly="'student:add'"></th>
         <th>Id</th>
         <th>Student Code</th>
         <th>Name</th>
         <th>Class Name</th>
-        <th *ngxPermissionsOnly="'staff'"></th>
+        <th *ngxPermissionsOnly="'student:add'"></th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-student>
       <tr>
-        <td *ngxPermissionsOnly="'staff'">
+        <td *ngxPermissionsOnly="'student:add'">
           <p-tableCheckbox [value]="student" />
         </td>
         <td>
@@ -85,7 +85,7 @@
           }
 
         </td>
-        <td class="flex flex-row" *ngxPermissionsOnly="'staff'">
+        <td class="flex flex-row" *ngxPermissionsOnly="'student:add'">
           <p-button
             icon="pi pi-pencil"
             class="mr-2"

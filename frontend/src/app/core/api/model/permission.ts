@@ -9,10 +9,8 @@
  */
 
 
-export interface Question { 
-    readonly id: number;
-    detail: string | null;
-    difficulty: number;
-    subject: number;
+export interface Permission { 
+    name: string;
+    description?: string | null;
 }
 

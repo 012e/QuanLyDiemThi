@@ -17,6 +17,7 @@ import { ToastModule } from 'primeng/toast';
 import { Subject as RxSubject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { Result, ResultService, SubjectService, Subject } from '../../core/api';
 import { Router } from '@angular/router';
+import { NgxPermissionsModule } from 'ngx-permissions';
 
 @Component({
   selector: 'app-result-list',
@@ -37,6 +38,7 @@ import { Router } from '@angular/router';
     FormsModule,
     InputNumberModule,
     ReactiveFormsModule,
+    NgxPermissionsModule,
   ],
   providers: [ConfirmationService],
   templateUrl: './result-list.component.html',

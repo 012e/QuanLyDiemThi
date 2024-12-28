@@ -2,7 +2,7 @@ from datetime import datetime
 
 from constance import config
 from django.conf import settings
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.db import IntegrityError
 from django.db.models import Count
 from django.utils import timezone
@@ -22,8 +22,10 @@ from rest_framework.views import APIView
 from .models import (
     Class,
     Difficulty,
+    Permission,
     Question,
     Result,
+    Role,
     Student,
     StudentResult,
     Subject,
@@ -32,14 +34,18 @@ from .models import (
 from .serializers import (
     ClassSerializer,
     DifficultySerializer,
+    PermissionSerializer,
     QuestionSerializer,
     ResultSerializer,
+    RoleSerializer,
     StandaloneStudentResultSerializer,
     StudentSerializer,
     SubjectSerializer,
     TestSerializer,
     UserSerializer,
 )
+
+User = get_user_model()
 
 
 class StudentFilterSet(filters.FilterSet):
@@ -196,7 +202,6 @@ class StudentResultViewSet(viewsets.ModelViewSet):
 
     def perform_update(self, serializer):
         student_result = serializer.save()
-
 
 class ConfigView(APIView):
     @extend_schema(
@@ -566,3 +571,20 @@ class AnnualReportView(APIView):
         }
 
         return Response(data, status=status.HTTP_200_OK)
+
+
+class RoleViewSet(viewsets.ModelViewSet):
+    queryset = Role.objects.all()
+    serializer_class = RoleSerializer
+    pagination_class = None
+    filter_backends = [OrderingFilter, SearchFilter]
+    search_fields = ["name"]
+    ordering = ["name"]
+
+class PermissionViewSet(viewsets.ModelViewSet):
+    queryset = Permission.objects.all()
+    serializer_class = PermissionSerializer
+    pagination_class = None
+    filter_backends = [OrderingFilter, SearchFilter]
+    search_fields = ["name"]
+    ordering = ["name"]

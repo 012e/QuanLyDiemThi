@@ -2,13 +2,17 @@ import { Injectable } from '@angular/core';
 import { decodeJwt } from 'jose';
 import { UserRole } from '../enums/user-role';
 import { NgxPermissionsService } from 'ngx-permissions';
+import { AuthService as ApiAuthService, UserService } from '../api/';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private readonly permissionService: NgxPermissionsService) {
-  }
+  constructor(
+    private readonly permissionService: NgxPermissionsService,
+    private readonly authService: ApiAuthService,
+    private readonly userService: UserService,
+  ) {}
   public tokenExpired(token: string): boolean {
     if (!token) return true;
     try {
@@ -26,13 +30,6 @@ export class AuthService {
     const token = localStorage.getItem('access_token');
     if (!token || this.tokenExpired(token)) return false;
     return true;
-  }
-
-  // TODO: handle user changing role in the middle of the session
-  public updateRole(): void {
-    //const role = this.getRole();
-    //this.permissionService.flushPermissions();
-    //this.permissionService.addPermission([role]);
   }
 
   public getRole(): UserRole {
@@ -60,5 +57,28 @@ export class AuthService {
 
   public tryRefreshToken(): boolean {
     return true;
+  }
+
+  public updateRoles(callback: () => void = () => {}): void {
+    console.log('Updating roles');
+    this.permissionService.flushPermissions();
+    this.authService.authUserRetrieve().subscribe({
+      next: (user) => {
+        const userId = user.pk;
+        this.userService.userRetrieve(userId).subscribe({
+          next: (userDetails) => {
+            this.permissionService.addPermission(userDetails.permissions);
+            console.log('User roles updated', userDetails.permissions);
+            callback();
+          },
+          error: (error) => {
+            console.error('Error retrieving user roles:', error);
+          },
+        });
+      },
+      error: (error) => {
+        console.error('Error updating roles:', error);
+      },
+    });
   }
 }

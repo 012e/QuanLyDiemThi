@@ -2,22 +2,26 @@ import logging
 import random
 from datetime import datetime, timedelta
 
+from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
-from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand
 from faker import Faker
 
 from score_manager.models import (
     Class,
     Difficulty,
+    Permission,
     Question,
     QuestionInTestModel,
     Result,
+    Role,
     Student,
     StudentResult,
     Subject,
     Test,
 )
+
+User = get_user_model()
 
 fake = Faker()
 fake.seed_instance(696969)
@@ -230,9 +234,121 @@ def seed_results():
     StudentResult.objects.bulk_create(student_results, ignore_conflicts=True)
 
 
+def seed_roles():
+    user_view = Permission(name="user:view")
+    user_view.save()
+    user_add = Permission(name="user:add")
+    user_add.save()
+
+    classroom_view = Permission(name="classroom:view")
+    classroom_view.save()
+    classroom_add = Permission(name="classroom:add")
+    classroom_add.save()
+
+    question_view = Permission(name="question:view")
+    question_view.save()
+    question_add = Permission(name="question:add")
+    question_add.save()
+
+    test_view = Permission(name="test:view")
+    test_view.save()
+    test_add = Permission(name="test:add")
+    test_add.save()
+
+    result_view = Permission(name="result:view")
+    result_view.save()
+    result_add = Permission(name="result:add")
+    result_add.save()
+
+    student_view = Permission(name="student:view")
+    student_view.save()
+    student_add = Permission(name="student:add")
+    student_add.save()
+
+    summary_view = Permission(name="summary:view")
+    summary_view.save()
+
+    config_view = Permission(name="config")
+    config_view.save()
+
+    admin = Role(name="admin")
+    admin.save()
+    admin.permissions.add(
+        user_view,
+        user_add,
+        student_view,
+        student_add,
+        classroom_view,
+        classroom_add,
+        question_view,
+        question_add,
+        test_view,
+        test_add,
+        result_view,
+        result_add,
+        summary_view,
+        config_view,
+    )
+    admin.save()
+
+    staff = Role(name="staff")
+    staff.save()
+    staff.permissions.add(
+        user_view,
+        user_add,
+        #
+        classroom_view,
+        classroom_add,
+        #
+        test_view,
+        test_add,
+        #
+        question_view,
+        question_add,
+        #
+        result_view,
+        result_add,
+        #
+        student_view,
+        student_add,
+        #
+        summary_view,
+    )
+    staff.save()
+
+    user = Role(name="user")
+    user.save()
+    user.permissions.add(
+        classroom_view,
+        question_view,
+        question_add,
+        result_view,
+        result_add,
+        test_view,
+        test_add,
+        student_view,
+        summary_view,
+    )
+    user.save()
+
+
+def set_roles():
+    admin = Role.objects.filter(name="admin").first()
+    staff = Role.objects.filter(name="staff").first()
+    user_role = Role.objects.filter(name="user").first()
+    for user in User.objects.all():
+        if user.is_superuser:
+            user.roles.set([admin])
+        elif user.is_staff:
+            user.roles.set([staff])
+        else:
+            user.roles.set([user_role])
+
 class Command(BaseCommand):
     def handle(self, *args, **options):
         try:
+            print("Seed roles")
+            seed_roles()
             print("seeding user")
             seed_users()
             print("seeding staff")
@@ -251,6 +367,8 @@ class Command(BaseCommand):
             seed_test()
             print("seeding results")
             seed_results()
+            print("set roles")
+            set_roles()
         except Exception as e:
             log.error(e)
             log.error("Seed data failed")

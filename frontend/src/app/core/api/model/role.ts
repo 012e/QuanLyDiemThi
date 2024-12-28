@@ -9,10 +9,10 @@
  */
 
 
-export interface Question { 
+export interface Role { 
+    name: string;
+    description?: string | null;
+    permissions: Array<string>;
     readonly id: number;
-    detail: string | null;
-    difficulty: number;
-    subject: number;
 }
 
