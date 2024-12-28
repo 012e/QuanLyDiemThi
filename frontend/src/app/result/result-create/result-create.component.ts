@@ -29,6 +29,7 @@ import { TestPickerComponent } from '../../core/components/test-picker/test-pick
 import { CheckboxModule } from 'primeng/checkbox';
 import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
+import { Utils } from '../../core/utils/utils';
 
 @Component({
   selector: 'app-result-create',
@@ -184,7 +185,7 @@ export class ResultCreateComponent implements OnInit, OnDestroy {
         this.router.navigate(['/result', result.id]);
       },
       error: (error) => {
-        this.showError('Failed to create result');
+        this.showError(`Failed to create result ${Utils.prettyError(error)}`);
       },
     });
   }

@@ -218,7 +218,7 @@ def seed_results():
     for result in Result.objects.all():
         # Create student results
         class_student_count = fake.random_int(30, 60)
-        students_in_classes = Student.objects.order_by("?")[:class_student_count]
+        students_in_classes = Student.objects.filter(classroom=result.classroom).order_by("?")[:class_student_count]
         for student in students_in_classes:
             score = fake.random_int(0, 10)
             note = fake.text() if fake.boolean(chance_of_getting_true=50) else None

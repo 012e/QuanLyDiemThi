@@ -146,7 +146,7 @@ export class EditUserFormComponent implements OnInit {
 
   public submit() {
     this.form.markAllAsTouched();
-    if (this.form.invalid) {
+    if (this.form.invalid || this.selectedRoles.length === 0) {
       this.messageService.add({
         severity: 'error',
         summary: 'Error',
