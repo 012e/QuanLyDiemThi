@@ -74,8 +74,141 @@ export class AdminComponent implements OnInit {
     this.configDialog = false;
   }
 
+  public checkConfig(): boolean {
+    let config: { key: string; value: string };
+    config = this.configForm.value;
+    switch (config.key) {
+      case 'MIN_TEST_SCORE':
+        const maxTestScoreConfig = this.configs.find(
+          (c) => c.key === 'MAX_TEST_SCORE'
+        );
+        if (
+          Number(config.value) < 0 ||
+          (maxTestScoreConfig &&
+            Number(config.value) > Number(maxTestScoreConfig.value))
+        ) {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail:
+              'MIN_TEST_SCORE must be greater than 0 and less than MAX_TEST_SCORE',
+            life: 3000,
+          });
+          return false;
+        }
+        return true;
+      case 'MAX_TEST_SCORE':
+        const minTestScoreConfig = this.configs.find(
+          (c) => c.key === 'MIN_TEST_SCORE'
+        );
+        if (
+          minTestScoreConfig &&
+          Number(config.value) < Number(minTestScoreConfig.value)
+        ) {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'MAX_TEST_SCORE must be greater than MIN_TEST_SCORE',
+            life: 3000,
+          });
+          return false;
+        }
+        return true;
+      case 'MIN_TEST_DURATION':
+        const maxTestDurationConfig = this.configs.find(
+          (c) => c.key === 'MAX_TEST_DURATION'
+        );
+        if (
+          Number(config.value) < 0 ||
+          (maxTestDurationConfig &&
+            Number(config.value) > Number(maxTestDurationConfig.value))
+        ) {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail:
+              'MIN_TEST_DURATION must be greater than 0 and less than MAX_TEST_DURATION',
+            life: 3000,
+          });
+          return false;
+        }
+        return true;
+      case 'MAX_TEST_DURATION':
+        const minTestDurationConfig = this.configs.find(
+          (c) => c.key === 'MIN_TEST_DURATION'
+        );
+        if (
+          minTestDurationConfig &&
+          Number(config.value) < Number(minTestDurationConfig.value)
+        ) {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'MAX_TEST_DURATION must be greater than MIN_TEST_DURATION',
+            life: 3000,
+          });
+          return false;
+        }
+        return true;
+      case 'MIN_QUESTIONS_PER_TEST':
+        const maxQuestionsPerTestConfig = this.configs.find(
+          (c) => c.key === 'MAX_QUESTIONS_PER_TEST'
+        );
+        if (
+          Number(config.value) < 1 ||
+          (maxQuestionsPerTestConfig &&
+            Number(config.value) > Number(maxQuestionsPerTestConfig.value))
+        ) {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail:
+              'MIN_QUESTIONS_PER_TEST must be greater than 1 and less than MAX_QUESTIONS_PER_TEST',
+            life: 3000,
+          });
+          return false;
+        }
+        return true;
+      case 'MAX_QUESTIONS_PER_TEST':
+        const minQuestionsPerTestConfig = this.configs.find(
+          (c) => c.key === 'MIN_QUESTIONS_PER_TEST'
+        );
+        if (
+          minQuestionsPerTestConfig &&
+          Number(config.value) < Number(minQuestionsPerTestConfig.value)
+        ) {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail:
+              'MAX_QUESTIONS_PER_TEST must be greater than MIN_QUESTIONS_PER_TEST',
+            life: 3000,
+          });
+          return false;
+        }
+        return true;
+      case 'MAX_SEMESTERS':
+        if (Number(config.value) < 1) {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'MAX_SEMESTERS must be greater than 1',
+            life: 3000,
+          });
+          return false;
+        }
+        return true;
+      default:
+        console.log('why this we get here?');
+        return true;
+    }
+  }
+
   public saveConfig(): void {
     this.configForm.markAllAsTouched();
+    if (this.checkConfig() === false) {
+      return;
+    }
 
     if (this.configForm.invalid) {
       this.messageService.add({
@@ -95,7 +228,7 @@ export class AdminComponent implements OnInit {
             detail: response.message,
             life: 3000,
           });
-          this.loadConfig()
+          this.loadConfig();
         },
 
         error: (error) => {

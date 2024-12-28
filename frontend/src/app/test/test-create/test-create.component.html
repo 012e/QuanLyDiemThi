@@ -2,14 +2,12 @@
   <div class="w-1/2">
     <h1 class="text-4xl p-0 m-0 capitalize">Create new test form</h1>
     <p-divider></p-divider>
-    <form [formGroup]="testForm" class="flex flex-col gap-5">
+    <form [formGroup]="testForm" class="flex flex-col gap-5 p-fluid">
       <div class="flex flex-col gap-1">
         <label for="subject" class="px-1 text-sm font-bold">Subject</label>
-        @if (
-          this.testForm.get('subject')?.invalid &&
-          this.testForm.get('subject')?.touched
-        ) {
-          <div class="px-1 text-sm text-red-500">Please select a subject</div>
+        @if ( this.testForm.get('subject')?.invalid &&
+        this.testForm.get('subject')?.touched ) {
+        <div class="px-1 text-sm text-red-500">Please select a subject</div>
         }
         <p-dropdown
           [style]="{ minWidth: '100%' }"
@@ -24,41 +22,37 @@
       </div>
       <div class="flex flex-col gap-1">
         <label for="semester" class="px-1 text-sm font-bold">Semester</label>
-        @if (
-          !this.testForm.get('semester')?.value &&
-          this.testForm.get('semester')?.touched
-        ) {
-          <div class="px-1 text-sm text-red-500">Please input valid semester</div>
-        } @else if (
-          this.testForm.get('semester')?.errors?.['isNumber'] &&
-          this.testForm.get('semester')?.touched
-        ) {
-          <div class="px-1 text-sm text-red-500">
-            Semester must be a postive number
-          </div>
+        @if ( !this.testForm.get('semester')?.value &&
+        this.testForm.get('semester')?.touched ) {
+        <div class="px-1 text-sm text-red-500">Please input valid semester</div>
+        } @else if ( this.testForm.get('semester')?.errors?.['isNumber'] &&
+        this.testForm.get('semester')?.touched ) {
+        <div class="px-1 text-sm text-red-500">
+          Semester must be a postive number
+        </div>
         }
-        <input
+        <p-inputNumber
           formControlName="semester"
           type="text"
           id="semester"
-          pInputText
+          [min]="0"
           placeholder="Enter Semester"
+          [useGrouping]="false"
         />
       </div>
       <div class="flex flex-col gap-1">
         <label for="duration" class="px-1 text-sm font-bold"
           >Date and time</label
         >
-        @if (
-          this.testForm.get('datetime')?.invalid &&
-          this.testForm.get('datetime')?.touched
-        ) {
-          <div class="px-1 text-sm text-red-500">
-            Please select valid date and time
-          </div>
+        @if ( this.testForm.get('datetime')?.invalid &&
+        this.testForm.get('datetime')?.touched ) {
+        <div class="px-1 text-sm text-red-500">
+          Please select valid date and time
+        </div>
         }
         <p-calendar
           formControlName="datetime"
+          [maxDate]="maxDate"
           [showIcon]="true"
           [showTime]="true"
           [readonlyInput]="true"
@@ -69,13 +63,9 @@
         <label for="duration" class="px-1 text-sm font-bold"
           >Duration (in minutes)</label
         >
-        @if (
-          this.testForm.get('duration')?.invalid &&
-          this.testForm.get('duration')?.touched
-        ) {
-          <div class="px-1 text-sm text-red-500">
-            Please input valid duration
-          </div>
+        @if ( this.testForm.get('duration')?.invalid &&
+        this.testForm.get('duration')?.touched ) {
+        <div class="px-1 text-sm text-red-500">Please input valid duration</div>
         }
         <input
           formControlName="duration"

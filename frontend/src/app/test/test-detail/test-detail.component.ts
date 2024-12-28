@@ -30,6 +30,7 @@ import { isNumberValidator } from '../../core/validators/is-number.validator';
 import { QuestionPickerComponent } from '../question-picker/question-picker.component';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Utils } from '../../core/utils/utils';
+import { InputNumberModule } from 'primeng/inputnumber';
 
 @Component({
   selector: 'app-test-create',
@@ -40,6 +41,7 @@ import { Utils } from '../../core/utils/utils';
     CardModule,
     FloatLabelModule,
     InputTextModule,
+    InputNumberModule,
     DividerModule,
     ButtonModule,
     CalendarModule,
@@ -78,6 +80,7 @@ export class TestDetailComponent implements OnInit, OnDestroy {
   public selectedQuestions: Question[] = [];
 
   public difficulties: Difficulty[] = [];
+  public maxDate!: Date;
 
   public enableEditing(): void {
     this.editing = true;
@@ -90,6 +93,7 @@ export class TestDetailComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
+    this.maxDate = new Date()
     this.initForm();
     this.loadData();
   }
