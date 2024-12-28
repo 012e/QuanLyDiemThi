@@ -25,12 +25,12 @@ export const routes: Routes = [
   {
     path: '',
     component: MainComponent,
+    title: 'Score Manager',
     canActivate: [isAuthenticatedGuard],
     children: [
       {
         path: 'summary/:year',
         component: SummaryComponent,
-        title: 'Yearly Summary',
       },
       {
         path: 'question',
@@ -100,6 +100,7 @@ export const routes: Routes = [
   },
   {
     path: 'auth/login',
+    title: 'Login',
     component: LoginComponent,
     canActivate: [isUnauthenticatedGuard],
   },
