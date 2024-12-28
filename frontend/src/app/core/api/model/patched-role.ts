@@ -7,12 +7,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Permission } from './permission';
 
 
-export interface Question { 
-    readonly id: number;
-    detail: string | null;
-    difficulty: number;
-    subject: number;
+export interface PatchedRole { 
+    name?: string;
+    description?: string | null;
+    permissions?: Array<Permission>;
 }
 
