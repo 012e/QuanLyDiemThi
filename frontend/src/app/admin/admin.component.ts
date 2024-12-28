@@ -155,7 +155,7 @@ export class AdminComponent implements OnInit {
           (c) => c.key === 'MAX_QUESTIONS_PER_TEST'
         );
         if (
-          Number(config.value) < 0 ||
+          Number(config.value) < 1 ||
           (maxQuestionsPerTestConfig &&
             Number(config.value) > Number(maxQuestionsPerTestConfig.value))
         ) {
@@ -188,14 +188,17 @@ export class AdminComponent implements OnInit {
         }
         return true;
       default:
+        console.log('bruh');
         // handle the default case
         return true;
     }
-    return false;
   }
 
   public saveConfig(): void {
     this.configForm.markAllAsTouched();
+    if (this.checkConfig() === false) {
+      return;
+    }
 
     if (this.configForm.invalid) {
       this.messageService.add({
