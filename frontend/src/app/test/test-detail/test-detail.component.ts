@@ -273,10 +273,12 @@ export class TestDetailComponent implements OnInit, OnDestroy {
     });
   }
 
-  public clearSelectedQuestions() {
+  public clearQuestions() {
     this.questions = [];
-    // this.testForm.get('questions')?.setValue([]);
     this.syncQuestionsTableToForm();
+  }
+
+  public clearSelectedQuestions() {
     this.selectedQuestions = [];
   }
 
@@ -323,6 +325,6 @@ export class TestDetailComponent implements OnInit, OnDestroy {
   }
 
   public deleteSelectedQuestions(): void {
-    this.clearSelectedQuestions();
+    this.clearQuestions();
   }
 }
