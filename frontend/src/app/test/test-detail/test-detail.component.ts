@@ -273,6 +273,11 @@ export class TestDetailComponent implements OnInit, OnDestroy {
     });
   }
 
+  public clearQuestions() {
+    this.questions = [];
+    this.syncQuestionsTableToForm();
+  }
+
   public clearSelectedQuestions() {
     this.selectedQuestions = [];
   }
@@ -317,5 +322,9 @@ export class TestDetailComponent implements OnInit, OnDestroy {
         });
       },
     });
+  }
+
+  public deleteSelectedQuestions(): void {
+    this.clearQuestions();
   }
 }

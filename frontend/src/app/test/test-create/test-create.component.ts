@@ -230,6 +230,11 @@ export class TestCreateComponent implements OnInit, OnDestroy {
     });
   }
 
+  public clearQuestions() {
+    this.questions = [];
+    this.syncQuestionsTableToForm();
+  }
+
   public clearSelectedQuestions() {
     this.selectedQuestions = [];
   }
@@ -255,5 +260,9 @@ export class TestCreateComponent implements OnInit, OnDestroy {
         this.showSuccess('Removed question from list');
       },
     });
+  }
+
+  public deleteSelectedQuestions(): void {
+    this.clearQuestions();
   }
 }

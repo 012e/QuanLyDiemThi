@@ -335,7 +335,7 @@ export class EditClassroomComponent implements OnInit, OnDestroy {
       error: (error) => {
         console.error(error);
         this.showError(
-          `Failed to create class: ${Utils.prettyError(error)}`
+          `Failed to create class`
         );
       },
     });

@@ -214,7 +214,7 @@ export class ResultEditComponent implements OnInit, OnDestroy {
         this.disableEditing();
       },
       error: (error) => {
-        this.showError(`Failed to update result ${Utils.prettyError(error)}`);
+        this.showError(`Failed to update result`);
       },
     });
   }
