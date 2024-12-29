@@ -185,7 +185,7 @@ export class ResultCreateComponent implements OnInit, OnDestroy {
         this.router.navigate(['/result', result.id]);
       },
       error: (error) => {
-        this.showError(`Failed to create result ${Utils.prettyError(error)}`);
+        this.showError(`Failed to create result`);
       },
     });
   }
